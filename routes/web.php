@@ -15,6 +15,12 @@ Route::middleware([
     'auth:sanctum',
     config('jetstream.auth_session'),
     'verified',
+])->group(function() {
+    // here we define routes for verified email users;
+});
+
+Route::middleware([
+    'auth:sanctum',
 ])->group(function () {
     Route::get('/dashboard', function () {
         return view('dashboard');
@@ -27,12 +33,16 @@ Route::middleware([
         ]);
     });
 
-    Route::get('/index', [UserController::class,'index'])->name('users.index')->middleware(isAdmin::class);
-    Route::get('/create', [UserController::class, 'create'])->name('users.create')->middleware(isAdmin::class);
-    Route::post('/users/store', [UserController::class, 'store'])->name('users.store');
+    Route::middleware(isAdmin::class)->group(function(){
+        Route::get('/index', [UserController::class,'index'])->name('users.index')->middleware(isAdmin::class);
+        Route::get('/create', [UserController::class, 'create'])->name('users.create')->middleware(isAdmin::class);
+        Route::delete('/users/{user}', [UserController::class, 'destroy'])->name('users.destroy')->middleware(isAdmin::class);
+        Route::post('/users/store', [UserController::class, 'store'])->name('users.store');
+        Route::get('tasks/trashes', [TaskController::class, 'trashedTasks'])->name('tasks.trashed');
+    });
+
     Route::get('/users/{user}/edit', [UserController::class, 'edit'])->name('users.edit');
     Route::put('/users/{user}', [UserController::class, 'update'])->name('users.update');
-    Route::delete('/users/{user}', [UserController::class, 'destroy'])->name('users.destroy')->middleware(isAdmin::class);
     Route::get('/users/{user}', [UserController::class, 'show'])->name('users.show');
     
     Route::resource('tasks', TaskController::class);

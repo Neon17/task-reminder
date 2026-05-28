@@ -8,12 +8,69 @@
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
 
+            <form method="GET" class="flex items-center justify-center gap-3 mb-3" action="{{ route('notes.index') }}">
+                @csrf
 
-            @if (auth()->user()->isAdmin())
-                <h4 class="text-xl font-extrabold text-center">{{__("All Notes")}}</h4>
-            @else
-                <h4 class="text-xl font-extrabold text-center">{{__("Your Notes")}}</h4>
-            @endif
+                <!-- Search by Title -->
+                <div class="mb-4">
+                    <label for="title" class="block text-sm font-medium text-gray-700">Search Title</label>
+                    <input type="text" name="title" id="title" value="{{ request('title') }}"
+                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
+                </div>
+
+                <!-- User Filter -->
+                @if (count($users) >0)
+                <div class="mb-4">
+                    <label for="user_id" class="block text-sm font-medium text-gray-700">User</label>
+                    <select name="user_id" id="user_id"
+                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
+                        <option value="">All Users</option>
+                        @foreach ($users as $user)
+                            <option value="{{ $user->id }}" {{ request('user_id') == $user->id ? 'selected' : '' }}>
+                                {{ $user->name }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
+                @endif
+
+
+                <!-- Notes by Task Categories (like yours, you followed, others) -->
+                <div class="mb-4">
+                    <label for="category" class="block text-sm font-medium text-gray-700">Category by Tasks</label>
+                    <select name="category" id="category"
+                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
+                        <option value="">All</option>
+                        <option value="creator" {{ request('category') === 'creator' ? 'selected' : '' }}>Your Tasks</option>
+                        <option value="follower" {{ request('category') === 'follower' ? 'selected' : '' }}>Followed Tasks</option>
+                        <option value="others" {{ request('category') === 'others' ? 'selected' : '' }}>Others</option>
+                    </select>
+                </div>
+
+                <!-- Sort Options -->
+                <div class="mb-4">
+                    <label for="sort" class="block text-sm font-medium text-gray-700">Sort By</label>
+                    <select name="sort" id="sort"
+                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
+                        <option value="">Default</option>
+                        <option value="created_at" {{ request('sort') === 'created_at' ? 'selected' : '' }}>Created
+                            (Oldest)</option>
+                        <option value="-created_at" {{ request('sort') === '-created_at' ? 'selected' : '' }}>Created
+                            (Newest)</option>
+                    </select>
+                </div>
+
+                <div class="space-x-4">
+                    <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded-md">
+                        Apply Filters
+                    </button>
+                    <a href="{{ route('notes.index') }}" class="px-4 py-2 bg-gray-300 text-gray-700 rounded-md">
+                        Reset
+                    </a>
+                </div>
+            </form>
+
+            <h4 class="text-xl font-extrabold text-center">{{ __('All Notes') }}</h4>
 
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg m-4 mb-7">
 
@@ -22,25 +79,25 @@
                         <thead class="text-xs text-gray-900 uppercase bg-gray-200">
                             <tr>
                                 <th scope="col" class="px-6 py-3">
-                                    {{__("SN")}}
+                                    {{ __('SN') }}
                                 </th>
                                 <th scope="col" class="px-6 py-3">
-                                    {{__("Description")}}
+                                    {{ __('Description') }}
                                 </th>
                                 <th scope="col" class="px-6 py-3">
-                                    {{__("User")}}
+                                    {{ __('User') }}
                                 </th>
                                 <th scope="col" class="px-6 py-3">
-                                    {{__("Task")}}
+                                    {{ __('Task') }}
                                 </th>
                                 <th scope="col" class="px-6 py-3">
-                                    {{__("Reason")}}
+                                    {{ __('Reason') }}
                                 </th>
                                 <th scope="col" class="px-6 py-3">
-                                    {{__("Assigned Date")}}
+                                    {{ __('Assigned Date') }}
                                 </th>
                                 <th scope="col" class="px-6 py-3">
-                                    {{__("Created Date")}}
+                                    {{ __('Created Date') }}
                                 </th>
                             </tr>
                         </thead>
@@ -49,7 +106,7 @@
                             @if (count($notes) == 0)
                                 <tr class="bg-white border-b border-gray-200">
                                     <td class="px-6 py-4 w-100">
-                                        <p class="text-center">{{__("No notes found")}}</p>
+                                        <p class="text-center">{{ __('No notes found') }}</p>
                                     </td>
                                 </tr>
                             @else
@@ -68,7 +125,7 @@
                                             @if ($note->task)
                                                 {{ $note->task->title }}
                                             @else
-                                                <em>{{__("Deleted")}}</em>
+                                                <em>{{ __('Deleted') }}</em>
                                             @endif
                                         </td>
                                         <td class="px-6 py-4 w-100">
@@ -78,7 +135,7 @@
                                             @if ($note->task)
                                                 {{ $note->task->assigned_date }}
                                             @else
-                                                <em>{{__("Deleted")}}</em>
+                                                <em>{{ __('Deleted') }}</em>
                                             @endif
                                         </td>
                                         <td class="px-6 py-4 w-100">
@@ -94,93 +151,7 @@
 
             </div>
 
-
-
-            @if (!auth()->user()->isAdmin())
-                <h4 class="text-xl font-extrabold text-center">Followed Task Notes</h4>
-
-
-                <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg m-4 mb-7">
-
-                    <div class="relative overflow-x-auto">
-                        <table class="w-full text-sm text-left rtl:text-right text-gray-500">
-                            <thead class="text-xs text-gray-900 uppercase bg-gray-200">
-                                <tr>
-                                    <th scope="col" class="px-6 py-3">
-                                        SN
-                                    </th>
-                                    <th scope="col" class="px-6 py-3">
-                                        Description
-                                    </th>
-                                    <th scope="col" class="px-6 py-3">
-                                        User
-                                    </th>
-                                    <th scope="col" class="px-6 py-3">
-                                        Task
-                                    </th>
-                                    <th scope="col" class="px-6 py-3">
-                                        Reason
-                                    </th>
-                                    <th scope="col" class="px-6 py-3">
-                                        Assigned Date
-                                    </th>
-                                    <th scope="col" class="px-6 py-3">
-                                        Created Date
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody>
-
-                                @if (count($followednotes) == 0)
-                                    <tr class="bg-white border-b border-gray-200">
-                                        <td class="px-6 py-4 w-100">
-                                            <p class="text-center">No notes found</p>
-                                        </td>
-                                    </tr>
-                                @else
-                                    @foreach ($followednotes as $note)
-                                        <tr class="bg-white border-b border-gray-200">
-                                            <td class="px-6 py-4 w-100">
-                                                {{ $loop->iteration }}
-                                            </td>
-                                            <td class="px-6 py-4 w-100">
-                                                {{ $note->description }}
-                                            </td>
-                                            <td class="px-6 py-4 w-100">
-                                                {{ $note->user->name }}
-                                            </td>
-                                            <td class="px-6 py-4 w-100">
-                                                @if ($note->task)
-                                                    {{ $note->task->title }}
-                                                @else
-                                                    <em>Deleted</em>
-                                                @endif
-                                            </td>
-                                            <td class="px-6 py-4 w-100">
-                                                {{ $note->reason }}
-                                            </td>
-                                            <td class="px-6 py-4 w-100">
-                                                @if ($note->task)
-                                                    {{ $note->task->assigned_date }}
-                                                @else
-                                                    <em>Deleted</em>
-                                                @endif
-                                            </td>
-                                            <td class="px-6 py-4 w-100">
-                                                {{ $note->created_at }}
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                @endif
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-
-                </div>
-
-            @endif
-
+            {{ $notes->links() }}
 
         </div>
     </div>

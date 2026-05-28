@@ -18,12 +18,21 @@ class TaskController extends Controller
             'created_by' => 'nullable|integer|exists:users,id',
             'status' => "nullable|in:completed,pending,''",
             'sort' => 'nullable|string', // e.g., "assigned_date,-created_at"
-            'assignee' => "nullable|string|in:creator,follower,''",
+            'assignee' => "nullable|string|in:creator,follower,others",
             'per_page' => 'nullable|integer|min:1|max:100'
         ]);
 
-        $tasks = Task::query()
-            ->filter($validated)
+        $tasks = null;
+
+        if (Auth::user()->role == 'admin') {
+            $tasks = Task::query();
+        } else {
+            $tasks = Task::where('created_by', Auth::user()->id)
+            ->orWhereHas('followers', fn($q) => $q->where('user_id', Auth::user()->id));
+        }
+
+
+        $tasks = $tasks->filter($validated)
             ->sort($validated["sort"] ?? null)
             ->paginate($validated["per_page"] ?? 10)->withQueryString();
 

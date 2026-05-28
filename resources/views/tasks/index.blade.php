@@ -101,7 +101,7 @@
                         <option value="follower"
                             {{ old('assignee', request('assignee')) === 'follower' ? 'selected' : '' }}>Followed By You
                         </option>
-                        <option value="others">Neither Created By You nor Followed By You</option>
+                        <option value="others">Neither</option>
                     </select>
                 </div>
 

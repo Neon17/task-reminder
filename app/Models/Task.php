@@ -41,12 +41,17 @@ class Task extends Model
 
     public function scopeFilter($query, array $filters)
     {
-        info('filters = ' . json_encode($filters));
         return $query
-            ->when(array_key_exists('assignee', $filters) && $filters['assignee'] === 'follower' ?? false, fn($q, $assignee) =>
-            $q->whereHas('followers', fn($q) => $q->where('user_id', $assignee)))
-            ->when(array_key_exists('assignee', $filters) && $filters['assignee'] === 'creator', fn($q) =>
-            $q->where('created_by', Auth::user()->id))
+            ->when($filters['assignee'] ?? false, function ($q, $assignee) {
+                if ($assignee === 'follower') {
+                    $q->whereHas('followers', fn($q) => $q->where('user_id', Auth::id()));
+                } elseif ($assignee === 'creator') {
+                    $q->where('created_by', Auth::id());
+                } elseif ($assignee === 'others'){
+                    $q->where('created_by', '!=', Auth::id())
+                        ->whereDoesntHave('followers', fn($q) => $q->where('user_id', Auth::id()));
+                }
+            })
             ->when($filters['title'] ?? false, fn($q, $title) =>
             $q->where('title', 'like', "%{$title}%"))
             ->when($filters['created_by'] ?? false, fn($q, $createdBy) =>

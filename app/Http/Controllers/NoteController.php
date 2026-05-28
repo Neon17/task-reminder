@@ -4,29 +4,47 @@ namespace App\Http\Controllers;
 
 use App\Models\Note;
 use App\Models\Task;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class NoteController extends Controller
 {
     //
-    public function index() {
-        $allnotes = [];
-        $yournotes = [];
-        $followednotes = [];
-        $trashednotes = [];
+    public function index(Request $request)
+    {
+        $validated = $request->validate([
+            'title' => 'nullable|string|max:255',
+            'user_id' => 'nullable|integer|exists:users,id',
+            'sort' => 'nullable|string',
+            'category' => 'nullable|string|in:creator,follower,others',
+            'per_page' => 'nullable|integer|min:1|max:100'
+        ]);
 
         if (Auth::user()->role=='admin') {
-            $notes = Note::with('task','user')->get();
-            return view('notes.index', compact('notes'));
+            $notes = Note::query();
+        } else {
+            $notes = Note::where(function($query){
+                $query->where('user_id', Auth::user()->id)
+                    ->orWhereHas('task', function($q){
+                        $q->whereHas('followers', function($q){
+                            $q->where('id', Auth::user()->id);
+                        });
+                    });
+            });
         }
 
-        $yournotes = Note::with('task','user')->where('user_id', Auth::user()->id)->get();
-        $followednotes = Note::with('task','user')->whereHas('task', fn($q) => $q->whereHas('followers', fn($q) => $q->where('user_id', Auth::user()->id)))->get();
+        $notes = $notes->filter($validated)
+            ->sort($validated['sort'] ?? null)
+            // ->with(['task', 'user'])
+            ->paginate($validated['per_page'] ?? 10)->withQueryString();
 
-        return view('notes.index', [
-            'notes' => $yournotes,
-            'followednotes' => $followednotes
-        ]);
+        $users = [];
+        if (Auth::user()->role=='admin') {
+            $users = User::all(); // For user dropdown
+        }
+
+
+        return view('notes.index', compact('notes', 'users'));
     }
 }

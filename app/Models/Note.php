@@ -28,6 +28,54 @@ class Note extends Model
         'updated_at' => 'datetime',
     ];
 
+    // app/Models/Note.php
+    public function scopeFilter($query, array $filters)
+    {
+        return $query
+            ->when($filters['category'] ?? false, function ($q, $category) {
+                if ($category == 'creator') {
+                    $q->whereHas('task', function ($q) {
+                        $q->where('created_by', Auth::id());
+                    });
+                } elseif ($category == 'follower') {
+                    $q->whereHas('task', function ($q) {
+                        $q->whereHas('followers', function ($q) {
+                            $q->where('user_id', Auth::id());
+                        });
+                    });
+                } elseif ($category == 'others') {
+                    $q->where(function ($q) {
+                        $q->whereDoesntHave('task', function ($q) {
+                            $q->where('created_by', Auth::id());  // Task not created by you
+                        })
+                            ->whereDoesntHave('task.followers', function ($q) {
+                                $q->where('user_id', Auth::id());  // Task not followed by you
+                            });
+                    });
+                }
+            })
+            ->when($filters['title'] ?? false, fn($q, $title) =>
+            $q->where('title', 'like', "%{$title}%"))
+            ->when($filters['user_id'] ?? false, fn($q, $userId) =>
+            $q->where('user_id', $userId))
+            ->when($filters['task_id'] ?? false, fn($q, $taskId) =>
+            $q->where('task_id', $taskId))
+            ->when($filters['reason'] ?? false, fn($q, $reason) =>
+            $q->where('reason', 'like', "%{$reason}%"));
+    }
+
+    public function scopeSort($query, $sort = '')
+    {
+        if (!$sort) return $query->latest();
+
+        $direction = str_starts_with($sort, '-') ? 'desc' : 'asc';
+        $column = ltrim($sort, '-');
+
+        return in_array($column, $this->fillable)
+            ? $query->orderBy($column, $direction)
+            : $query->latest();
+    }
+
     public function task()
     {
         return $this->belongsTo(Task::class);
