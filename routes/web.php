@@ -68,9 +68,12 @@ Route::middleware([
     });
 
     Route::get('api/users/search/{query}', function (string $query) {
-        info('query = '.$query);
-        return User::where('name', 'like', "%{$query}%")
-            ->orWhere('email', 'like', "%{$query}%")
+        // info('query = '.$query);
+        return User::where('id', '!=', Auth::id())
+            ->where(function($q) use ($query) {
+                $q->where('name', 'like', "%{$query}%")
+                ->orWhere('email', 'like', "%{$query}%");
+            })
             ->limit(10)
             ->get(['id', 'name', 'email']);
     });
