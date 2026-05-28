@@ -11,9 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('users', function (Blueprint $table) {
+        Schema::table('tasks', function (Blueprint $table) {
             //
-            $table->enum('role', ['admin', 'user'])->default('user');
+            $table->timestamp('last_notified_at')->nullable();
         });
     }
 
@@ -22,9 +22,9 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('users', function (Blueprint $table) {
+        Schema::table('tasks', function (Blueprint $table) {
             //
-            $table->dropColumn('role');
+            $table->dropColumn('last_notified_at');
         });
     }
 };

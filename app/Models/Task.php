@@ -23,9 +23,20 @@ class Task extends Model
         'completed_date',
         'notification_start_date',
         'notification_interval',
+        'last_notified_at',
         'deleted_at',
         'created_at',
         'updated_at'
+    ];
+
+    protected $casts = [
+        'assigned_date' => 'datetime',
+        'completed_date' => 'datetime',
+        'notification_start_date' => 'datetime',
+        'last_notified_at' => 'datetime',
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
+        'deleted_at' => 'datetime'
     ];
 
     public function creator()
