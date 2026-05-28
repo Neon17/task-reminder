@@ -187,6 +187,13 @@ class TaskController extends Controller
         // Should we need to extract joined at?
         $task = Task::where('id', $id)->with('creator', 'followers', 'notes')->first();
 
+        if (!$task){
+            return redirect()->route('tasks.index')->with('error', "Task not Found!");
+        }
+
+        if (!$task->canDelete())
+            return redirect()->back()->with('error', "Only task creator can edit the task");
+
         if ($task->completed_date) {
             return redirect()->back()->with('error', 'Task already completed!');
         }
@@ -205,6 +212,8 @@ class TaskController extends Controller
     public function updateFollowers(Request $request)
     {
         $task = Task::find($request->task_id);
+        if (!$task->canDelete())
+            return redirect()->back()->with('error', 'Only task creator can update followers');
         $followerIds = json_decode($request->followers, true);
         $task->followers()->sync($followerIds);
         return redirect()->back()->with('success', 'Followers updated successfully!');
@@ -212,6 +221,8 @@ class TaskController extends Controller
 
     public function update(Request $request, Task $task)
     {
+        if (!$task->canDelete())
+            return redirect()->route('tasks.index')->with('error', 'Only task creator can update the task');
         if (!$task) {
             return redirect()->route('tasks.index')->with('error', 'Task not found!');
         }

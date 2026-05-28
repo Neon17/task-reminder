@@ -95,6 +95,10 @@ class Task extends Model
         return $this->hasMany(Note::class);
     }
 
+    public function canDelete() {
+        return $this->created_by == Auth::user()->id;
+    }
+
     public function canComplete()
     {
         // it checks if the user is authorized to complete the task

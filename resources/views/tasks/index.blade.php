@@ -268,7 +268,7 @@
                                                             </button>
                                                         </form>
                                                     @else
-                                                        @if ($task->canComplete() && $task->completed_date == null)
+                                                        @if ($task->canDelete() && $task->completed_date == null)
                                                             <a href="{{ route('tasks.edit', $task->id) }}"
                                                                 class="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-3 py-2 text-center whitespace-nowrap">
                                                                 {{ __('Edit') }}
@@ -277,6 +277,15 @@
                                                                 class="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-3 py-2 text-center whitespace-nowrap">
                                                                 {{ __('Complete') }}
                                                             </a>
+                                                            <form action="{{ route('tasks.delete', $task->id) }}"
+                                                                method="post">
+                                                                @csrf
+                                                                @method('POST')
+                                                                <button type="submit"
+                                                                    class="w-full focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-3 py-2 text-center">
+                                                                    {{ __('Delete') }}
+                                                                </button>
+                                                            </form>
                                                         @else
                                                             <a href="{{ route('tasks.show', $task->id) }}"
                                                                 class="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-3 py-2 text-center whitespace-nowrap">
@@ -284,15 +293,6 @@
                                                             </a>
                                                         @endif
                                                     @endif
-                                                    <form action="{{ route('tasks.delete', $task->id) }}"
-                                                        method="post">
-                                                        @csrf
-                                                        @method('POST')
-                                                        <button type="submit"
-                                                            class="w-full focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-3 py-2 text-center">
-                                                            {{ __('Delete') }}
-                                                        </button>
-                                                    </form>
                                                 </div>
                                             </div>
                                         </td>
