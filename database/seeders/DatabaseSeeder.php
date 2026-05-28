@@ -15,11 +15,16 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->create();
 
-        $this->call([
-            // UserSeeder::class,
-            // TaskSeeder::class,
-            // NoteSeeder::class,
-            TaskUserFollowerSeeder::class
+        User::factory()->create([
+            'name' => 'Admin User',
+            'role' => 'admin',
         ]);
+
+        // $this->call([
+        //     UserSeeder::class,
+        //     TaskSeeder::class,
+        //     NoteSeeder::class,
+        //     TaskUserFollowerSeeder::class
+        // ]);
     }
 }
