@@ -6,7 +6,6 @@
 
 - Replace hardcoded value to {{__('...')__}} like (because anyone can change)
 - Learn every detail (like every detail in Jetstream), don't repeat code ( use component layout ) and minimize code in controller
-- Make full screen table in design (not container like)
   
 - Monday bata Native PHP garne
 - Add built in Laravel Email Verification
@@ -21,6 +20,3 @@
   - Signature (Cheers, Regards)
   - Signature text(Your Assistant Name, ...., .... (can be array of length 3)) 
   - Introductory text (introduction_text)
-
-- Task Lists should be shown as a whole rather than Followed Tasks, Other Tasks, Your Tasks
-- Instead, we can add filter like (Followed Tasks, Your Tasks, Other Tasks)

@@ -100,7 +100,7 @@ class TaskController extends Controller
         return view('tasks.show', compact('task'));
     }
 
-    public function complete($task)
+    public function complete(Task $task)
     {
         if ($task->completed_date) {
             return redirect()->route('tasks.index')->with('error', 'Task already completed!');

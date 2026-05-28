@@ -34,7 +34,7 @@
 
 
             <div class="relative overflow-x-auto p-5 bg-white">
-                <form class="max-w-md mx-auto" action="{{ route('tasks.complete', $task) }}" method="POST">
+                <form class="mx-auto" action="{{ route('tasks.complete', $task) }}" method="POST">
                     @csrf
                     @method('POST')
                     <div class="notes-fields">
@@ -44,7 +44,7 @@
                         </label>
                         <textarea id="message" rows="4" name="notes" required
                             class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
-                            placeholder="Write your reason for the task completion here..."></textarea>
+                            placeholder="Write your reason for the task completion here(in very short words)..."></textarea>
                         @error('notes')
                             <div class="mt-1 flex items-center text-sm text-red-600">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" viewBox="0 0 20 20"
