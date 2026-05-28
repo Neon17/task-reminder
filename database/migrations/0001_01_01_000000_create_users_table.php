@@ -18,7 +18,7 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->string('role')->default('user');
-            $table->string('timezone')->default('GMT+5:45'); // Nepal timezone
+            $table->string('timezone')->default('Asia/Kathmandu'); // Nepal timezone
             $table->rememberToken();
             $table->foreignId('current_team_id')->nullable();
             $table->string('profile_photo_path', 2048)->nullable();

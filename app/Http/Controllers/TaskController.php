@@ -58,10 +58,10 @@ class TaskController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'title' => 'required|max:15',
+            'title' => 'required|max:30',
             'description' => 'required|max:255',
             'notification_start_date' => 'required|after:today',
-            'date_of_completion' => 'required|date|after:today',
+            'date_of_completion' => 'required|after:today',
             'notification_interval' => [
                 'required',
                 'numeric',
@@ -120,7 +120,7 @@ class TaskController extends Controller
             'title' => 'required|max:30',
             'description' => 'required|max:255',
             'notification_start_date' => 'required|after:today|before:date_of_completion',
-            'date_of_completion' => 'required|date|after:today',
+            'date_of_completion' => 'required|after:today',
             'notification_interval' => [
                 'required',
                 'numeric',

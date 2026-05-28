@@ -57,6 +57,21 @@
                         <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                     @enderror
                 </div>
+                <div class="relative z-0 w-full mb-5 group">
+                    <label for="confirm_password"
+                        class="peer-focus:font-medium absolute text-sm text-gray-500 duration-300 transform -translate-y-6 scale-75 top-2 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
+                            Select Timezone
+                    </label>
+                    <select name="timezone" class="form-select text-gray-600" required>
+                        @foreach ($timezones as $tz)
+                            <option value="{{ $tz['value'] }}"
+                                {{ old('timezone', $user->timezone ?? '') === $tz['value'] ? 'selected' : '' }}>
+                                {{ $tz['label'] }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
+
                 <div class="grid md:grid-cols-2 md:gap-6">
                     <div class="relative z-0 w-full mb-5 group">
                         <div class="space-y-4 text-gray-500">

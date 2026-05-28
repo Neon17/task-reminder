@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\TimezoneHelper;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -18,7 +19,8 @@ class UserController extends Controller
 
     public function create()
     {
-        return view('users.create');
+        $timezones = TimezoneHelper::all();
+        return view('users.create', compact('timezones'));
     }
 
     public function store(Request $request)
@@ -34,6 +36,7 @@ class UserController extends Controller
             'name' => $request->username,
             'email' => $request->email,
             'password' => bcrypt($request->password),
+            'timezone' => $request->timezone? $request->timezone: null,
             'role' => ($request->role) == 'admin' ? 'admin' : 'user'
         ]);
 
@@ -43,7 +46,8 @@ class UserController extends Controller
 
     public function edit(User $user)
     {
-        return view('users.edit', compact('user'));
+        $timezones = TimezoneHelper::all();
+        return view('users.edit', compact('user', 'timezones'));
     }
 
     public function update(Request $request, User $user)

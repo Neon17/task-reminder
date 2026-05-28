@@ -55,7 +55,7 @@
                     </div>
 
                     <div class="relative z-0 w-full mb-5 group">
-                        <input type="date" name="date_of_completion" id="floating_first_name"
+                        <input type="datetime" name="date_of_completion" id="floating_first_name"
                             class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                             placeholder=" " required />
                         <label for="floating_first_name"
@@ -75,7 +75,7 @@
                     </div>
 
                     <div class="relative z-0 w-full mb-5 group">
-                        <input type="date" name="notification_start_date" id="floating_first_name"
+                        <input type="datetime" name="notification_start_date" id="floating_first_name"
                             class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                             placeholder=" " required />
                         <label for="floating_first_name"
