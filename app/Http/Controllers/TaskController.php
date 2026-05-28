@@ -166,7 +166,7 @@ class TaskController extends Controller
             return redirect()->route('tasks.index')->with('error', 'Task already completed!');
         }
         $request->validate([
-            'notes' => 'required'
+            'notes' => 'required|max:250'
         ]);
 
         $task->update([
@@ -265,6 +265,9 @@ class TaskController extends Controller
         if (!$task) {
             return redirect()->route('tasks.index')->with('error', 'Task not found!');
         }
+        $request->validate([
+            'notes' => 'required|max:250'
+        ]);
         $task->notes()->create([
             'reason' => 'deletion',
             'description' => $request->notes,
@@ -301,7 +304,7 @@ class TaskController extends Controller
                         }
                     }
                 ],
-                'notes' => 'required'
+                'notes' => 'required|max:250'
             ]);
         }
 
