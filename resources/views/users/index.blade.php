@@ -246,7 +246,9 @@
 
             </div>
 
-            {{ $users->links() }}
+            <div class="mx-3">
+                {{ $users->links() }}
+            </div>
         </div>
     </div>
 </x-app-layout>

@@ -207,7 +207,9 @@
 
             </div>
 
-            {{ $notes->links() }}
+            <div class="mx-3">
+                {{ $notes->links() }}
+            </div>
 
         </div>
     </div>

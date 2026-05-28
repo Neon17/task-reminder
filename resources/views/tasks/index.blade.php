@@ -309,7 +309,9 @@
 
             @endif
 
-            {{ $tasks->links() }}
+            <div class="mx-3">
+                {{ $tasks->links() }}
+            </div>
 
         </div>
 
