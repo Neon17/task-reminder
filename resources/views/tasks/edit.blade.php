@@ -118,6 +118,15 @@
 
             </div>
 
+            
+            <div class="relative overflow-x-auto p-5 mt-5 bg-white">
+                <h4 class="text-xl font-extrabold text-center">Followers</h4>
+                
+                 {{-- <a href="{{route('task.followers.create')}}" type="button"
+                        class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center">Add Followers</a> --}}
+                {{-- here list of followers are shown --}}
+            </div>
+
         </div>
     </div>
 </x-app-layout>

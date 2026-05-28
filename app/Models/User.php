@@ -38,6 +38,10 @@ class User extends Authenticatable
         return $this->hasMany(Task::class);
     }
 
+    public function followedTasks() {
+        return $this->belongsToMany(Task::class, 'task_user_followers')->withTimestamps();
+    }
+
     /**
      * The attributes that should be hidden for serialization.
      *
