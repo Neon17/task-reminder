@@ -20,6 +20,13 @@ Route::middleware([
         return view('dashboard');
     })->name('dashboard');
 
+    Route::get('/register', function() {
+        return response()->json([
+            'message' => 'You are not authorized to access this page.',
+            'advice' => 'Please contact the admin to register a new account.'
+        ]);
+    });
+
     Route::get('/index', [UserController::class,'index'])->name('users.index')->middleware(isAdmin::class);
     Route::get('/create', [UserController::class, 'create'])->name('users.create')->middleware(isAdmin::class);
     Route::post('/users/store', [UserController::class, 'store'])->name('users.store');
