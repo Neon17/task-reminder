@@ -10,7 +10,7 @@
     <div class="p-0 sm:p-5">
         <div class="mx-auto sm:px-6 lg:px-8 p-5">
 
-            <x-user-form :isEdit="false" />
+            <x-user-form />
 
         </div>
     </div>

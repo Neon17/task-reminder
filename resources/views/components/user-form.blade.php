@@ -1,6 +1,6 @@
 @props(['user' => null, 'isEdit' => false])
 
-<form method="POST" action="{{ $isEdit ? route('users.update', $user) : route('users.store') }}" class="space-y-6">
+<form method="POST" action="{{ $user ? route('users.update', $user) : route('users.store') }}" class="space-y-6">
     @csrf
     @if($isEdit) @method('PUT') @endif
 
@@ -16,6 +16,9 @@
                 <input type="username" name="username" value="{{ old('username', $user->name ?? '') }}"
                     class="mt-1 block w-full rounded-md border-gray-200 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm p-3 border"
                     required>
+                    @error('username')
+                        <p class="text-red-800">{{$message}}</p>
+                    @enderror
             </div>
 
             <!-- Email Field -->
@@ -24,6 +27,9 @@
                 <input type="email" name="email" value="{{ old('email', $user->email ?? '') }}"
                     class="mt-1 block w-full rounded-md border-gray-200 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm p-3 border"
                     required>
+                @error('email')
+                       <p class="text-red-800">{{$message}}</p> 
+                @enderror
             </div>
 
             <!-- Timezone Field -->
@@ -36,8 +42,31 @@
                         </option>
                     @endforeach
                 </select>
+                    @error('timezone')
+                        <p class="text-red-800">{{$message}}</p>
+                    @enderror
             </div>
 
+            @if (!$user)
+                <div class="space-y-2">
+                    <label class="block text-sm font-medium text-gray-700">Password</label>
+                    <input type="password" name="password" value=""
+                        class="mt-1 block w-full rounded-md border-gray-200 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm p-3 border"
+                        required>
+                    @error('password')
+                        <p class="text-red-800">{{$message}}</p>
+                    @enderror
+                </div>
+                <div class="space-y-2">
+                    <label class="block text-sm font-medium text-gray-700">Confirm Password</label>
+                    <input type="password" name="confirm_password" value=""
+                        class="mt-1 block w-full rounded-md border-gray-200 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm p-3 border"
+                        required>
+                    @error('confirm_password')
+                        <p class="text-red-800">{{$message}}</p>
+                    @enderror
+                 </div>
+            @endif
             <!-- Role Field -->
             <div class="space-y-2">
                 <label class="block text-sm font-medium text-gray-700">Role</label>
