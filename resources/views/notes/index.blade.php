@@ -6,7 +6,7 @@
     </x-slot>
 
     <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+        <div class="mx-auto sm:px-6 lg:px-8">
 
             <form method="GET" class="flex items-center justify-center gap-3 mb-3" action="{{ route('notes.index') }}">
                 @csrf

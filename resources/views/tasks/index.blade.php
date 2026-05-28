@@ -6,7 +6,7 @@
     </x-slot>
 
     <div class="py-12 pt-2">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+        <div class="mx-auto sm:px-6 lg:px-8">
 
             <div class="error-container" style="min-height: 60px;">
                 @if (session('error'))

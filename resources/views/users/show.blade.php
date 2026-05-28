@@ -8,7 +8,7 @@
     </x-slot>
 
     <div class="py-12">
-        <div class="max-w-7xl bg-white mx-auto sm:px-6 lg:px-8 py-5">
+        <div class="bg-white mx-auto sm:px-6 lg:px-8 py-5">
 
             <div class="relative z-0 w-full mb-5 group">
                 <input disabled type="text" name="username" id="username" value="{{ $user->name }}"

@@ -5,7 +5,7 @@
         </h2>
     </x-slot>
     <div class="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+        <div class="mx-auto px-4 sm:px-6 lg:px-8 py-20">
             <div class="text-center">
                 <h1 class="text-5xl font-extrabold text-gray-900 mb-6">
                     <span class="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-purple-600">Task
