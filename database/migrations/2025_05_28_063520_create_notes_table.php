@@ -17,8 +17,8 @@ return new class extends Migration
             $table->text('description');
             $table->json('labels')->nullable();
             $table->foreignId('user_id')->constrained('users');
-            $table->foreignId('task_id')->constrained()->cascadeOnDelete();
-            $table->enum('reason', ['creation', 'updation', 'deletion']);
+            $table->foreignId('task_id')->constrained();
+            $table->enum('reason', ['creation', 'updation', 'deletion', 'completion'])->default('creation');
             $table->timestamps();
         });
     }

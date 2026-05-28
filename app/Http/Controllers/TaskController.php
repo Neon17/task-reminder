@@ -44,13 +44,15 @@ class TaskController extends Controller
         return view('tasks.create');
     }
 
-    public function restore($id){
+    public function restore($id)
+    {
         //trashed object doesn't bind automatically, so can't write Task $task instead of $id in parameter
         $task = Task::onlyTrashed()->where('id', $id)->restore();
         return redirect()->route('tasks.index')->with('success', 'Task restored successfully!');
     }
 
-    public function forceDelete($id){
+    public function forceDelete($id)
+    {
         $task = Task::onlyTrashed()->where('id', $id)->forceDelete();
         return redirect()->route('tasks.index')->with('success', 'Task deleted permanently!');
     }
@@ -102,12 +104,52 @@ class TaskController extends Controller
     public function show(Task $task)
     {
         //this route is for showing single Task
+        $task = Task::where('id', $task->id)->with('creator', 'followers')->first();
+        return view('tasks.show', compact('task'));
+    }
+
+    public function complete($task)
+    {
+        if ($task->completed_date) {
+            return redirect()->route('tasks.index')->with('error', 'Task already completed!');
+        }
+        return view('tasks.complete', compact('task'));
+    }
+
+    public function completeTask(Request $request, Task $task)
+    {
+        if ($task->completed_date) {
+            return redirect()->route('tasks.index')->with('error', 'Task already completed!');
+        }
+        $request->validate([
+            'notes' => 'required'
+        ]);
+
+        $task->update([
+            'completed_date' => now()
+        ]);
+
+        $task->notes()->create([
+            'reason' => 'completion',
+            'description' => $request->notes,
+            'user_id' => Auth::user()->id
+        ]);
+
+        return redirect()->route('tasks.index')->with('success', 'Task completed successfully!');
     }
 
     public function edit($id)
     {
         // Should we need to extract joined at?
-        $task = Task::where('id', $id)->with('creator', 'followers')->first();
+        $task = Task::where('id', $id)->with('creator', 'followers', 'notes')->first();
+
+        if ($task->completed_date) {
+            return redirect()->back()->with('error', 'Task already completed!');
+        }
+
+        if (($task->created_by != Auth::user()->id) && (Auth::user()->role != 'admin')) {
+            return redirect()->back()->with('error', 'Only task creator and admin are authorized to edit this task!'); //back() suitable or route('tasks.index')
+        }
         return view('tasks.edit', compact('task'));
     }
 
@@ -153,7 +195,8 @@ class TaskController extends Controller
         return redirect()->route('tasks.index')->with('success', 'Task updated successfully!');
     }
 
-    public function delete(Task $task) {
+    public function delete(Task $task)
+    {
         if (!$task) {
             return redirect()->route('tasks.index')->with('error', 'Task not found!');
         }

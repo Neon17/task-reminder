@@ -43,6 +43,13 @@ class Task extends Model
         return $this->hasMany(Note::class);
     }
 
+    public function canComplete(){
+        // it checks if the user is authorized to complete the task
+        // only task creator and admin can complete the task
+
+        return $this->created_by == Auth::user()->id || Auth::user()->role == 'admin';
+    }
+
 
     // Defining mutators and accessors: set is mutators, get is accessors
 

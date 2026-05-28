@@ -80,6 +80,12 @@ class UserController extends Controller
             ->with('success', 'User created successfully');
     }
 
+    public function show($id) {
+        $user = User::find($id);
+        $timezones = TimezoneHelper::all();
+        return view('users.show', compact('user', 'timezones'));
+    }
+
     public function destroy(User $user)
     {
         $user->delete();

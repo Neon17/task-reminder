@@ -5,32 +5,56 @@
         </h2>
     </x-slot>
 
-    <div class="py-12">
+    <div class="py-12 pt-2">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
 
-            @if (session('success'))
-                <div class="alert alert-success mb-4">
-                    <div
-                        class="flex items-center justify-between px-4 py-3 bg-green-100 border border-green-400 text-green-700 rounded">
-                        <div class="flex items-center">
-                            <svg class="h-5 w-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd"
-                                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                                    clip-rule="evenodd" />
-                            </svg>
-                            <span>{{ session('success') }}</span>
+            <div class="error-container" style="min-height: 60px;">
+                @if (session('error'))
+                    <div class="alert alert-error mb-4">
+                        <div
+                            class="flex items-center justify-between px-4 py-3 bg-red-100 border border-red-400 text-red-700 rounded">
+                            <div class="flex items-center">
+                                <svg class="h-5 w-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd"
+                                        d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+                                        clip-rule="evenodd" />
+                                </svg>
+                                <span>{{ session('error') }}</span>
+                            </div>
+                            <button type="button" class="text-red-700 hover:text-red-900"
+                                onclick="this.parentElement.parentElement.remove()">
+                                <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd"
+                                        d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                                        clip-rule="evenodd" />
+                                </svg>
+                            </button>
                         </div>
-                        <button type="button" class="text-green-700 hover:text-green-900"
-                            onclick="this.parentElement.parentElement.remove()">
-                            <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd"
-                                    d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                                    clip-rule="evenodd" />
-                            </svg>
-                        </button>
                     </div>
-                </div>
-            @endif
+                @elseif(session('success'))
+                    <div class="alert alert-success mb-4">
+                        <div
+                            class="flex items-center justify-between px-4 py-3 bg-green-100 border border-green-400 text-green-700 rounded">
+                            <div class="flex items-center">
+                                <svg class="h-5 w-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd"
+                                        d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                                        clip-rule="evenodd" />
+                                </svg>
+                                <span>{{ session('success') }}</span>
+                            </div>
+                            <button type="button" class="text-green-700 hover:text-green-900"
+                                onclick="this.parentElement.parentElement.remove()">
+                                <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd"
+                                        d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                                        clip-rule="evenodd" />
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                @endif
+            </div>
 
             <a type="button" href="{{ route('tasks.create') }}"
                 class="py-2.5 px-5 me-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100">Create
@@ -117,19 +141,26 @@
                                             <div
                                                 class="absolute right-0 mt-2 w-32 bg-white rounded-md shadow-lg z-50 hidden actions-dropdown origin-top-right">
                                                 <div class="flex flex-col space-y-2 p-2">
-                                                    <a href="{{ route('tasks.edit', $task->id) }}"
+                                                    <a href="{{ route('tasks.show', $task->id) }}"
                                                         class="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-3 py-2 text-center whitespace-nowrap">
-                                                        Edit
+                                                        View
                                                     </a>
-                                                    <form action="{{ route('tasks.delete', $task->id) }}"
-                                                        method="post">
-                                                        @csrf
-                                                        @method('POST')
-                                                        <button type="submit"
-                                                            class="w-full focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-3 py-2 text-center">
-                                                            Delete
-                                                        </button>
-                                                    </form>
+
+                                                    @if (auth()->user()->isAdmin() || $task->completed_date == null)
+                                                        <a href="{{ route('tasks.edit', $task->id) }}"
+                                                            class="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-3 py-2 text-center whitespace-nowrap">
+                                                            Edit
+                                                        </a>
+                                                        <form action="{{ route('tasks.delete', $task->id) }}"
+                                                            method="post">
+                                                            @csrf
+                                                            @method('POST')
+                                                            <button type="submit"
+                                                                class="w-full focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-3 py-2 text-center">
+                                                                Delete
+                                                            </button>
+                                                        </form>
+                                                    @endif
                                                 </div>
                                             </div>
                                         </td>
@@ -227,19 +258,26 @@
                                             <div
                                                 class="absolute right-0 mt-2 w-32 bg-white rounded-md shadow-lg z-50 hidden actions-dropdown origin-top-right">
                                                 <div class="flex flex-col space-y-2 p-2">
-                                                    <a href="{{ route('tasks.edit', $task->id) }}"
+
+                                                    <a href="{{ route('tasks.show', $task->id) }}"
                                                         class="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-3 py-2 text-center whitespace-nowrap">
-                                                        Edit
+                                                        View
                                                     </a>
-                                                    <form action="{{ route('tasks.delete', $task->id) }}"
-                                                        method="post">
-                                                        @csrf
-                                                        @method('POST')
-                                                        <button type="submit"
-                                                            class="w-full focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-3 py-2 text-center">
-                                                            Delete
-                                                        </button>
-                                                    </form>
+                                                    @if ($task->canComplete())
+                                                        <a href="{{ route('tasks.edit', $task->id) }}"
+                                                            class="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-3 py-2 text-center whitespace-nowrap">
+                                                            Edit
+                                                        </a>
+                                                        <form action="{{ route('tasks.delete', $task->id) }}"
+                                                            method="post">
+                                                            @csrf
+                                                            @method('POST')
+                                                            <button type="submit"
+                                                                class="w-full focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-3 py-2 text-center">
+                                                                Delete
+                                                            </button>
+                                                        </form>
+                                                    @endif
                                                 </div>
                                             </div>
                                         </td>
@@ -337,6 +375,10 @@
                                                 <div
                                                     class="absolute right-0 mt-2 w-32 bg-white rounded-md shadow-lg z-50 hidden actions-dropdown origin-top-right">
                                                     <div class="flex flex-col space-y-2 p-2">
+                                                        <a href="{{ route('tasks.show', $task->id) }}"
+                                                            class="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-3 py-2 text-center whitespace-nowrap">
+                                                            View
+                                                        </a>
                                                         <a href="{{ route('tasks.edit', $task->id) }}"
                                                             class="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-3 py-2 text-center whitespace-nowrap">
                                                             Edit
