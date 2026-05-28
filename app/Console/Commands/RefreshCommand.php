@@ -26,10 +26,11 @@ class RefreshCommand extends Command
     public function handle()
     {
         //
-        $this->call('cache:clear');
         $this->call('config:clear');
-        $this->call('view:clear');
         $this->call('route:clear');
+        $this->call('view:clear');
+        $this->call('cache:clear');
         $this->call('clear');
+        $this->call('optimize:clear');
     }
 }

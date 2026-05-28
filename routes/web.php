@@ -6,11 +6,12 @@ use App\Http\Controllers\TaskUserController;
 use App\Http\Controllers\UserController;
 use App\Http\Middleware\isAdmin;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect('/login');
 });
 
 Route::middleware([
@@ -19,6 +20,29 @@ Route::middleware([
     'verified',
 ])->group(function () {
     // here we define routes for verified email users;
+});
+
+// for testing fortify email verification
+Route::middleware(['auth'])->group(function () {
+    Route::get('/test-verification', function () {
+        $user = User::find(Auth::id());
+        
+        if ($user->hasVerifiedEmail()) {
+            return 'Email already verified!';
+        }
+        
+        $user->sendEmailVerificationNotification();
+        return 'Verification email sent! Check your email.';
+    });
+    
+    Route::get('/verification-status', function () {
+        $user = User::find(Auth::id());
+        return [
+            'email' => $user->email,
+            'verified' => $user->hasVerifiedEmail(),
+            'verified_at' => $user->email_verified_at,
+        ];
+    });
 });
 
 Route::middleware([
