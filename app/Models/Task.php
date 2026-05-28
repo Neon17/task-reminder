@@ -9,11 +9,12 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Task extends Model
 {
     //
-    use SoftDeletes, HandlesTimeZones;
+    use HasFactory, SoftDeletes, HandlesTimeZones;
 
     protected $fillable = [
         'title',

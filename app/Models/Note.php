@@ -7,17 +7,19 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Note extends Model
 {
     //
-    use HandlesTimeZones;
+    use HasFactory, HandlesTimeZones;
 
     protected $fillable = [
         'title',
         'description',
         'user_id',
         'task_id',
+        'labels',
         'reason',
         'created_at',
         'updated_at'
@@ -26,6 +28,7 @@ class Note extends Model
     protected $casts = [
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
+        'labels' => 'array'
     ];
 
     // app/Models/Note.php

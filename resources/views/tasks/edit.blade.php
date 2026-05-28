@@ -175,10 +175,10 @@
                     <thead class="text-xs text-gray-900 uppercase bg-gray-200">
                         <tr>
                             <th scope="col" class="px-6 py-3">
-                                {{_("Name")}}
+                                {{__("Name")}}
                             </th>
                             <th scope="col" class="px-6 py-3">
-                                {{_("Email")}}
+                                {{__("Email")}}
                             </th>
                             <th scope="col" class="px-6 py-3">
                                 {{__("Timezone")}}

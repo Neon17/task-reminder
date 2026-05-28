@@ -1,0 +1,35 @@
+- add followers list on tasks index using select2 .com
+- followers list edit page ma direct edit hune milaune like Jira, Gmail
+- remove followers page
+- create task huda followers allocate huna pauna paryo
+
+
+- can change email settings/template (phase 2)
+- change tasks to reminder
+
+- user lai soft delete garna milna
+- user lai permanent delete nagarne
+- Email verification part
+- reason ko filter in notes page
+
+- mobile responsive
+- dashboard ma task ko recent task ma complete lai pending chha
+- remove created by, notes in edit page of tasks
+- filters lai left align garne
+- date ma click garda calender open hune rather than clicking on icon
+- flash message ma gap huna paryo m-2
+
+- you can delete notes on creating tasks (Sanil sir)
+
+
+- Jira ma small tasks
+- Mobile response 1
+- UI Fix 1 (Filter, Flash Message)
+- Followers
+- Email Template (Phase 2)
+- User Soft Delete
+
+- change remainder to reminder
+
+
+- You can make manual like UI

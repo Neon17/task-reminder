@@ -40,8 +40,8 @@
                     <div class="flex items-center justify-between">
                         <div>
                             <h1 class="text-3xl font-bold">{{__("Welcome back")}}, {{ Auth::user()->name }}!</h1>
-                            <p class="mt-2 text-indigo-100">{{_("You have")}}<span
-                                    class="font-semibold">{{ $pendingTasksCount }}</span> {{_("pending tasks to complete")}}</p>
+                            <p class="mt-2 text-indigo-100">{{__("You have ")}}<span
+                                    class="font-semibold">{{ $pendingTasksCount }}</span> {{__("pending tasks to complete")}}</p>
                         </div>
                         <div class="hidden md:block">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16" fill="none" viewBox="0 0 24 24"
@@ -65,7 +65,7 @@
                                 </svg>
                             </div>
                             <div class="ml-4">
-                                <h3 class="text-gray-500 text-sm font-medium">{{_("Pending Tasks")}}</h3>
+                                <h3 class="text-gray-500 text-sm font-medium">{{__("Pending Tasks")}}</h3>
                                 <p class="text-2xl font-semibold text-gray-900">{{ $pendingTasksCount }}</p>
                             </div>
                         </div>
@@ -81,7 +81,7 @@
                                 </svg>
                             </div>
                             <div class="ml-4">
-                                <h3 class="text-gray-500 text-sm font-medium">{{_("Completed Today")}}</h3>
+                                <h3 class="text-gray-500 text-sm font-medium">{{__("Completed Today")}}</h3>
                                 <p class="text-2xl font-semibold text-gray-900">{{ $completedTodayCount }}</p>
                             </div>
                         </div>
@@ -107,7 +107,7 @@
                 <!-- Recent Tasks -->
                 <div class="bg-white shadow rounded-lg overflow-hidden">
                     <div class="px-6 py-4 border-b border-gray-200">
-                        <h2 class="text-lg font-medium text-gray-900">{{_("Recent Tasks")}}</h2>
+                        <h2 class="text-lg font-medium text-gray-900">{{__("Recent Tasks")}}</h2>
                     </div>
                     <div class="divide-y divide-gray-200">
                         @forelse($recentTasks as $task)

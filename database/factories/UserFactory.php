@@ -26,11 +26,14 @@ class UserFactory extends Factory
      */
     public function definition(): array
     {
+        $roles = ['admin', 'user'];
         return [
             'name' => fake()->name(),
             'email' => fake()->unique()->safeEmail(),
             'email_verified_at' => now(),
             'password' => static::$password ??= Hash::make('password'),
+            'role' => $this->faker->randomElement($roles),
+            'timezone' => $this->faker->timezone,
             'two_factor_secret' => null,
             'two_factor_recovery_codes' => null,
             'remember_token' => Str::random(10),
