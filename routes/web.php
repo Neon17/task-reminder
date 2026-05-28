@@ -58,3 +58,7 @@ Route::middleware([
         ->parameters(['followers' => 'user']); // For destroy route to detach the follower
     });
 });
+
+Route::get('/auth/redirect', [UserController::class, 'googleRedirect'])->name('google.login');
+ 
+Route::get('/auth/callback', [UserController::class, 'googleCallback']);

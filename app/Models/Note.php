@@ -23,6 +23,11 @@ class Note extends Model
         'updated_at'
     ];
 
+    protected $casts = [
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
+    ];
+
     public function task()
     {
         return $this->belongsTo(Task::class);

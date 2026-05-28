@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
+use Laravel\Socialite\Facades\Socialite;
 
 class UserController extends Controller
 {
@@ -36,7 +37,7 @@ class UserController extends Controller
             'name' => $request->username,
             'email' => $request->email,
             'password' => bcrypt($request->password),
-            'timezone' => $request->timezone? $request->timezone: null,
+            'timezone' => $request->timezone ? $request->timezone : null,
             'role' => ($request->role) == 'admin' ? 'admin' : 'user'
         ]);
 
@@ -80,7 +81,8 @@ class UserController extends Controller
             ->with('success', 'User created successfully');
     }
 
-    public function show($id) {
+    public function show($id)
+    {
         $user = User::find($id);
         $timezones = TimezoneHelper::all();
         return view('users.show', compact('user', 'timezones'));
@@ -91,5 +93,38 @@ class UserController extends Controller
         $user->delete();
         return redirect()->route('users.index')
             ->with('success', 'User deleted successfully');
+    }
+
+    public function googleRedirect()
+    {
+        return Socialite::driver('google')->redirect();
+    }
+
+    public function googleCallback()
+    {
+        try {
+            $user = Socialite::driver('google')->user();
+
+            $finduser = User::where('email', $user->email)->first();
+
+            if ($finduser) {
+                Auth::login($finduser);
+
+                $user = User::where('id', $finduser->id)->first();
+                $user->email_verified_at = now();
+                $user->save();
+                
+                return redirect()->intended('dashboard');
+            }
+
+            return redirect('/login')->withErrors([
+                'message' => 'Your email is not registered. Please contact admin!'
+            ]);
+
+        } catch (\Exception $e) {
+            return redirect('/login')->withErrors([
+                'message' => 'Google login failed. Please try again.'
+            ]);
+        }
     }
 }
