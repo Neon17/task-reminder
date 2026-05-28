@@ -18,7 +18,7 @@ class TaskController extends Controller
         $validated = $request->validate([
             'title' => 'nullable|string|max:255',
             'created_by' => 'nullable|integer|exists:users,id',
-            'status' => "nullable|in:completed,pending,''",
+            'status' => "nullable|in:completed,pending,'',trashed",
             'sort' => 'nullable|string', // e.g., "assigned_date,-created_at"
             'assignee' => "nullable|string|in:creator,follower,others",
             'per_page' => 'nullable|integer|min:1|max:100',
@@ -26,11 +26,22 @@ class TaskController extends Controller
 
         $tasks = null;
 
+        // return $validated;
+
         if (Auth::user()->role == 'admin') {
-            $tasks = Task::query();
+            if (array_key_exists('status', $validated) && $validated['status'] == 'trashed') {
+                $tasks = Task::onlyTrashed();
+            } else {
+                $tasks = Task::query();
+            }
         } else {
-            $tasks = Task::where('created_by', Auth::user()->id)
-                ->orWhereHas('followers', fn($q) => $q->where('user_id', Auth::user()->id));
+            if (array_key_exists('status', $validated) && $validated['status'] == 'trashed') {
+                $tasks = Task::where('created_by', Auth::user()->id)->onlyTrashed();
+            }
+            else {
+                $tasks = Task::where('created_by', Auth::user()->id)
+                    ->orWhereHas('followers', fn($q) => $q->where('user_id', Auth::user()->id));
+            }
         }
 
 
@@ -213,6 +224,9 @@ class TaskController extends Controller
 
     public function delete(Task $task)
     {
+        if (($task->created_by != Auth::user()->id) || (Auth::user()->role != 'admin')) {
+            return redirect()->route('tasks.index')->with('error', 'Only task creator or admin is authorized to delete this task!');
+        }
         if (!$task) {
             return redirect()->route('tasks.index')->with('error', 'Task not found!');
         }

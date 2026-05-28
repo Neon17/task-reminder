@@ -47,6 +47,11 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function scopeFilter(Builder $query, array $filters): Builder
     {
+        // Trashed Users
+        if (!empty($filters['status']) && $filters['status'] === 'trashed') {
+            $query->onlyTrashed();
+        }
+
         // Search by name or email
         if (!empty($filters['search'])) {
             $query->where(function ($q) use ($filters) {

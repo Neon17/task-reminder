@@ -32,7 +32,7 @@
                 </div>
 
                 <!-- Email Status Filter -->
-                <div class="mb-4 w-full md:w-auto">
+                {{-- <div class="mb-4 w-full md:w-auto">
                     <label for="email" class="block text-sm font-medium text-gray-700">
                         {{ __('Email') }}
                     </label>
@@ -47,6 +47,22 @@
                         </option>
                         <option value="verified" {{ old('email', request('email')) === 'verified' ? 'selected' : '' }}>
                             {{ __('Verified') }}
+                        </option>
+                    </select>
+                </div> --}}
+
+                <!-- Trashed Status Filter -->
+                <div class="mb-4 w-full md:w-auto">
+                    <label for="status" class="block text-sm font-medium text-gray-700">
+                        {{ __('Status') }}
+                    </label>
+                    <select name="status" id="status"
+                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
+                        <option value="">
+                            {{ __('All') }}
+                        </option>
+                        <option value="trashed" {{ old('status', request('status')) === 'trashed' ? 'selected' : '' }}>
+                            {{ __('Trashed/Inactive') }}
                         </option>
                     </select>
                 </div>
@@ -176,8 +192,8 @@
                                         <button type="button"
                                             class="text-gray-500 hover:text-gray-700 focus:outline-none transition-all duration-200 action-toggle"
                                             onclick="toggleActions(this)">
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5"
-                                                viewBox="0 0 20 20" fill="currentColor">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20"
+                                                fill="currentColor">
                                                 <path fill-rule="evenodd"
                                                     d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
                                                     clip-rule="evenodd" />
@@ -188,12 +204,23 @@
                                         <div
                                             class="absolute w-32 bg-white rounded-md shadow-lg z-50 hidden actions-dropdown origin-top-right">
                                             <div class="flex flex-col space-y-2 p-2">
-                                                <a href="{{ route('users.edit', $user->id) }}"
-                                                    class="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-3 py-2 text-center whitespace-nowrap">
-                                                    {{ __('Edit') }}
-                                                </a>
-                                                <form action="{{ route('users.destroy', $user->id) }}"
-                                                    method="post">
+                                                @if (request('status') && request('status') == 'trashed')
+                                                    <form action="{{ route('users.restore', $user->id) }}"
+                                                        method="post">
+                                                        @csrf
+                                                        <button type="submit"
+                                                            class="w-full text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-3 py-2 text-center whitespace-nowrap">
+                                                            {{ __('Restore') }}
+                                                        </button>
+                                                    </form>
+                                                @else
+                                                    <a href="{{ route('users.edit', $user->id) }}"
+                                                        class="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-3 py-2 text-center whitespace-nowrap">
+                                                        {{ __('Edit') }}
+                                                    </a>
+                                                @endif
+
+                                                <form action="{{ route('users.destroy', $user->id) }}" method="post">
                                                     @csrf
                                                     @method('DELETE')
                                                     <button type="submit"

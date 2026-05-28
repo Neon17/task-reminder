@@ -28,13 +28,6 @@
                 wire:model="state.password_confirmation" autocomplete="new-password" />
             <x-input-error for="password_confirmation" class="mt-2" />
         </div>
-
-        <div class="col-span-6 sm:col-span-4">
-            <a type="button" href="{{ route('users.trashed') }}"
-                class="py-2.5 px-5 me-2 text-sm font-medium text-gray-900 focus:outline-none rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100">
-                {{ __('Trashed Users') }}
-            </a>
-        </div>
     </x-slot>
 
     <x-slot name="actions">

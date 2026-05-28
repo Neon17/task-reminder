@@ -59,11 +59,11 @@ class UserController extends Controller
 
         $validated = $request->validate([
             'search' => 'nullable|string|max:255',
-            'email' => 'nullable|in:unverified,verified',
+            'status' => "nullable|in:trashed, ''",
+            // 'email' => 'nullable|in:unverified,verified',
             'role' => 'nullable|in:admin,user',
-            'timezone' => 'nullable|in:'.$strTimezones,
+            // 'timezone' => 'nullable|in:'.$strTimezones,
             'sort' => 'nullable|string',
-            'export_excel' => 'nullable|in:true',
         ]);
 
         $users = User::where('id', '!=', Auth::user()->id);

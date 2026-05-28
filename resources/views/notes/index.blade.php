@@ -116,8 +116,6 @@
                 </div>
             </form>
 
-            <h4 class="text-xl font-extrabold text-center">{{ __('All Notes') }}</h4>
-
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg m-4 mb-7">
 
                 <div class="overflow-x-auto">

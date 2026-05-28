@@ -15,15 +15,7 @@
                 {{ __('Create Reminder') }}
             </a>
 
-            @if (auth()->user()->isAdmin())
-                <a type="button" href="{{ route('tasks.trashed') }}"
-                    class="py-2.5 px-5 me-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100">
-                    {{ __('Trashed Reminders') }}
-                </a>
-            @endif
-
-            <a type="button"
-                href={{ route('tasks.exportFiltered', request()->query())}}
+            <a type="button" href={{ route('tasks.exportFiltered', request()->query()) }}
                 class="py-2.5 px-5 me-2 mb-2 text-sm float-right font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100">
                 {{ __('Export') }}
             </a>
@@ -47,13 +39,16 @@
                     </label>
                     <select name="status" id="status"
                         class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
-                        <option value="">All</option>
+                        <option value="">Pending/Completed</option>
                         <option value="pending" {{ old('status', request('status')) === 'pending' ? 'selected' : '' }}>
                             {{ __('Pending') }}
                         </option>
                         <option value="completed"
                             {{ old('status', request('status')) === 'completed' ? 'selected' : '' }}>
                             {{ __('Completed') }}
+                        </option>
+                        <option value="trashed" {{ old('status', request('status')) === 'trashed' ? 'selected' : '' }}>
+                            {{ __('Trashed') }}
                         </option>
                     </select>
                 </div>
@@ -117,8 +112,6 @@
                 </div>
             </form>
 
-            <h4 class="text-xl font-extrabold mt-3 text-center">All Reminders</h4>
-
             <div class="bg-white shadow-xl sm:rounded-lg m-4 mb-7">
 
                 <div class="overflow-x-auto">
@@ -176,9 +169,7 @@
                                         <td class="px-6 py-4 w-100">
                                             <div class="flex">
                                                 <div value ="{{ $task->creator->id }}"
-                                                    class="bg-blue-100 text-blue-800 text-sm font-medium px-2.5 py-2.5 rounded flex items-center">
-                                                    <img src="{{ $task->creator->avatar || 'https://ui-avatars.com/api/?name=' . $task->creator->name }}"
-                                                        class="w-5 h-5 rounded-full mr-1">
+                                                    class="text-sm font-medium px-2.5 py-2.5 rounded flex items-center">
                                                     {{ $task->creator->name }}
                                                     <a href="{{ route('users.show', $task->creator) }}"
                                                         class="ml-1 text-blue-400 hover:text-blue-600">
@@ -208,9 +199,7 @@
                                                 @foreach ($task->followers as $follower)
                                                     <div class="flex">
                                                         <div value ="{{ $follower->id }}"
-                                                            class="bg-blue-100 text-blue-800 text-sm font-medium px-2.5 py-2.5 rounded flex items-center">
-                                                            <img src="{{ $follower->avatar || 'https://ui-avatars.com/api/?name=' . $follower->name }}"
-                                                                class="w-5 h-5 rounded-full mr-1">
+                                                            class="text-sm font-medium px-2.5 py-2.5 rounded flex items-center">
                                                             {{ $follower->name }}
                                                             <a href="{{ route('users.show', $follower) }}"
                                                                 class="ml-1 text-blue-400 hover:text-blue-600">
@@ -268,20 +257,27 @@
                                             <div
                                                 class="absolute w-32 bg-white rounded-md shadow-lg z-50 hidden actions-dropdown">
                                                 <div class="flex flex-col space-y-2 p-2">
-                                                    <a href="{{ route('tasks.show', $task->id) }}"
-                                                        class="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-3 py-2 text-center whitespace-nowrap">
-                                                        {{ __('View') }}
-                                                    </a>
-
-                                                    @if ($task->canComplete())
-                                                        <a href="{{ route('tasks.edit', $task->id) }}"
-                                                            class="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-3 py-2 text-center whitespace-nowrap">
-                                                            {{ __('Edit') }}
-                                                        </a>
-                                                        <a href="{{ route('tasks.complete', $task->id) }}"
-                                                            class="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-3 py-2 text-center whitespace-nowrap">
-                                                            {{ __('Complete') }}
-                                                        </a>
+                                                    @if (request('status') && request('status') == 'trashed')
+                                                        <form action="{{ route('tasks.restore', $task->id) }}"
+                                                            method="post">
+                                                            @csrf
+                                                            @method('POST')
+                                                            <button type="submit"
+                                                                class="w-full text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-3 py-2 text-center whitespace-nowrap">
+                                                                {{ __('Restore') }}
+                                                            </button>
+                                                        </form>
+                                                    @else
+                                                        @if ($task->canComplete())
+                                                            <a href="{{ route('tasks.edit', $task->id) }}"
+                                                                class="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-3 py-2 text-center whitespace-nowrap">
+                                                                {{ __('Edit') }}
+                                                            </a>
+                                                            <a href="{{ route('tasks.complete', $task->id) }}"
+                                                                class="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-3 py-2 text-center whitespace-nowrap">
+                                                                {{ __('Complete') }}
+                                                            </a>
+                                                        @endif
                                                     @endif
                                                     <form action="{{ route('tasks.delete', $task->id) }}"
                                                         method="post">

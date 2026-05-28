@@ -68,17 +68,12 @@ class Task extends Model
 
     public function scopeSort($query, $sort = "")
     {
-        info("sort = $sort");
         if (!$sort) return $query->latest();
 
         $direction = str_starts_with($sort, '-') ? 'desc' : 'asc';
         $column = ltrim($sort, '-');
 
-        info("sorting p= $column, d= $direction");
-
         $sortableColumns = array_merge($this->fillable);
-
-        info('sortable columns = ' . json_encode($sortableColumns));
 
         return in_array($column, $sortableColumns)
             ? $query->orderBy($column, $direction)
