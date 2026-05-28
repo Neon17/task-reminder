@@ -31,6 +31,8 @@ class User extends Authenticatable
         'role',
         'timezone',
         'password',
+        'created_at',
+        'updated_at'
     ];
 
     public function tasks()

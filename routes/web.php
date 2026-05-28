@@ -4,6 +4,7 @@ use App\Http\Controllers\NoteController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\TaskUserController;
 use App\Http\Controllers\UserController;
+use App\Http\Middleware\isAdmin;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -18,7 +19,10 @@ Route::middleware([
     Route::get('/dashboard', function () {
         return view('dashboard');
     })->name('dashboard');
-    Route::get('/index', [UserController::class,'index'])->name('users.index');
+
+    Route::get('/index', [UserController::class,'index'])->name('users.index')->middleware(isAdmin::class);
+    Route::get('/create', [UserController::class, 'create'])->name('users.create')->middleware(isAdmin::class);
+    Route::post('/users/store', [UserController::class, 'store'])->name('users.store')->middleware(isAdmin::class);
     
     Route::resource('tasks', TaskController::class);
     Route::post('tasks/{task}', [TaskController::class, 'delete'])->name('tasks.delete'); //here delete form is rendered and notes are required for delete so
