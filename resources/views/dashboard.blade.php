@@ -33,7 +33,110 @@
             @endif
 
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
-                <x-welcome />
+
+
+                <!-- Welcome Banner -->
+                <div class="bg-gradient-to-r from-indigo-500 to-purple-600 rounded-xl shadow-lg p-6 mb-8 text-white">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <h1 class="text-3xl font-bold">{{__("Welcome back")}}, {{ Auth::user()->name }}!</h1>
+                            <p class="mt-2 text-indigo-100">{{_("You have")}}<span
+                                    class="font-semibold">{{ $pendingTasksCount }}</span> {{_("pending tasks to complete")}}</p>
+                        </div>
+                        <div class="hidden md:block">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16" fill="none" viewBox="0 0 24 24"
+                                stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Stats Cards -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                    <div class="bg-white rounded-lg shadow p-6">
+                        <div class="flex items-center">
+                            <div class="p-3 rounded-full bg-indigo-100 text-indigo-600">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
+                                    viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                            </div>
+                            <div class="ml-4">
+                                <h3 class="text-gray-500 text-sm font-medium">{{_("Pending Tasks")}}</h3>
+                                <p class="text-2xl font-semibold text-gray-900">{{ $pendingTasksCount }}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-lg shadow p-6">
+                        <div class="flex items-center">
+                            <div class="p-3 rounded-full bg-green-100 text-green-600">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
+                                    viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M5 13l4 4L19 7" />
+                                </svg>
+                            </div>
+                            <div class="ml-4">
+                                <h3 class="text-gray-500 text-sm font-medium">{{_("Completed Today")}}</h3>
+                                <p class="text-2xl font-semibold text-gray-900">{{ $completedTodayCount }}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-lg shadow p-6">
+                        <div class="flex items-center">
+                            <div class="p-3 rounded-full bg-blue-100 text-blue-600">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
+                                    viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+                                </svg>
+                            </div>
+                            <div class="ml-4">
+                                <h3 class="text-gray-500 text-sm font-medium">{{__("Team Members")}}</h3>
+                                <p class="text-2xl font-semibold text-gray-900">{{ $teamMembersCount }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Tasks -->
+                <div class="bg-white shadow rounded-lg overflow-hidden">
+                    <div class="px-6 py-4 border-b border-gray-200">
+                        <h2 class="text-lg font-medium text-gray-900">{{_("Recent Tasks")}}</h2>
+                    </div>
+                    <div class="divide-y divide-gray-200">
+                        @forelse($recentTasks as $task)
+                            <div class="px-6 py-4 hover:bg-gray-50 transition duration-150">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <h3 class="text-md font-medium text-gray-900">{{ $task->title }}</h3>
+                                        <p class="text-sm text-gray-500 mt-1">{{ $task->description }}</p>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <span
+                                            class="px-2 py-1 text-xs rounded-full {{ $task->completed ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800' }}">
+                                            {{ $task->completed ? 'Completed' : 'Pending' }}
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        @empty
+                            <div class="px-6 py-8 text-center">
+                                <p class="text-gray-500">{{__("No tasks found. Create your first task!")}}</p>
+                            </div>
+                        @endforelse
+                    </div>
+                    <div class="px-6 py-4 border-t border-gray-200 bg-gray-50">
+                        <a href="{{ route('tasks.index') }}"
+                            class="text-indigo-600 hover:text-indigo-800 font-medium">{{__("View all tasks")}}</a>
+                    </div>
+                </div>
+
             </div>
         </div>
     </div>

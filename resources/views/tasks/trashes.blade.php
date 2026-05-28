@@ -57,7 +57,7 @@
             </div>
 
 
-            <h4 class="text-xl font-extrabold text-center">All Trashed Tasks</h4>
+            <h4 class="text-xl font-extrabold text-center">{{__("All Trashed Tasks")}}</h4>
 
             <div class="bg-white shadow-xl sm:rounded-lg m-4 mb-7">
 
@@ -66,28 +66,28 @@
                         <thead class="text-xs text-gray-900 uppercase bg-gray-200">
                             <tr>
                                 <th scope="col" class="px-6 py-3">
-                                    SN
+                                    {{__("SN")}}
                                 </th>
                                 <th scope="col" class="px-6 py-3">
-                                    Name
+                                    {{__("Name")}}
                                 </th>
                                 <th scope="col" class="px-6 py-3">
-                                    Description
+                                    {{__("Description")}}
                                 </th>
                                 <th scope="col" class="px-6 py-3">
-                                    Created By
+                                    {{__("Created By")}}
                                 </th>
                                 <th scope="col" class="px-6 py-3">
-                                    Assigned Date For Completion
+                                    {{__("Assigned Date For Completion")}}
                                 </th>
                                 <th scope="col" class="px-6 py-3">
-                                    Completed Date
+                                    {{__("Completed Date")}}
                                 </th>
                                 <th scope="col" class="px-6 py-3">
-                                    Created At
+                                    {{__("Created At")}}
                                 </th>
                                 <th scope="col" class="px-6 py-3">
-                                    Updated At
+                                    {{__("Updated At")}}
                                 </th>
                             </tr>
                         </thead>
@@ -96,7 +96,9 @@
                             @if (count($tasks) == 0)
                                 <tr class="bg-white border-b border-gray-200">
                                     <td class="px-6 py-4 w-100">
-                                        <p class="text-center">No task found</p>
+                                        <p class="text-center">
+                                            {{__("No task found")}}
+                                        </p>
                                     </td>
                                 </tr>
                             @else
@@ -146,7 +148,7 @@
                                                         @method('POST')
                                                         <button type="submit"
                                                             class="w-full focus:outline-none text-black bg-gray-100 hover:bg-gray-200 hover:text-black focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-3 py-2 text-center">
-                                                            Restore
+                                                            {{__("Restore")}}
                                                         </button>
                                                     </form>
                                                     <form action="{{ route('tasks.forceDelete', $task->id) }}"
@@ -155,7 +157,7 @@
                                                         @method('POST')
                                                         <button type="submit"
                                                             class="w-full focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-3 py-2 text-center">
-                                                            Delete
+                                                            {{__("Delete")}}
                                                         </button>
                                                     </form>
                                                 </div>

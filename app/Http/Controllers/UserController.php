@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\TimezoneHelper;
+use App\Models\Task;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
@@ -12,6 +14,18 @@ use Laravel\Socialite\Facades\Socialite;
 class UserController extends Controller
 {
     //
+    public function dashboard() {
+        //$recentTasks, $pendingTasksCount, $completedTodayCount, $teamMembersCount
+        //recent tasks can be 3
+
+        $recentTasks = Task::where('created_by', Auth::user()->id)->orderBy('created_at', 'desc')->limit(3)->get();
+        $pendingTasksCount = Task::where('created_by', Auth::user()->id)->where('completed_date', null)->count();
+        $completedTodayCount = Task::where('created_by', Auth::user()->id)->whereDate('completed_date', Carbon::today())->count();
+        $teamMembersCount = Task::with('followers')->count() + 1;
+
+        return view('dashboard', compact('recentTasks', 'pendingTasksCount', 'completedTodayCount', 'teamMembersCount'));
+    }
+
     public function index()
     {
         $users = User::get();

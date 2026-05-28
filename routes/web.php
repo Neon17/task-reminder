@@ -22,9 +22,7 @@ Route::middleware([
 Route::middleware([
     'auth:sanctum',
 ])->group(function () {
-    Route::get('/dashboard', function () {
-        return view('dashboard');
-    })->name('dashboard');
+    Route::get('/dashboard', [UserController::class, 'dashboard'])->name('dashboard');
 
     Route::get('/register', function() {
         return response()->json([

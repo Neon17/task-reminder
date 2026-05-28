@@ -13,7 +13,9 @@
 
                 <!-- Search by Title -->
                 <div class="mb-4">
-                    <label for="title" class="block text-sm font-medium text-gray-700">Search Title</label>
+                    <label for="title" class="block text-sm font-medium text-gray-700">
+                        {{__("Search Title")}}
+                    </label>
                     <input type="text" name="title" id="title" value="{{ request('title') }}"
                         class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
                 </div>
@@ -21,10 +23,14 @@
                 <!-- User Filter -->
                 @if (count($users) >0)
                 <div class="mb-4">
-                    <label for="user_id" class="block text-sm font-medium text-gray-700">User</label>
+                    <label for="user_id" class="block text-sm font-medium text-gray-700">
+                        {{__("User")}}
+                    </label>
                     <select name="user_id" id="user_id"
                         class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
-                        <option value="">All Users</option>
+                        <option value="">
+                            {{__("All Users")}}
+                        </option>
                         @foreach ($users as $user)
                             <option value="{{ $user->id }}" {{ request('user_id') == $user->id ? 'selected' : '' }}>
                                 {{ $user->name }}
@@ -37,35 +43,44 @@
 
                 <!-- Notes by Task Categories (like yours, you followed, others) -->
                 <div class="mb-4">
-                    <label for="category" class="block text-sm font-medium text-gray-700">Category by Tasks</label>
+                    <label for="category" class="block text-sm font-medium text-gray-700">
+                        {{__("Category by Tasks")}}
+                    </label>
                     <select name="category" id="category"
                         class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
                         <option value="">All</option>
-                        <option value="creator" {{ request('category') === 'creator' ? 'selected' : '' }}>Your Tasks</option>
-                        <option value="follower" {{ request('category') === 'follower' ? 'selected' : '' }}>Followed Tasks</option>
-                        <option value="others" {{ request('category') === 'others' ? 'selected' : '' }}>Others</option>
+                        <option value="creator" {{ request('category') === 'creator' ? 'selected' : '' }}>
+                            {{__("Your Tasks")}}
+                        </option>
+                        <option value="follower" {{ request('category') === 'follower' ? 'selected' : '' }}>
+                            {{__("Followed Tasks")}}
+                        </option>
+                        <option value="others" {{ request('category') === 'others' ? 'selected' : '' }}>
+                            {{__("Others")}}
+                        </option>
                     </select>
                 </div>
 
                 <!-- Sort Options -->
                 <div class="mb-4">
-                    <label for="sort" class="block text-sm font-medium text-gray-700">Sort By</label>
+                    <label for="sort" class="block text-sm font-medium text-gray-700">{{__("Sort By")}}</label>
                     <select name="sort" id="sort"
                         class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
-                        <option value="">Default</option>
-                        <option value="created_at" {{ request('sort') === 'created_at' ? 'selected' : '' }}>Created
-                            (Oldest)</option>
-                        <option value="-created_at" {{ request('sort') === '-created_at' ? 'selected' : '' }}>Created
-                            (Newest)</option>
+                        <option value="">{{__("Default")}}</option>
+                        <option value="created_at" {{ request('sort') === 'created_at' ? 'selected' : '' }}>
+                            {{__("Created (Oldest)")}}
+                        </option>
+                        <option value="-created_at" {{ request('sort') === '-created_at' ? 'selected' : '' }}>
+                            {{__("Created (Newest)</option>")}}
                     </select>
                 </div>
 
                 <div class="space-x-4">
                     <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded-md">
-                        Apply Filters
+                        {{__("Apply Filters")}}
                     </button>
                     <a href="{{ route('notes.index') }}" class="px-4 py-2 bg-gray-300 text-gray-700 rounded-md">
-                        Reset
+                        {{__("Reset")}}
                     </a>
                 </div>
             </form>

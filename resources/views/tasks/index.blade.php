@@ -70,63 +70,86 @@
                 <!-- Search by Title -->
                 @csrf
                 <div class="mb-4">
-                    <label for="title" class="block text-sm font-medium text-gray-700">Search Title</label>
+                    <label for="title" class="block text-sm font-medium text-gray-700">
+                        {{__("Search Title")}}
+                    </label>
                     <input type="text" name="title" id="title" value="{{ old('title', request('title')) }}"
                         class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
                 </div>
 
                 <!-- Status Filter -->
                 <div class="mb-4">
-                    <label for="status" class="block text-sm font-medium text-gray-700">Status</label>
+                    <label for="status" class="block text-sm font-medium text-gray-700">
+                        {{__("Status")}}
+                    </label>
                     <select name="status" id="status"
                         class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
                         <option value="">All</option>
                         <option value="pending" {{ old('status', request('status')) === 'pending' ? 'selected' : '' }}>
-                            Pending</option>
+                            {{__("Pending")}}
+                        </option>
                         <option value="completed"
-                            {{ old('status', request('status')) === 'completed' ? 'selected' : '' }}>Completed
+                            {{ old('status', request('status')) === 'completed' ? 'selected' : '' }}>
+                            {{__("Completed")}}
                         </option>
                     </select>
                 </div>
 
                 <!-- Assignee Filter -->
                 <div class="mb-4">
-                    <label for="assignee" class="block text-sm font-medium text-gray-700">Creators and Followers</label>
+                    <label for="assignee" class="block text-sm font-medium text-gray-700">
+                        {{__("Creators and Followers")}}
+                    </label>
                     <select name="assignee" id="assignee"
                         class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
-                        <option value="">All</option>
+                        <option value="">
+                            {{__("All")}}
+                        </option>
                         <option value="creator"
-                            {{ old('assignee', request('assignee')) === 'creator' ? 'selected' : '' }}>Created By You
+                            {{ old('assignee', request('assignee')) === 'creator' ? 'selected' : '' }}>
+                            {{__("Created By You")}}
                         </option>
                         <option value="follower"
-                            {{ old('assignee', request('assignee')) === 'follower' ? 'selected' : '' }}>Followed By You
+                            {{ old('assignee', request('assignee')) === 'follower' ? 'selected' : '' }}>
+                            {{__("Followed By You")}}
                         </option>
-                        <option value="others">Neither</option>
+                        <option value="others">
+                            {{__("Neither")}}
+                        </option>
                     </select>
                 </div>
 
                 <!-- Sort Options -->
                 <div class="mb-4">
-                    <label for="sort" class="block text-sm font-medium text-gray-700">Sort By</label>
+                    <label for="sort" class="block text-sm font-medium text-gray-700">
+                        {{__("Sort By")}}
+                    </label>
                     <select name="sort" id="sort"
                         class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
-                        <option value="">Default</option>
-                        <option value="title" {{ request('sort') === 'title' ? 'selected' : '' }}>Title (A-Z)</option>
-                        <option value="-title" {{ request('sort') === '-title' ? 'selected' : '' }}>Title (Z-A)
+                        <option value="">
+                            {{__("Default")}}
+                        </option>
+                        <option value="title" {{ request('sort') === 'title' ? 'selected' : '' }}>
+                            {{__("Title (A-Z)")}}
+                        </option>
+                        <option value="-title" {{ request('sort') === '-title' ? 'selected' : '' }}>
+                            {{__("Title (Z-A)")}}
                         </option>
                         <option value="assigned_date" {{ request('sort') === 'assigned_date' ? 'selected' : '' }}>
-                            Assigned Date (Oldest)</option>
+                            {{__("Assigned Date (Oldest)")}}
+                        </option>
                         <option value="-assigned_date" {{ request('sort') === '-assigned_date' ? 'selected' : '' }}>
-                            Assigned Date (Newest)</option>
+                            {{__("Assigned Date (Newest)")}}
+                        </option>
                     </select>
                 </div>
 
                 <div class="space-x-4">
                     <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded-md">
-                        Apply Filters
+                        {{__("Apply Filters")}}
                     </button>
                     <a href="{{ route('tasks.index') }}" class="px-4 py-2 bg-gray-300 text-gray-700 rounded-md">
-                        Reset
+                        {{__("Reset")}}
                     </a>
                 </div>
             </form>
@@ -140,28 +163,28 @@
                         <thead class="text-xs text-gray-900 uppercase bg-gray-200">
                             <tr>
                                 <th scope="col" class="px-6 py-3">
-                                    SN
+                                    {{__("SN")}}
                                 </th>
                                 <th scope="col" class="px-6 py-3">
-                                    Name
+                                    {{__("Name")}}
                                 </th>
                                 <th scope="col" class="px-6 py-3">
-                                    Description
+                                    {{__("Description")}}
                                 </th>
                                 <th scope="col" class="px-6 py-3">
-                                    Created By
+                                    {{__("Created By")}}
                                 </th>
                                 <th scope="col" class="px-6 py-3">
-                                    Assigned Date For Completion
+                                    {{__("Assigned Date For Completion")}}
                                 </th>
                                 <th scope="col" class="px-6 py-3">
-                                    Completed Date
+                                    {{__("Completed Date")}}
                                 </th>
                                 <th scope="col" class="px-6 py-3">
-                                    Created At
+                                    {{__("Created At")}}
                                 </th>
                                 <th scope="col" class="px-6 py-3">
-                                    Updated At
+                                    {{__("Updated At")}}
                                 </th>
                             </tr>
                         </thead>
@@ -170,7 +193,9 @@
                             @if (count($tasks) == 0)
                                 <tr class="bg-white border-b border-gray-200">
                                     <td class="px-6 py-4 w-100">
-                                        <p class="text-center">No task found</p>
+                                        <p class="text-center">
+                                            {{__("No task found")}}
+                                        </p>
                                     </td>
                                 </tr>
                             @else
@@ -215,11 +240,11 @@
                                                 <div class="flex flex-col space-y-2 p-2">
                                                     <a href="{{ route('tasks.show', $task->id) }}"
                                                         class="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-3 py-2 text-center whitespace-nowrap">
-                                                        View
+                                                        {{__("View")}}
                                                     </a>
                                                     <a href="{{ route('tasks.edit', $task->id) }}"
                                                         class="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-3 py-2 text-center whitespace-nowrap">
-                                                        Edit
+                                                        {{__("Edit")}}
                                                     </a>
                                                     <form action="{{ route('tasks.delete', $task->id) }}"
                                                         method="post">
@@ -227,7 +252,7 @@
                                                         @method('POST')
                                                         <button type="submit"
                                                             class="w-full focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-3 py-2 text-center">
-                                                            Delete
+                                                            {{__("Delete")}}
                                                         </button>
                                                     </form>
                                                 </div>
