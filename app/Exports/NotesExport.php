@@ -41,12 +41,16 @@ class NotesExport implements FromArray, WithStyles, WithEvents
             'Task',
             'Reason',
             'Assigned Date of Completion (Task)',
-            'Created Date'
+            'Created Date',
+            'Followers'
         ];
 
         // Add task data
         $sn = 1;
         foreach ($this->notes as $note) {
+            if ($note->task && $note->task->followers){
+                $followers = $note->task->followers->pluck('name')->implode(', ') ?? null;
+            }
             $data[] = [
                 $sn++,
                 $note['title'] ?? $note->title ?? '',
@@ -56,6 +60,7 @@ class NotesExport implements FromArray, WithStyles, WithEvents
                 $note['reason'] ?? $note->notification_start_date ?? '',
                 $note['assigned_date'] ?? $note->task->assigned_date ?? '',
                 $note['created_date'] ?? $note->created_at ?? '',
+                $followers ?? null
             ];
         }
 
@@ -105,11 +110,11 @@ class NotesExport implements FromArray, WithStyles, WithEvents
         return [
             AfterSheet::class => function (AfterSheet $event) {
                 $sheet = $event->sheet->getDelegate();
-                $sheet->mergeCells('A1:G1');
-                $sheet->mergeCells('A2:G2');
-                $sheet->mergeCells('A3:G3');
-                $sheet->mergeCells('A4:G4');
-                foreach (range('A', 'G') as $column) {
+                $sheet->mergeCells('A1:H1');
+                $sheet->mergeCells('A2:H2');
+                $sheet->mergeCells('A3:H3');
+                $sheet->mergeCells('A4:H4');
+                foreach (range('A', 'H') as $column) {
                     $sheet->getColumnDimension($column)->setAutoSize(true);
                 }
             }

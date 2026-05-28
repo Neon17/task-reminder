@@ -40,12 +40,14 @@ class TasksExport implements FromArray, WithStyles, WithEvents
             'Assigned Date',
             'Notification Start Date',
             'Notification Interval',
-            'Created By'
+            'Created By',
+            'Followers'
         ];
 
         // Add task data
         $sn = 1;
         foreach ($this->tasks as $task) {
+            $followers = $task->followers->pluck('name')->implode(', ');
             $data[] = [
                 $sn++,
                 $task['title'] ?? $task->title ?? '',
@@ -53,7 +55,8 @@ class TasksExport implements FromArray, WithStyles, WithEvents
                 $task['assigned_date'] ?? $task->assigned_date ?? '',
                 $task['notification_start_date'] ?? $task->notification_start_date ?? '',
                 $task['notification_interval'] ?? $task->notification_interval ?? '',
-                isset($task->creator) ? $task->creator->name : (isset($task['creator_name']) ? $task['creator_name'] : 'N/A')
+                isset($task->creator) ? $task->creator->name : (isset($task['creator_name']) ? $task['creator_name'] : 'N/A'),
+                $followers ?? ''
             ];
         }
 
@@ -103,11 +106,11 @@ class TasksExport implements FromArray, WithStyles, WithEvents
         return [
             AfterSheet::class => function (AfterSheet $event) {
                 $sheet = $event->sheet->getDelegate();
-                $sheet->mergeCells('A1:G1');
-                $sheet->mergeCells('A2:G2');
-                $sheet->mergeCells('A3:G3');
-                $sheet->mergeCells('A4:G4');
-                foreach (range('A', 'G') as $column) {
+                $sheet->mergeCells('A1:H1');
+                $sheet->mergeCells('A2:H2');
+                $sheet->mergeCells('A3:H3');
+                $sheet->mergeCells('A4:H4');
+                foreach (range('A', 'H') as $column) {
                     $sheet->getColumnDimension($column)->setAutoSize(true);
                 }
             }
