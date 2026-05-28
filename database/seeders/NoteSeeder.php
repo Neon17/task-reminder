@@ -15,7 +15,7 @@ class NoteSeeder extends Seeder
     {
         //
          Note::factory()
-            ->count(100)
+            ->count(150)
             ->create();
         
         $this->command->info('100 notes created successfully!');

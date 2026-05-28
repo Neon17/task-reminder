@@ -31,8 +31,8 @@ class NoteFactory extends Factory
                 true
             ),
             'labels' => count($labels) ? $labels : null,
-            'user_id' => User::factory(),
-            'task_id' => Task::factory(),
+            'task_id' => Task::exists() ? Task::inRandomOrder()->value('id') : Task::factory(),
+            'user_id' => User::exists() ? User::inRandomOrder()->value('id') : User::factory(),
             'reason' => $this->faker->randomElement($reasons),
         ];
     }

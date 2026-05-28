@@ -15,7 +15,7 @@ class TaskSeeder extends Seeder
     {
         //
         Task::factory()
-            ->count(100)
+            ->count(150)
             ->create();
 
         $this->command->info('100 tasks created successfully!');

@@ -126,7 +126,7 @@
                                     {{ __('Description') }}
                                 </th>
                                 <th scope="col" class="px-6 py-3">
-                                    {{ __('User') }}
+                                    {{ __('Creator') }}
                                 </th>
                                 <th scope="col" class="px-6 py-3">
                                     {{ __('Task') }}
@@ -157,10 +157,25 @@
                                             {{ $loop->iteration }}
                                         </td>
                                         <td class="px-6 py-4 w-100">
-                                            {{ $note->description }}
+                                            {{ Str::words($note->description, 6, '...') }}
                                         </td>
                                         <td class="px-6 py-4 w-100">
-                                            {{ $note->user->name }}
+                                            <div class="flex">
+                                                <div value ="{{ $note->user->id }}"
+                                                    class="bg-blue-100 text-blue-800 text-sm font-medium px-2.5 py-2.5 rounded flex items-center">
+                                                    <img src="{{ $note->user->avatar || 'https://ui-avatars.com/api/?name=' . $note->user->name }}"
+                                                        class="w-5 h-5 rounded-full mr-1">
+                                                    {{ $note->user->name }}
+                                                    <a href="{{ route('users.show', $note->user) }}"
+                                                        class="ml-1 text-blue-400 hover:text-blue-600">
+                                                        <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                                                            <path fill-rule="evenodd"
+                                                                d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-8.707l-3-3a1 1 0 00-1.414 0l-3 3a1 1 0 001.414 1.414L9 9.414V13a1 1 0 102 0V9.414l1.293 1.293a1 1 0 001.414-1.414z"
+                                                                clip-rule="evenodd"></path>
+                                                        </svg>
+                                                    </a>
+                                                </div>
+                                            </div>
                                         </td>
                                         <td class="px-6 py-4 w-100">
                                             @if ($note->task)

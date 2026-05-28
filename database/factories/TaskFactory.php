@@ -41,7 +41,7 @@ class TaskFactory extends Factory
         return [
             'title' => $this->faker->sentence(1),
             'description' => $this->faker->sentence(3),
-            'created_by' => User::factory(),
+            'created_by' => User::exists() ? User::inRandomOrder()->value('id') : User::factory(),
             'assigned_date' => $assignedDate,
             'notification_start_date' => $notificationStartDate,
             'notification_interval' => $interval, // In days (integer)
