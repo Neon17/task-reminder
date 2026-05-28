@@ -369,14 +369,22 @@
                                         <td class="px-6 py-4 w-100">
                                             {{ $task->created_at }}
                                         </td>
-                                        <td class="px-6 py-4 w-100">
-                                            <div class="grid grid-cols-2 w-100">
-                                                <form action="{{ route('tasks.restore', $task->id) }}" method="post">
-                                                    @csrf
-                                                    @method('POST')
-                                                    <button type="submit"
-                                                        class="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5">Restore</button>
-                                                </form>
+                                        <td class="px-1 py-4 w-100">
+                                            <di class="grid grid-cols-2 w-100">
+                                                    <form action="{{ route('tasks.restore', $task->id) }}"
+                                                        method="post">
+                                                        @csrf
+                                                        @method('POST')
+                                                        <button type="submit"
+                                                            class="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5">Restore</button>
+                                                    </form>
+                                                    <form action="{{ route('tasks.forceDelete', $task->id) }}"
+                                                        method="post">
+                                                        @csrf
+                                                        @method('POST')
+                                                        <button type="submit"
+                                                            class="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5">Delete</button>
+                                                    </form>
                                             </div>
                                         </td>
 

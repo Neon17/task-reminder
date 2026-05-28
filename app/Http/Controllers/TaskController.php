@@ -44,9 +44,15 @@ class TaskController extends Controller
         return view('tasks.create');
     }
 
-    public function restore(Task $task){
-        $task->restore();
+    public function restore($id){
+        //trashed object doesn't bind automatically, so can't write Task $task instead of $id in parameter
+        $task = Task::onlyTrashed()->where('id', $id)->restore();
         return redirect()->route('tasks.index')->with('success', 'Task restored successfully!');
+    }
+
+    public function forceDelete($id){
+        $task = Task::onlyTrashed()->where('id', $id)->forceDelete();
+        return redirect()->route('tasks.index')->with('success', 'Task deleted permanently!');
     }
 
     public function store(Request $request)
