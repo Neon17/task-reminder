@@ -35,6 +35,8 @@ class Note extends Model
     public function scopeFilter($query, array $filters)
     {
         return $query
+            ->when($filters['reason'] ?? false, fn($q, $reason) =>
+            $q->where('reason', $reason))
             ->when($filters['category'] ?? false, function ($q, $category) {
                 if ($category == 'creator') {
                     $q->whereHas('task', function ($q) {

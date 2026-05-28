@@ -34,7 +34,7 @@ class TaskController extends Controller
 
         $tasks = $tasks->filter($validated)
             ->sort($validated["sort"] ?? null)
-            ->paginate($validated["per_page"] ?? 10)->withQueryString();
+            ->paginate($validated["per_page"] ?? 15)->withQueryString();
 
 
         return view('tasks.index', [

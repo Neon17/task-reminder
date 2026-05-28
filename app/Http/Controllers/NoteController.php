@@ -18,6 +18,7 @@ class NoteController extends Controller
             'user_id' => 'nullable|integer|exists:users,id',
             'sort' => 'nullable|string',
             'category' => 'nullable|string|in:creator,follower,others',
+            'reason' => 'nullable|string|in:creation,completion,updation,deletion',
             'per_page' => 'nullable|integer|min:1|max:100'
         ]);
 
@@ -36,8 +37,8 @@ class NoteController extends Controller
 
         $notes = $notes->filter($validated)
             ->sort($validated['sort'] ?? null)
-            // ->with(['task', 'user'])
-            ->paginate($validated['per_page'] ?? 10)->withQueryString();
+            // ->with(['task', 'user']) maybe to fix N+1 problem
+            ->paginate($validated['per_page'] ?? 15)->withQueryString();
 
         $users = [];
         if (Auth::user()->role=='admin') {

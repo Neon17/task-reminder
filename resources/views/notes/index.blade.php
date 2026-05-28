@@ -8,79 +8,104 @@
     <div class="py-12">
         <div class="mx-auto sm:px-6 lg:px-8">
 
-            <form method="GET" class="flex items-center justify-center gap-3 mb-3" action="{{ route('notes.index') }}">
+            <form method="GET" class="flex items-center ps-3 gap-3 mb-3" action="{{ route('notes.index') }}">
                 @csrf
 
                 <!-- Search by Title -->
                 <div class="mb-4">
                     <label for="title" class="block text-sm font-medium text-gray-700">
-                        {{__("Search Title")}}
+                        {{ __('Search Title') }}
                     </label>
                     <input type="text" name="title" id="title" value="{{ request('title') }}"
                         class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
                 </div>
 
                 <!-- User Filter -->
-                @if (count($users) >0)
-                <div class="mb-4">
-                    <label for="user_id" class="block text-sm font-medium text-gray-700">
-                        {{__("User")}}
-                    </label>
-                    <select name="user_id" id="user_id"
-                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
-                        <option value="">
-                            {{__("All Users")}}
-                        </option>
-                        @foreach ($users as $user)
-                            <option value="{{ $user->id }}" {{ request('user_id') == $user->id ? 'selected' : '' }}>
-                                {{ $user->name }}
+                @if (count($users) > 0)
+                    <div class="mb-4">
+                        <label for="user_id" class="block text-sm font-medium text-gray-700">
+                            {{ __('User') }}
+                        </label>
+                        <select name="user_id" id="user_id"
+                            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
+                            <option value="">
+                                {{ __('All Users') }}
                             </option>
-                        @endforeach
-                    </select>
-                </div>
+                            @foreach ($users as $user)
+                                <option value="{{ $user->id }}"
+                                    {{ request('user_id') == $user->id ? 'selected' : '' }}>
+                                    {{ $user->name }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
                 @endif
 
 
                 <!-- Notes by Task Categories (like yours, you followed, others) -->
                 <div class="mb-4">
                     <label for="category" class="block text-sm font-medium text-gray-700">
-                        {{__("Category by Tasks")}}
+                        {{ __('Category by Tasks') }}
                     </label>
                     <select name="category" id="category"
                         class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
                         <option value="">All</option>
                         <option value="creator" {{ request('category') === 'creator' ? 'selected' : '' }}>
-                            {{__("Your Tasks")}}
+                            {{ __('Your Tasks') }}
                         </option>
                         <option value="follower" {{ request('category') === 'follower' ? 'selected' : '' }}>
-                            {{__("Followed Tasks")}}
+                            {{ __('Followed Tasks') }}
                         </option>
                         <option value="others" {{ request('category') === 'others' ? 'selected' : '' }}>
-                            {{__("Others")}}
+                            {{ __('Others') }}
+                        </option>
+                    </select>
+                </div>
+
+                <!-- Notes by Reason Categories (like creation, deletion, updation) -->
+                <div class="mb-4">
+                    <label for="reason" class="block text-sm font-medium text-gray-700">
+                        {{ __('Category by Reason') }}
+                    </label>
+                    <select name="reason" id="reason"
+                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
+                        <option value="">All</option>
+                        <option value="creation" {{ request('reason') === 'creation' ? 'selected' : '' }}>
+                            {{ __('creation') }}
+                        </option>
+                        <option value="completion" {{ request('reason') === 'completion' ? 'selected' : '' }}>
+                            {{ __('completion') }}
+                        </option>
+                        <option value="updation" {{ request('reason') === 'updation' ? 'selected' : '' }}>
+                            {{ __('updation') }}
+                        </option>
+                        <option value="deletion" {{ request('reason') === 'deletion' ? 'selected' : '' }}>
+                            {{ __('deletion') }}
                         </option>
                     </select>
                 </div>
 
                 <!-- Sort Options -->
                 <div class="mb-4">
-                    <label for="sort" class="block text-sm font-medium text-gray-700">{{__("Sort By")}}</label>
+                    <label for="sort" class="block text-sm font-medium text-gray-700">{{ __('Sort By') }}</label>
                     <select name="sort" id="sort"
                         class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
-                        <option value="">{{__("Default")}}</option>
+                        <option value="">{{ __('Default') }}</option>
                         <option value="created_at" {{ request('sort') === 'created_at' ? 'selected' : '' }}>
-                            {{__("Created (Oldest)")}}
+                            {{ __('Created (Oldest)') }}
                         </option>
                         <option value="-created_at" {{ request('sort') === '-created_at' ? 'selected' : '' }}>
-                            {{__("Created (Newest)</option>")}}
+                            {{ __('Created (Newest)') }}
+                        </option>
                     </select>
                 </div>
 
                 <div class="space-x-4">
                     <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded-md">
-                        {{__("Apply Filters")}}
+                        {{ __('Apply Filters') }}
                     </button>
                     <a href="{{ route('notes.index') }}" class="px-4 py-2 bg-gray-300 text-gray-700 rounded-md">
-                        {{__("Reset")}}
+                        {{ __('Reset') }}
                     </a>
                 </div>
             </form>
