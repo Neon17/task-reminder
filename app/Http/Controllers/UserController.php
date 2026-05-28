@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\TimezoneHelper;
+use App\Exports\UsersExport;
 use App\Models\Task;
 use App\Models\User;
 use Carbon\Carbon;
@@ -10,6 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 use Laravel\Socialite\Facades\Socialite;
+use Maatwebsite\Excel\Facades\Excel;
 
 class UserController extends Controller
 {
@@ -66,8 +68,13 @@ class UserController extends Controller
 
         $users = User::where('id', '!=', Auth::user()->id);
         $users = $users->filter($validated)
-            ->sort($validated['sort'] ?? null)
-            ->paginate(15)
+            ->sort($validated['sort'] ?? null);
+            
+        if ($request->export_excel == 'true') {
+            return Excel::download(new UsersExport($users->get()), 'users.xlsx');
+        }
+
+        $users = $users->paginate(15)
             ->withQueryString();
 
         return view('users.index', compact('users'));

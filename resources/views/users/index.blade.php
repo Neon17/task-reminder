@@ -127,7 +127,7 @@
                             </option>
                             @foreach (App\Helpers\TimezoneHelper::all() as $tz)
                                 <option value="{{ $tz['value'] }}"
-                                    {{ old('timezone') === $tz['value'] ? 'selected' : '' }}>
+                                    {{ old('timezone', request('timezone')) === $tz['value'] ? 'selected' : '' }}>
                                     {{ $tz['label'] }}
                                 </option>
                             @endforeach
