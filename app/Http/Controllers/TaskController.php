@@ -117,7 +117,7 @@ class TaskController extends Controller
             return redirect()->route('tasks.index')->with('error', 'Task not found!');
         }
         $validated = $request->validate([
-            'title' => 'required|max:15',
+            'title' => 'required|max:30',
             'description' => 'required|max:255',
             'notification_start_date' => 'required|after:today|before:date_of_completion',
             'date_of_completion' => 'required|date|after:today',
