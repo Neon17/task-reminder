@@ -58,7 +58,7 @@
 
             <a type="button" href="{{ route('tasks.create') }}"
                 class="py-2.5 px-5 me-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100">
-                {{ __('Create Task') }}
+                {{ __('Create Reminder') }}
             </a>
 
             @if (auth()->user()->isAdmin())
@@ -274,8 +274,9 @@
                                                 @endforeach
                                             @else
                                                 <button type="button"
-                                                    class="text-gray-500 hover:text-gray-700 focus:outline-none transition-all duration-200 action-toggle"
+                                                    class="text-gray-500 flex hover:text-gray-700 focus:outline-none transition-all duration-200 action-toggle"
                                                     onclick="toggleActions(this)">
+                                                    {{$task->followers->count()}}
                                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5"
                                                         viewBox="0 0 20 20" fill="currentColor">
                                                         <path fill-rule="evenodd"
