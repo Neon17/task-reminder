@@ -2,87 +2,34 @@
 
 <form method="POST" class="mb-2" action="{{ $isEdit ? route('tasks.update', $task) : route('tasks.store') }}">
     @csrf
-    @if($isEdit) @method('PATCH') @endif
+    @if ($isEdit)
+        @method('PATCH')
+    @endif
 
     <div class="grid gap-6">
 
-        {{-- Title --}}
-        <div class="relative z-0 w-full group">
-            <input type="text" name="title" id="title"
-                value="{{ old('title', $task->title ?? '') }}"
-                placeholder=" " required
-                class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer">
-            <label for="title"
-                class="peer-focus:font-medium absolute text-sm text-gray-500 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-0 peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
-                Title
-            </label>
-            @error('title')
-                <p class="text-sm text-red-600 mt-1">{{ $message }}</p>
-            @enderror
-        </div>
+        <x-form.input name="title" id="title" label="Title" type="text" :value="old('title', $task->title ?? '')" required />
+        <x-form.input name="description" id="description" label="Description" type="text" :value="old('description', $task->description ?? '')" required />
 
-        {{-- Description --}}
-        <div class="relative z-0 w-full group">
-            <input type="text" name="description" id="description"
-                value="{{ old('description', $task->description ?? '') }}"
-                placeholder=" " required
-                class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer">
-            <label for="description"
-                class="peer-focus:font-medium absolute text-sm text-gray-500 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-0 peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
-                Description
-            </label>
-            @error('description')
-                <p class="text-sm text-red-600 mt-1">{{ $message }}</p>
-            @enderror
-        </div>
+        <x-form.input name="assigned_completion_date" id="assigned_completion_date" label="Assigned Completion Date"
+            type="datetime-local" :value="old(
+                'assigned_completion_date',
+                isset($task->assigned_date) ? \Carbon\Carbon::parse($task->assigned_date)->format('Y-m-d\TH:i') : '',
+            )" required />
 
-        {{-- Assigned Completion Date --}}
-        <div class="relative z-0 w-full group">
-            <input type="datetime-local" name="date_of_completion" id="date_of_completion"
-                value="{{ old('date_of_completion', isset($task->assigned_date) ? \Carbon\Carbon::parse($task->assigned_date)->format('Y-m-d\TH:i') : '') }}"
-                placeholder=" " required
-                class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer">
-            <label for="date_of_completion"
-                class="peer-focus:font-medium absolute text-sm text-gray-500 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-0 peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
-                Assigned Date of Completion
-            </label>
-            @error('date_of_completion')
-                <p class="text-sm text-red-600 mt-1">{{ $message }}</p>
-            @enderror
-        </div>
+        <x-form.input name="notification_start_date" id="notification_start_date" label="Notification Start Date"
+            type="datetime-local" :value="old(
+                'notification_start_date',
+                isset($task->notification_start_date)
+                    ? \Carbon\Carbon::parse($task->notification_start_date)->format('Y-m-d\TH:i')
+                    : '',
+            )" required />
 
-        {{-- Notification Start Date --}}
-        <div class="relative z-0 w-full group">
-            <input type="datetime-local" name="notification_start_date" id="notification_start_date"
-                value="{{ old('notification_start_date', isset($task->notification_start_date) ? \Carbon\Carbon::parse($task->notification_start_date)->format('Y-m-d\TH:i') : '') }}"
-                placeholder=" " required
-                class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer">
-            <label for="notification_start_date"
-                class="peer-focus:font-medium absolute text-sm text-gray-500 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-0 peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
-                Notification Start Date
-            </label>
-            @error('notification_start_date')
-                <p class="text-sm text-red-600 mt-1">{{ $message }}</p>
-            @enderror
-        </div>
-
-        {{-- Notification Interval --}}
-        <div class="relative z-0 w-full group">
-            <input type="number" name="notification_interval" id="notification_interval"
-                value="{{ old('notification_interval', $task->notification_interval ?? '') }}"
-                placeholder=" " required
-                class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer">
-            <label for="notification_interval"
-                class="peer-focus:font-medium absolute text-sm text-gray-500 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-0 peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
-                Notification Interval (in days)
-            </label>
-            @error('notification_interval')
-                <p class="text-sm text-red-600 mt-1">{{ $message }}</p>
-            @enderror
-        </div>
+        <x-form.input name="notification_interval" id="notification_interval" label="Notification Interval" type="number"
+            :value="old('notification_interval', $task->notification_interval ?? '')" required />
 
         {{-- Notes (only on Edit) --}}
-        @if($isEdit)
+        @if ($isEdit)
             <div>
                 <label for="notes" class="block mb-2 text-sm font-medium text-gray-900">
                     Your Notes

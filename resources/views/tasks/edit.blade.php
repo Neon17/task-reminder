@@ -29,10 +29,11 @@
                 @include('tasks._followers', ['task' => $task])
             </div>
             
-            
-            <div class="relative overflow-x-auto p-5 my-2 bg-white">
-                @include('tasks._notes', ['notes' => $notes])
-            </div>
+            @if (count($notes) > 0)            
+                <div class="relative overflow-x-auto p-5 my-2 bg-white">
+                    @include('tasks._notes', ['notes' => $notes])
+                </div>
+            @endif
             
         </div>
     </div>
