@@ -35,6 +35,9 @@ class User extends Authenticatable
         'updated_at'
     ];
 
+    public function isAdmin(){
+        return $this->role == 'admin';
+    }
     public function tasks()
     {
         return $this->hasMany(Task::class);

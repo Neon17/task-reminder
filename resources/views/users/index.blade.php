@@ -38,7 +38,7 @@
             <a type="button" href="{{ route('users.create') }}"
                 class="py-2.5 px-5 me-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100">Create
                 User</a>
-                
+
 
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg mt-5">
 
@@ -87,7 +87,34 @@
                                     </td>
                                     <td class="px-6 py-4">
                                         <button type="button"
-                                            class="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2">Actions</button>
+                                            class="text-gray-500 hover:text-gray-700 focus:outline-none transition-all duration-200 action-toggle"
+                                            onclick="toggleActions(this)">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20"
+                                                fill="currentColor">
+                                                <path fill-rule="evenodd"
+                                                    d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                                                    clip-rule="evenodd" />
+                                            </svg>
+                                        </button>
+
+                                        <!-- Vertical Actions dropdown -->
+                                        <div
+                                            class="absolute right-0 mt-2 w-32 bg-white rounded-md shadow-lg z-50 hidden actions-dropdown origin-top-right">
+                                            <div class="flex flex-col space-y-2 p-2">
+                                                <a href="{{ route('users.edit', $user->id) }}"
+                                                    class="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-3 py-2 text-center whitespace-nowrap">
+                                                    Edit
+                                                </a>
+                                                <form action="{{ route('users.destroy', $user->id) }}" method="post">
+                                                    @csrf
+                                                    @method('POST')
+                                                    <button type="submit"
+                                                        class="w-full focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-3 py-2 text-center">
+                                                        Delete
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        </div>
                                     </td>
                                 </tr>
                             @endforeach

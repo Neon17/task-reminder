@@ -23,6 +23,9 @@ Route::middleware([
     Route::get('/index', [UserController::class,'index'])->name('users.index')->middleware(isAdmin::class);
     Route::get('/create', [UserController::class, 'create'])->name('users.create')->middleware(isAdmin::class);
     Route::post('/users/store', [UserController::class, 'store'])->name('users.store')->middleware(isAdmin::class);
+    Route::get('/users/{user}/edit', [UserController::class, 'edit'])->name('users.edit')->middleware(isAdmin::class);
+    Route::put('/users/{user}', [UserController::class, 'update'])->name('users.update')->middleware(isAdmin::class);
+    Route::delete('/users/{user}', [UserController::class, 'destroy'])->name('users.destroy')->middleware(isAdmin::class);
     
     Route::resource('tasks', TaskController::class);
     Route::post('tasks/{task}', [TaskController::class, 'delete'])->name('tasks.delete'); //here delete form is rendered and notes are required for delete so
