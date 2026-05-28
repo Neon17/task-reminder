@@ -22,7 +22,6 @@ class TaskController extends Controller
             'sort' => 'nullable|string', // e.g., "assigned_date,-created_at"
             'assignee' => "nullable|string|in:creator,follower,others",
             'per_page' => 'nullable|integer|min:1|max:100',
-            'export_excel' => 'nullable|string'
         ]);
 
         $tasks = null;
@@ -47,6 +46,32 @@ class TaskController extends Controller
         return view('tasks.index', [
             'tasks' => $tasks,
         ]);
+    }
+
+    public function exportFiltered(Request $request)
+    {
+        $validated = $request->validate([
+            'title' => 'nullable|string|max:255',
+            'created_by' => 'nullable|integer|exists:users,id',
+            'status' => "nullable|in:completed,pending,''",
+            'sort' => 'nullable|string', // e.g., "assigned_date,-created_at"
+            'assignee' => "nullable|string|in:creator,follower,others",
+        ]);
+
+        $tasks = null;
+
+        if (Auth::user()->role == 'admin') {
+            $tasks = Task::query();
+        } else {
+            $tasks = Task::where('created_by', Auth::user()->id)
+                ->orWhereHas('followers', fn($q) => $q->where('user_id', Auth::user()->id));
+        }
+
+
+        $tasks = $tasks->filter($validated)
+            ->sort($validated["sort"] ?? null);
+
+        return Excel::download(new TasksExport($tasks->get()), 'tasks.xlsx');
     }
 
     public function trashedTasks(Request $request)

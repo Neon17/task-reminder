@@ -69,7 +69,7 @@ class UserController extends Controller
         $users = User::where('id', '!=', Auth::user()->id);
         $users = $users->filter($validated)
             ->sort($validated['sort'] ?? null);
-            
+
         if ($request->export_excel == 'true') {
             return Excel::download(new UsersExport($users->get()), 'users.xlsx');
         }
@@ -78,6 +78,30 @@ class UserController extends Controller
             ->withQueryString();
 
         return view('users.index', compact('users'));
+    }
+
+    public function exportFiltered(Request $request)
+    {
+        $timezones = TimezoneHelper::all();
+        $labels = [];
+        foreach ($timezones as $timezone) {
+            $labels[] = $timezone['value'];
+        }
+        $strTimezones = implode(',', $labels);
+
+        $validated = $request->validate([
+            'search' => 'nullable|string|max:255',
+            'email' => 'nullable|in:unverified,verified',
+            'role' => 'nullable|in:admin,user',
+            'timezone' => 'nullable|in:' . $strTimezones,
+            'sort' => 'nullable|string',
+        ]);
+
+        $users = User::where('id', '!=', Auth::user()->id);
+        $users = $users->filter($validated)
+            ->sort($validated['sort'] ?? null);
+
+        return Excel::download(new UsersExport($users->get()), 'users.xlsx');
     }
 
     public function create()

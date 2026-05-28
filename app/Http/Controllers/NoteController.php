@@ -24,13 +24,13 @@ class NoteController extends Controller
             'per_page' => 'nullable|integer|min:1|max:100'
         ]);
 
-        if (Auth::user()->role=='admin') {
+        if (Auth::user()->role == 'admin') {
             $notes = Note::query();
         } else {
-            $notes = Note::where(function($query){
+            $notes = Note::where(function ($query) {
                 $query->where('user_id', Auth::user()->id)
-                    ->orWhereHas('task', function($q){
-                        $q->whereHas('followers', function($q){
+                    ->orWhereHas('task', function ($q) {
+                        $q->whereHas('followers', function ($q) {
                             $q->where('id', Auth::user()->id);
                         });
                     });
@@ -48,11 +48,41 @@ class NoteController extends Controller
         $notes = $notes->paginate($validated['per_page'] ?? 15)->withQueryString();
 
         $users = [];
-        if (Auth::user()->role=='admin') {
+        if (Auth::user()->role == 'admin') {
             $users = User::all(); // For user dropdown
         }
 
 
         return view('notes.index', compact('notes', 'users'));
+    }
+
+    public function exportFiltered(Request $request)
+    {
+        $validated = $request->validate([
+            'title' => 'nullable|string|max:255',
+            'user_id' => 'nullable|integer|exists:users,id',
+            'sort' => 'nullable|string',
+            'category' => 'nullable|string|in:creator,follower,others',
+            'reason' => 'nullable|string|in:creation,completion,updation,deletion',
+        ]);
+
+        if (Auth::user()->role == 'admin') {
+            $notes = Note::query();
+        } else {
+            $notes = Note::where(function ($query) {
+                $query->where('user_id', Auth::user()->id)
+                    ->orWhereHas('task', function ($q) {
+                        $q->whereHas('followers', function ($q) {
+                            $q->where('id', Auth::user()->id);
+                        });
+                    });
+            });
+        }
+
+        $notes = $notes->filter($validated)
+            ->sort($validated['sort'] ?? null)
+            ->with(['task', 'user']); // maybe to fix N+1 problem
+
+        return Excel::download(new NotesExport($notes->get()), 'notes.xlsx');
     }
 }

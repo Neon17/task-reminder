@@ -39,6 +39,30 @@
 
 
 
-============== New Phase =========================
+============== Maintainence Phase =========================
+
+Status: All, Active, Trashed
+Delete Timezone Filter
+Add Export button at right of Create User
+filter ko lai separate blade files
+in Reminder Edit, Edit button at top, Notes list at bottom
+200 characters limit in notes (only description)
+logo change
+remove Trashed Reminders and add it to status/filter
+z-index of assign followers list
+Make good User Profile Page in Viewing Profile
+Make notes when updating, deleting and restoring tasks only
+updating means updating completion date, name not followers
+You can remove notes page and add it at the list of edit
+
+can admin add followers?? really??
+Refactoring Code(main), some UI fixes
 
 
+Learn database indexing, API development
+
+Validation is not required if admin fills user details,
+Need to remove email validation and set auto validation of email
+at the time of admin creating user
+
+Learn Policy

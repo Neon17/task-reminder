@@ -1,12 +1,17 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Tasks') }}
+            {{ __('Notes') }}
         </h2>
     </x-slot>
 
     <div class="py-12">
         <div class="mx-auto sm:px-6 lg:px-8">
+
+            <a type="button" href={{ route('notes.exportFiltered', request()->query()) }}
+                class="py-2.5 px-5 me-2 mb-2 text-sm float-right font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100">
+                {{ __('Export') }}
+            </a>
 
             <form method="GET" class="mt-5 px-5 flex flex-col md:flex-row md:items-center md:justify-start gap-2"
                 action="{{ route('notes.index') }}">
@@ -99,12 +104,6 @@
                             {{ __('Created (Newest)') }}
                         </option>
                     </select>
-                </div>
-
-                <div class="h-full py-auto flex justify-center items-center mb-4">
-                    <input id="default-checkbox" name="export_excel" type="checkbox" value=true
-                        class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-blue-500">
-                    <label for="default-checkbox" class="ms-2 text-sm font-medium text-gray-900">Export to Excel</label>
                 </div>
 
                 <div class="flex gap-2 w-full md:w-auto">

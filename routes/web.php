@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Route;
 
+
 Route::get('/', function () {
     return redirect('/login');
 });
@@ -26,15 +27,15 @@ Route::middleware([
 Route::middleware(['auth'])->group(function () {
     Route::get('/test-verification', function () {
         $user = User::find(Auth::id());
-        
+
         if ($user->hasVerifiedEmail()) {
             return 'Email already verified!';
         }
-        
+
         $user->sendEmailVerificationNotification();
         return 'Verification email sent! Check your email.';
     });
-    
+
     Route::get('/verification-status', function () {
         $user = User::find(Auth::id());
         return [
@@ -70,14 +71,15 @@ Route::middleware([
     Route::get('api/users/search/{query}', function (string $query) {
         // info('query = '.$query);
         return User::where('id', '!=', Auth::id())
-            ->where(function($q) use ($query) {
+            ->where(function ($q) use ($query) {
                 $q->where('name', 'like', "%{$query}%")
-                ->orWhere('email', 'like', "%{$query}%");
+                    ->orWhere('email', 'like', "%{$query}%");
             })
             ->limit(10)
             ->get(['id', 'name', 'email']);
     });
 
+    Route::get('/users/export', [UserController::class, 'exportFiltered'])->name('users.exportFiltered');
     Route::get('/users/{user}/edit', [UserController::class, 'edit'])->name('users.edit');
     Route::put('/users/{user}', [UserController::class, 'update'])->name('users.update');
     Route::get('/users/{user}', [UserController::class, 'show'])->name('users.show');
@@ -85,15 +87,22 @@ Route::middleware([
     Route::post('users/{user}/restore', [UserController::class, 'restore'])->name('users.restore');
     Route::post('users/{user}/forceDelete', [UserController::class, 'forceDelete'])->name('users.forceDelete');
 
+    Route::get('/tasks/export/', [TaskController::class, 'exportFiltered'])->name('tasks.exportFiltered');
     Route::resource('tasks', TaskController::class);
     Route::post('tasks/{task}', [TaskController::class, 'delete'])->name('tasks.delete'); //here delete form is rendered and notes are required for delete so
     Route::post('tasks/{task}/restore', [TaskController::class, 'restore'])->name('tasks.restore');
     Route::post('tasks/{task}/forceDelete', [TaskController::class, 'forceDelete'])->name('tasks.forceDelete');
     Route::post('tasks/{task}/complete', [TaskController::class, 'completeTask'])->name('tasks.complete');
     Route::get('tasks/{task}/complete', [TaskController::class, 'complete'])->name('tasks.complete');
+    Route::get('/tasks/export', [TaskController::class, 'exportFiltered'])->name('tasks.exportFiltered');
+    // Route::get('tasks/export', function() {
+    //     log('Export route hit'); // Check storage/logs/laravel.log
+    //     return "Hello, Exporting takes time...";
+    // })->name('tasks.exportFiltered');
 
     // Route::get('tasks/{task}/notes', [TaskController::class, 'notes'])->name('tasks.notes');
     Route::get('notes', [NoteController::class, 'index'])->name('notes.index');
+    Route::get('notes/export', [NoteController::class, 'exportFiltered'])->name('notes.exportFiltered');
 
     Route::prefix('tasks/{task}')->group(function () {
         Route::resource('followers', TaskUserController::class)->names([
@@ -112,3 +121,7 @@ Route::middleware([
 Route::get('/auth/redirect', [UserController::class, 'googleRedirect'])->name('google.login');
 
 Route::get('/auth/callback', [UserController::class, 'googleCallback']);
+
+Route::get('/test', function () {
+    return view('test');
+})->name('test');
