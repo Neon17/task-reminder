@@ -115,7 +115,7 @@
 
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg m-4 mb-7">
 
-                <div class="relative overflow-x-auto">
+                <div class="overflow-x-auto">
                     <table class="w-full text-sm text-left rtl:text-right text-gray-500">
                         <thead class="text-xs text-gray-900 uppercase bg-gray-200">
                             <tr>

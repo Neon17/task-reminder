@@ -68,7 +68,7 @@
             <div class="bg-white m-2 overflow-hidden shadow-xl sm:rounded-lg mt-5">
 
 
-                <div class="relative overflow-x-auto">
+                <div class="overflow-x-auto">
                     <table class="w-full text-sm text-left rtl:text-right text-gray-500">
                         <thead class="text-xs text-gray-900 uppercase bg-gray-200">
                             <tr>
@@ -124,7 +124,7 @@
 
                                         <!-- Vertical Actions dropdown -->
                                         <div
-                                            class="absolute right-0 mt-2 w-32 bg-white rounded-md shadow-lg z-50 hidden actions-dropdown origin-top-right">
+                                            class="absolute mt-2 w-32 bg-white rounded-md shadow-lg z-50 hidden actions-dropdown origin-top-right">
                                             <div class="flex flex-col space-y-2 p-2">
                                                 <a href="{{ route('users.edit', $user->id) }}"
                                                     class="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-3 py-2 text-center whitespace-nowrap">
