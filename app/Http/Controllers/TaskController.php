@@ -106,7 +106,8 @@ class TaskController extends Controller
 
     public function edit($id)
     {
-        $task = Task::where('id', $id)->with('creator')->first();
+        // Should we need to extract joined at?
+        $task = Task::where('id', $id)->with('creator', 'followers')->first();
         return view('tasks.edit', compact('task'));
     }
 

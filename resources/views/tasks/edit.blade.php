@@ -142,9 +142,75 @@
             <div class="relative overflow-x-auto p-5 mt-5 bg-white">
                 <h4 class="text-xl font-extrabold text-center">Followers</h4>
 
-                <a href="{{route('task.followers.create', $task)}}" type="button"
-                        class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center">Add Followers</a>
-                {{-- here list of followers are shown --}}
+                <a href="{{ route('task.followers.create', $task) }}" type="button"
+                    class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center">Add
+                    Followers</a>
+
+
+                <table class="w-full mt-3 text-sm text-left rtl:text-right text-gray-500">
+                    <thead class="text-xs text-gray-900 uppercase bg-gray-200">
+                        <tr>
+                            <th scope="col" class="px-6 py-3">
+                                SN
+                            </th>
+                            <th scope="col" class="px-6 py-3">
+                                Name
+                            </th>
+                            <th scope="col" class="px-6 py-3">
+                                Email
+                            </th>
+                            <th scope="col" class="px-6 py-3">
+                                Role
+                            </th>
+                            <th scope="col" class="px-6 py-3">
+                                Timezone
+                            </th>
+                            <th scope="col" class="px-6 py-3">
+                                Action
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        @if ($task->followers->count() == 0)
+                            <tr class="bg-white border-b border-gray-200">
+                                <td class="px-6 py-4 w-100">
+                                    <p class="text-center">No followers found</p>
+                                </td>
+                            </tr>
+                        @else
+                            @foreach ($task->followers as $follower)
+                                <tr class="bg-white border-b border-gray-200">
+                                    <td class="px-6 py-4 w-100">
+                                        {{ $loop->iteration }}
+                                    </td>
+                                    <td class="px-6 py-4 w-100">
+                                        {{ $follower->name }}
+                                    </td>
+                                    <td class="px-6 py-4 w-100">
+                                        {{ $follower->email }}
+                                    </td>
+                                    <td class="px-6 py-4 w-100">
+                                        {{ $follower->role }}
+                                    </td>
+                                    <td class="px-6 py-4 w-100">
+                                        {{ $follower->timezone }}
+                                    </td>
+                                    <td class="px-6 py-4 w-100">
+                                        <form method="POST"
+                                            action="{{ route('task.followers.destroy', [$task, $follower]) }}">
+                                            @csrf @method('DELETE')
+                                            <button type="submit" class="text-red-500 hover:underline">
+                                                Detach Follower
+                                            </button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        @endif
+                        </tr>
+                    </tbody>
+                </table>
             </div>
 
         </div>
