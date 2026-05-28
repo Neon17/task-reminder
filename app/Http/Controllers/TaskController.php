@@ -28,7 +28,7 @@ class TaskController extends Controller
             $tasks = Task::query();
         } else {
             $tasks = Task::where('created_by', Auth::user()->id)
-            ->orWhereHas('followers', fn($q) => $q->where('user_id', Auth::user()->id));
+                ->orWhereHas('followers', fn($q) => $q->where('user_id', Auth::user()->id));
         }
 
 
@@ -150,7 +150,7 @@ class TaskController extends Controller
         if (!$task) {
             return redirect()->route('tasks.index')->with('error', 'Task not found!');
         }
-        $validated = $this->validateRequest($request);
+        $validated = $this->validateRequest($request, 1);
         $task->update([
             'title' => $validated['title'],
             'description' => $validated['description'],
@@ -158,6 +158,11 @@ class TaskController extends Controller
             'notification_start_date' => $validated['notification_start_date'],
             'notification_interval' => $validated['notification_interval'],
         ]);
+
+        if ($request->has('followers')) {
+            $followerIds = json_decode($request->input('followers'), true);
+            $task->followers()->sync($followerIds);
+        }
 
         $task->notes()->create([
             'reason' => 'updation',
@@ -190,30 +195,61 @@ class TaskController extends Controller
         return redirect()->route('tasks.index')->with('success', 'Task deleted successfully!');
     }
 
-    public function validateRequest($request){
-        return $request->validate([
-            'title' => 'required|max:30',
-            'description' => 'required|max:255',
-            'notification_start_date' => 'required|after:today',
-            'date_of_completion' => 'required|after:today',
-            'notification_interval' => [
-                'required',
-                'numeric',
-                'min:1',
-                function ($attribute, $value, $fail) use ($request) {
-                    $startDate = Carbon::parse($request->notification_start_date);
-                    $endDate = Carbon::parse($request->date_of_completion);
-                    $maxInterval = $startDate->diffInDays($endDate);
+    public function validateRequest($request, $status = 0)
+    {
+        // $status = 0 means creating and $status = 1 means updating
 
-                    info("maxInterval = $maxInterval");
-                    info("Value = $value");
-
-                    if ($value > $maxInterval) {
-                        $fail("The notification interval cannot exceed $maxInterval days. Your value = $value");
+        if ($status == 1){
+            return $request->validate([
+                'title' => 'required|max:30',
+                'description' => 'required|max:255',
+                'notification_start_date' => 'required',
+                'date_of_completion' => 'required|after:today',
+                'notification_interval' => [
+                    'required',
+                    'numeric',
+                    'min:1',
+                    function ($attribute, $value, $fail) use ($request) {
+                        $startDate = Carbon::parse($request->notification_start_date);
+                        $endDate = Carbon::parse($request->date_of_completion);
+                        $maxInterval = $startDate->diffInDays($endDate);
+    
+                        info("maxInterval = $maxInterval");
+                        info("Value = $value");
+    
+                        if ($value > $maxInterval) {
+                            $fail("The notification interval cannot exceed $maxInterval days. Your value = $value");
+                        }
                     }
-                }
-            ],
-            'notes' => 'required'
-        ]);
+                ],
+                'notes' => 'required'
+            ]);
+        }
+
+        return $request->validate([
+                'title' => 'required|max:30',
+                'description' => 'required|max:255',
+                'notification_start_date' => 'required|after:today',
+                'date_of_completion' => 'required|after:today',
+                'notification_interval' => [
+                    'required',
+                    'numeric',
+                    'min:1',
+                    function ($attribute, $value, $fail) use ($request) {
+                        $startDate = Carbon::parse($request->notification_start_date);
+                        $endDate = Carbon::parse($request->date_of_completion);
+                        $maxInterval = $startDate->diffInDays($endDate);
+    
+                        info("maxInterval = $maxInterval");
+                        info("Value = $value");
+    
+                        if ($value > $maxInterval) {
+                            $fail("The notification interval cannot exceed $maxInterval days. Your value = $value");
+                        }
+                    }
+                ],
+                'notes' => 'required'
+            ]);
+        
     }
 }

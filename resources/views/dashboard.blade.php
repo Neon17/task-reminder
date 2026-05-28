@@ -119,8 +119,8 @@
                                     </div>
                                     <div class="flex items-center">
                                         <span
-                                            class="px-2 py-1 text-xs rounded-full {{ $task->completed ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800' }}">
-                                            {{ $task->completed ? 'Completed' : 'Pending' }}
+                                            class="px-2 py-1 text-xs rounded-full {{ $task->completed_date ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800' }}">
+                                            {{ $task->completed_date ? 'Completed' : 'Pending' }}
                                         </span>
                                     </div>
                                 </div>

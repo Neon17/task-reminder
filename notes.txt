@@ -7,6 +7,8 @@
 - can change email settings/template (phase 2)
 - change tasks to reminder
 
+- when clicked on welcome, it should auto redirect to login for now
+
 - user lai soft delete garna milna
 - user lai permanent delete nagarne
 - Email verification part

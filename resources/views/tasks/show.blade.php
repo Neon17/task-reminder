@@ -60,7 +60,7 @@
             <div class="relative overflow-x-auto p-5 bg-white">
                 <form class="mx-auto">
 
-                     <h4 class="text-xl font-extrabold text-center mb-3">{{__("Task Details")}}</h4>
+                    <h4 class="text-xl font-extrabold text-center mb-3">{{ __('Task Details') }}</h4>
 
                     <div class="edit-field-container">
 
@@ -70,7 +70,7 @@
                                 value="{{ $task->title }}" placeholder=" " required />
                             <label for="floating_first_name"
                                 class="peer-focus:font-medium absolute text-sm text-gray-500 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
-                                {{__("Title")}}
+                                {{ __('Title') }}
                             </label>
                         </div>
 
@@ -82,7 +82,7 @@
                                 placeholder=" " required />
                             <label for="floating_first_name"
                                 class="peer-focus:font-medium absolute text-sm text-gray-500 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
-                                {{__("Description")}}
+                                {{ __('Description') }}
                             </label>
                         </div>
 
@@ -93,7 +93,7 @@
                                 placeholder=" " required />
                             <label for="floating_first_name"
                                 class="peer-focus:font-medium absolute text-sm text-gray-500 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
-                                {{__("Assigned Date of Completion")}}
+                                {{ __('Assigned Date of Completion') }}
                             </label>
                         </div>
 
@@ -104,7 +104,7 @@
                                 placeholder=" " required />
                             <label for="floating_first_name"
                                 class="peer-focus:font-medium absolute text-sm text-gray-500 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
-                                {{__("Notification Start Date")}}
+                                {{ __('Notification Start Date') }}
                             </label>
                         </div>
 
@@ -115,17 +115,68 @@
                                 placeholder=" " required />
                             <label for="floating_first_name"
                                 class="peer-focus:font-medium absolute text-sm text-gray-500 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
-                                {{__("Notification Interval (in days)")}}
+                                {{ __('Notification Interval (in days)') }}
                             </label>
                         </div>
 
 
                     </div>
 
+                    <div class="relative z-0 flex gap-3 mb-5 group">
+                        <label class="block mb-2 text-sm font-medium text-gray-900">
+                            {{ __('Created By') }}
+                        </label>
+                        <div class="bg-blue-100 text-blue-800 text-sm font-medium px-2.5 py-1.5 rounded flex items-center">
+                            <img src="{{ $task->creator->avatar || 'https://ui-avatars.com/api/?name=' . $task->creator->name }}"
+                                class="w-5 h-5 rounded-full mr-1">
+                            {{ $task->creator->name }}
+                            <a href="{{ route('users.show', $task->creator) }}"
+                                class="ml-1 text-blue-400 hover:text-blue-600">
+                                <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd"
+                                        d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-8.707l-3-3a1 1 0 00-1.414 0l-3 3a1 1 0 001.414 1.414L9 9.414V13a1 1 0 102 0V9.414l1.293 1.293a1 1 0 001.414-1.414z"
+                                        clip-rule="evenodd"></path>
+                                </svg>
+                            </a>
+                        </div>
+                        </a>
+                    </div>
+
+                    <!-- Followers Field -->
+                    <div class="relative overflow-x-auto mb-3 bg-white">
+                        <h4 class="">
+                            {{ __('Followers') }}
+                        </h4>
+
+                        <div class="mt-3 flex flex-wrap gap-2">
+                            @if ($task->followers->count() == 0)
+                                <p class="text-gray-500">{{ __('No followers found') }}</p>
+                            @else
+                                @foreach ($task->followers as $follower)
+                                    <div
+                                        class="bg-blue-100 text-blue-800 text-sm font-medium px-2.5 py-2.5 rounded flex items-center">
+                                        <img src="{{ $follower->avatar || 'https://ui-avatars.com/api/?name=' . $follower->name }}"
+                                            class="w-5 h-5 rounded-full mr-1">
+                                        {{ $follower->name }}
+                                        <a href="{{ route('users.show', $follower) }}"
+                                            class="ml-1 text-blue-400 hover:text-blue-600">
+                                            <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                                                <path fill-rule="evenodd"
+                                                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-8.707l-3-3a1 1 0 00-1.414 0l-3 3a1 1 0 001.414 1.414L9 9.414V13a1 1 0 102 0V9.414l1.293 1.293a1 1 0 001.414-1.414z"
+                                                    clip-rule="evenodd"></path>
+                                            </svg>
+                                        </a>
+                                    </div>
+                                @endforeach
+                            @endif
+                        </div>
+                    </div>
+
+
                     <div class="notes-fields mb-3">
 
                         <label for="message" class="block mb-2 text-sm font-medium text-gray-900">
-                            {{__("Your Notes")}}
+                            {{ __('Your Notes') }}
                         </label>
                         <textarea id="message" rows="4" name="notes" required
                             class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
@@ -135,131 +186,18 @@
                     @if ($task->completed_date)
                         <a type="button"
                             class="text-white bg-green-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center">
-                            {{__("Completed")}}
+                            {{ __('Completed') }}
                         </a>
                     @else
                         <a type="button" href="{{ route('tasks.edit', $task) }}"
                             class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center">
-                            {{__("Edit")}}
+                            {{ __('Edit') }}
                         </a>
                     @endif
                 </form>
 
             </div>
 
-
-            <div class="relative overflow-x-auto mt-5 p-5 bg-white">
-                <h4 class="text-xl font-extrabold text-center mb-3">
-                    {{__("Created By")}}
-                </h4>
-
-
-                <table class="w-full text-sm text-left rtl:text-right text-gray-500">
-                    <thead class="text-xs text-gray-900 uppercase bg-gray-200">
-                        <tr>
-                            <th scope="col" class="px-6 py-3">
-                                {{__("Name")}}
-                            </th>
-                            <th scope="col" class="px-6 py-3">
-                                {{__("Email")}}
-                            </th>
-                            <th scope="col" class="px-6 py-3">
-                                {{__("Timezone")}}
-                            </th>
-                            <th scope="col" class="px-6 py-3">
-                                {{__("Role")}}
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr class="bg-white border-b">
-                            <td class="px-6 py-4">
-                                {{ $task->creator->name }}
-                            </td>
-                            <td class="px-6 py-4">
-                                {{ $task->creator->email }}
-                            </td>
-                            <td class="px-6 py-4">
-                                {{ $task->creator->timezone }}
-                            </td>
-                            <td class="px-6 py-4">
-                                {{ $task->creator->role }}
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-
-
-            <div class="relative overflow-x-auto p-5 mt-5 bg-white">
-                <h4 class="text-xl font-extrabold text-center">
-                    {{__("Followers")}}
-                </h4>
-
-                <table class="w-full mt-3 text-sm text-left rtl:text-right text-gray-500">
-                    <thead class="text-xs text-gray-900 uppercase bg-gray-200">
-                        <tr>
-                            <th scope="col" class="px-6 py-3">
-                                {{__("SN")}}
-                            </th>
-                            <th scope="col" class="px-6 py-3">
-                                {{__("Name")}}
-                            </th>
-                            <th scope="col" class="px-6 py-3">
-                                {{__("Email")}}
-                            </th>
-                            <th scope="col" class="px-6 py-3">
-                                {{__("Role")}}
-                            </th>
-                            <th scope="col" class="px-6 py-3">
-                                {{__("Timezone")}}
-                            </th>
-                            <th scope="col" class="px-6 py-3">
-                                {{__("Action")}}
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-
-                        @if ($task->followers->count() == 0)
-                            <tr class="bg-white border-b border-gray-200">
-                                <td class="px-6 py-4 w-100">
-                                    <p class="text-center">
-                                        {{__("No followers found")}}
-                                    </p>
-                                </td>
-                            </tr>
-                        @else
-                            @foreach ($task->followers as $follower)
-                                <tr class="bg-white border-b border-gray-200">
-                                    <td class="px-6 py-4 w-100">
-                                        {{ $loop->iteration }}
-                                    </td>
-                                    <td class="px-6 py-4 w-100">
-                                        {{ $follower->name }}
-                                    </td>
-                                    <td class="px-6 py-4 w-100">
-                                        {{ $follower->email }}
-                                    </td>
-                                    <td class="px-6 py-4 w-100">
-                                        {{ $follower->role }}
-                                    </td>
-                                    <td class="px-6 py-4 w-100">
-                                        {{ $follower->timezone }}
-                                    </td>
-                                    <td class="px-6 py-4 w-100">
-                                        <a href="{{ route('users.show', $follower) }}" type="button"
-                                            class="text-red-500 hover:underline hover:cursor-pointer">
-                                            {{__("View")}}
-                                        </a>
-                                    </td>
-                                </tr>
-                            @endforeach
-                        @endif
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
 
         </div>
     </div>

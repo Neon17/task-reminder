@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Tasks') }}
+            {{ __('Reminders') }}
         </h2>
     </x-slot>
 
@@ -62,16 +62,16 @@
             </a>
             <a type="button" href="{{ route('tasks.trashed') }}"
                 class="py-2.5 px-5 me-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100">
-                {{ __('Trashed Tasks') }}
+                {{ __('Trashed Reminders') }}
             </a>
 
-            <form method="GET" class="mt-5 flex items-center justify-center gap-2"
+            <form method="GET" class="mt-5 px-5 flex items-center justify-start gap-2"
                 action="{{ route('tasks.index') }}">
                 <!-- Search by Title -->
                 @csrf
                 <div class="mb-4">
                     <label for="title" class="block text-sm font-medium text-gray-700">
-                        {{__("Search Title")}}
+                        {{ __('Search Title') }}
                     </label>
                     <input type="text" name="title" id="title" value="{{ old('title', request('title')) }}"
                         class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
@@ -80,17 +80,17 @@
                 <!-- Status Filter -->
                 <div class="mb-4">
                     <label for="status" class="block text-sm font-medium text-gray-700">
-                        {{__("Status")}}
+                        {{ __('Status') }}
                     </label>
                     <select name="status" id="status"
                         class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
                         <option value="">All</option>
                         <option value="pending" {{ old('status', request('status')) === 'pending' ? 'selected' : '' }}>
-                            {{__("Pending")}}
+                            {{ __('Pending') }}
                         </option>
                         <option value="completed"
                             {{ old('status', request('status')) === 'completed' ? 'selected' : '' }}>
-                            {{__("Completed")}}
+                            {{ __('Completed') }}
                         </option>
                     </select>
                 </div>
@@ -98,23 +98,23 @@
                 <!-- Assignee Filter -->
                 <div class="mb-4">
                     <label for="assignee" class="block text-sm font-medium text-gray-700">
-                        {{__("Creators and Followers")}}
+                        {{ __('Creators and Followers') }}
                     </label>
                     <select name="assignee" id="assignee"
                         class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
                         <option value="">
-                            {{__("All")}}
+                            {{ __('All') }}
                         </option>
                         <option value="creator"
                             {{ old('assignee', request('assignee')) === 'creator' ? 'selected' : '' }}>
-                            {{__("Created By You")}}
+                            {{ __('Created By You') }}
                         </option>
                         <option value="follower"
                             {{ old('assignee', request('assignee')) === 'follower' ? 'selected' : '' }}>
-                            {{__("Followed By You")}}
+                            {{ __('Followed By You') }}
                         </option>
                         <option value="others">
-                            {{__("Neither")}}
+                            {{ __('Neither') }}
                         </option>
                     </select>
                 </div>
@@ -122,39 +122,39 @@
                 <!-- Sort Options -->
                 <div class="mb-4">
                     <label for="sort" class="block text-sm font-medium text-gray-700">
-                        {{__("Sort By")}}
+                        {{ __('Sort By') }}
                     </label>
                     <select name="sort" id="sort"
                         class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
                         <option value="">
-                            {{__("Default")}}
+                            {{ __('Default') }}
                         </option>
                         <option value="title" {{ request('sort') === 'title' ? 'selected' : '' }}>
-                            {{__("Title (A-Z)")}}
+                            {{ __('Title (A-Z)') }}
                         </option>
                         <option value="-title" {{ request('sort') === '-title' ? 'selected' : '' }}>
-                            {{__("Title (Z-A)")}}
+                            {{ __('Title (Z-A)') }}
                         </option>
                         <option value="assigned_date" {{ request('sort') === 'assigned_date' ? 'selected' : '' }}>
-                            {{__("Assigned Date (Oldest)")}}
+                            {{ __('Assigned Date (Oldest)') }}
                         </option>
                         <option value="-assigned_date" {{ request('sort') === '-assigned_date' ? 'selected' : '' }}>
-                            {{__("Assigned Date (Newest)")}}
+                            {{ __('Assigned Date (Newest)') }}
                         </option>
                     </select>
                 </div>
 
                 <div class="space-x-4">
                     <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded-md">
-                        {{__("Apply Filters")}}
+                        {{ __('Apply Filters') }}
                     </button>
                     <a href="{{ route('tasks.index') }}" class="px-4 py-2 bg-gray-300 text-gray-700 rounded-md">
-                        {{__("Reset")}}
+                        {{ __('Reset') }}
                     </a>
                 </div>
             </form>
 
-            <h4 class="text-xl font-extrabold text-center">All Tasks</h4>
+            <h4 class="text-xl font-extrabold mt-3 text-center">All Reminders</h4>
 
             <div class="bg-white shadow-xl sm:rounded-lg m-4 mb-7">
 
@@ -163,28 +163,28 @@
                         <thead class="text-xs text-gray-900 uppercase bg-gray-200">
                             <tr>
                                 <th scope="col" class="px-6 py-3">
-                                    {{__("SN")}}
+                                    {{ __('SN') }}
                                 </th>
                                 <th scope="col" class="px-6 py-3">
-                                    {{__("Name")}}
+                                    {{ __('Name') }}
                                 </th>
                                 <th scope="col" class="px-6 py-3">
-                                    {{__("Description")}}
+                                    {{ __('Description') }}
                                 </th>
                                 <th scope="col" class="px-6 py-3">
-                                    {{__("Created By")}}
+                                    {{ __('Creator') }}
                                 </th>
                                 <th scope="col" class="px-6 py-3">
-                                    {{__("Assigned Date For Completion")}}
+                                    {{ __('Assigned Completion') }}
                                 </th>
                                 <th scope="col" class="px-6 py-3">
-                                    {{__("Completed Date")}}
+                                    {{ __('is Completed') }}
                                 </th>
                                 <th scope="col" class="px-6 py-3">
-                                    {{__("Created At")}}
+                                    {{ __('Followers') }}
                                 </th>
                                 <th scope="col" class="px-6 py-3">
-                                    {{__("Updated At")}}
+                                    {{ __('Actions') }}
                                 </th>
                             </tr>
                         </thead>
@@ -194,7 +194,7 @@
                                 <tr class="bg-white border-b border-gray-200">
                                     <td class="px-6 py-4 w-100">
                                         <p class="text-center">
-                                            {{__("No task found")}}
+                                            {{ __('No task found') }}
                                         </p>
                                     </td>
                                 </tr>
@@ -211,16 +211,79 @@
                                             {{ $task->description }}
                                         </td>
                                         <td class="px-6 py-4 w-100">
-                                            {{ $task->creator->name }}
+                                            <div class="flex">
+                                                <div value ="{{ $task->creator->id }}"
+                                                    class="bg-blue-100 text-blue-800 text-sm font-medium px-2.5 py-2.5 rounded flex items-center">
+                                                    <img src="{{ $task->creator->avatar || 'https://ui-avatars.com/api/?name=' . $task->creator->name }}"
+                                                        class="w-5 h-5 rounded-full mr-1">
+                                                    {{ $task->creator->name }}
+                                                    <a href="{{ route('users.show', $task->creator) }}"
+                                                        class="ml-1 text-blue-400 hover:text-blue-600">
+                                                        <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                                                            <path fill-rule="evenodd"
+                                                                d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-8.707l-3-3a1 1 0 00-1.414 0l-3 3a1 1 0 001.414 1.414L9 9.414V13a1 1 0 102 0V9.414l1.293 1.293a1 1 0 001.414-1.414z"
+                                                                clip-rule="evenodd"></path>
+                                                        </svg>
+                                                    </a>
+                                                </div>
+                                            </div>
                                         </td>
                                         <td class="px-6 py-4 w-100">
                                             {{ $task->assigned_date }}
                                         </td>
                                         <td class="px-6 py-4 w-100">
-                                            {{ $task->completed_date }}
+                                            @if ($task->completed_date)
+                                                {{ __('Yes') }}
+                                            @else
+                                                {{ __('No') }}
+                                            @endif
                                         </td>
                                         <td class="px-6 py-4 w-100">
-                                            {{ $task->created_at }}
+                                            @if ($task->followers->count() == 0)
+                                                {{ __('No follower') }}
+                                            @elseif ($task->followers->count() == 1)
+                                                @foreach ($task->followers as $follower)
+                                                    <div class="flex">
+                                                        <div value ="{{ $follower->id }}"
+                                                            class="bg-blue-100 text-blue-800 text-sm font-medium px-2.5 py-2.5 rounded flex items-center">
+                                                            <img src="{{ $follower->avatar || 'https://ui-avatars.com/api/?name=' . $follower->name }}"
+                                                                class="w-5 h-5 rounded-full mr-1">
+                                                            {{ $follower->name }}
+                                                            <a href="{{ route('users.show', $follower) }}"
+                                                                class="ml-1 text-blue-400 hover:text-blue-600">
+                                                                <svg class="w-3 h-3" fill="currentColor"
+                                                                    viewBox="0 0 20 20">
+                                                                    <path fill-rule="evenodd"
+                                                                        d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-8.707l-3-3a1 1 0 00-1.414 0l-3 3a1 1 0 001.414 1.414L9 9.414V13a1 1 0 102 0V9.414l1.293 1.293a1 1 0 001.414-1.414z"
+                                                                        clip-rule="evenodd"></path>
+                                                                </svg>
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                @endforeach
+                                            @else
+                                                <select name="followers" id="">
+                                                    <option value="0">{{ $task->followers->count() }}</option>
+                                                    @foreach ($task->followers as $follower)
+                                                        <option value ="{{ $follower->id }}"
+                                                            class="bg-blue-100 text-blue-800 text-sm font-medium px-2.5 py-2.5 rounded flex items-center">
+                                                            <img src="{{ $follower->avatar || 'https://ui-avatars.com/api/?name=' . $follower->name }}"
+                                                                class="w-5 h-5 rounded-full mr-1">
+                                                            {{ $follower->name }}
+                                                            <a href="{{ route('users.show', $follower) }}"
+                                                                class="ml-1 text-blue-400 hover:text-blue-600">
+                                                                <svg class="w-3 h-3" fill="currentColor"
+                                                                    viewBox="0 0 20 20">
+                                                                    <path fill-rule="evenodd"
+                                                                        d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-8.707l-3-3a1 1 0 00-1.414 0l-3 3a1 1 0 001.414 1.414L9 9.414V13a1 1 0 102 0V9.414l1.293 1.293a1 1 0 001.414-1.414z"
+                                                                        clip-rule="evenodd"></path>
+                                                                </svg>
+                                                            </a>
+                                                        </option>
+                                                    @endforeach
+                                                </select>
+                                            @endif
+
                                         </td>
                                         <td class="px-6 py-4 w-100">
                                             <button type="button"
@@ -240,11 +303,11 @@
                                                 <div class="flex flex-col space-y-2 p-2">
                                                     <a href="{{ route('tasks.show', $task->id) }}"
                                                         class="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-3 py-2 text-center whitespace-nowrap">
-                                                        {{__("View")}}
+                                                        {{ __('View') }}
                                                     </a>
                                                     <a href="{{ route('tasks.edit', $task->id) }}"
                                                         class="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-3 py-2 text-center whitespace-nowrap">
-                                                        {{__("Edit")}}
+                                                        {{ __('Edit') }}
                                                     </a>
                                                     <form action="{{ route('tasks.delete', $task->id) }}"
                                                         method="post">
@@ -252,7 +315,7 @@
                                                         @method('POST')
                                                         <button type="submit"
                                                             class="w-full focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-3 py-2 text-center">
-                                                            {{__("Delete")}}
+                                                            {{ __('Delete') }}
                                                         </button>
                                                     </form>
                                                 </div>

@@ -21,11 +21,13 @@
                         </x-nav-link>
                     @endif
                     <x-nav-link href="{{ route('tasks.index') }}" :active="request()->routeIs('tasks.index')">
-                        {{ __('Tasks') }}
+                        {{ __('Reminders') }}
                     </x-nav-link>
-                    <x-nav-link href="{{ route('notes.index') }}" :active="request()->routeIs('notes.index')">
-                        {{ __('Notes') }}
-                    </x-nav-link>
+                    @if (auth()->user()->isAdmin())
+                        <x-nav-link href="{{ route('notes.index') }}" :active="request()->routeIs('notes.index')">
+                            {{ __('Notes') }}
+                        </x-nav-link>
+                    @endif
                 </div>
             </div>
 
@@ -172,12 +174,14 @@
             @endif
 
             <x-responsive-nav-link href="{{ route('tasks.index') }}" :active="request()->routeIs('tasks.index')">
-                {{ __('Tasks') }}
+                {{ __('Reminders') }}
             </x-responsive-nav-link>
 
-            <x-responsive-nav-link href="{{ route('notes.index') }}" :active="request()->routeIs('notes.index')">
-                {{ __('Notes') }}
-            </x-responsive-nav-link>
+            @if (auth()->user()->isAdmin())
+                <x-responsive-nav-link href="{{ route('notes.index') }}" :active="request()->routeIs('notes.index')">
+                    {{ __('Notes') }}
+                </x-responsive-nav-link>
+            @endif
         </div>
 
         <!-- Responsive Settings Options -->
