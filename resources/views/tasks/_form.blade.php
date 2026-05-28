@@ -8,10 +8,11 @@
 
     <div class="grid gap-6">
 
-        <x-form.input name="title" id="title" label="Title" type="text" :value="old('title', $task->title ?? '')" required />
-        <x-form.input name="description" id="description" label="Description" type="text" :value="old('description', $task->description ?? '')" required />
+        <x-form.input name="title" id="title" label="Title" type="text" :value="old('title', $task->title ?? '')" :editable="$isEdit" required />
+        <x-form.input name="description" id="description" label="Description" type="text" :value="old('description', $task->description ?? '')" :editable="$isEdit" required />
 
         <x-form.input name="assigned_completion_date" id="assigned_completion_date" label="Assigned Completion Date"
+            :editable="$isEdit"
             type="datetime-local" :value="old(
                 'assigned_completion_date',
                 isset($task->assigned_date) ? \Carbon\Carbon::parse($task->assigned_date)->format('Y-m-d\TH:i') : '',
@@ -26,7 +27,7 @@
             )" required />
 
         <x-form.input name="notification_interval" id="notification_interval" label="Notification Interval" type="number"
-            :value="old('notification_interval', $task->notification_interval ?? '')" required />
+            :value="old('notification_interval', $task->notification_interval ?? '')" required :editable="$isEdit" />
 
         {{-- Notes (only on Edit) --}}
         @if ($isEdit)

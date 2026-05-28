@@ -8,12 +8,9 @@
     </x-slot>
 
     <div class="p-0 sm:p-5">
-        <div class="bg-white mx-auto sm:px-6 lg:px-8 p-5">
+        <div class="mx-auto sm:px-6 lg:px-8 p-5">
 
-
-
-            @include('users.form', ['isEdit' => false])
-
+            <x-user-form :isEdit="false" />
 
         </div>
     </div>

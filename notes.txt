@@ -66,3 +66,5 @@ Need to remove email validation and set auto validation of email
 at the time of admin creating user
 
 Learn Policy
+
+Need to search for users that are not followers in Assign Followers tab
