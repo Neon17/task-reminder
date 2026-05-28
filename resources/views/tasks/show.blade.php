@@ -11,25 +11,24 @@
         <div class="mx-auto sm:px-6 lg:px-8">
 
             <x-session-message />
-
-
-            @if ($task->completed_date)
-                <a type="button"
-                    class="text-white bg-green-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center">
-                    {{ __('Completed') }}
-                </a>
-            @else
-                @if ($task->canComplete())
-                    <a type="button" href="{{ route('tasks.edit', $task) }}"
-                        class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center">
-                        {{ __('Edit') }}
-                @endif
-                </a>
-            @endif
+    
             <div class="relative overflow-x-auto p-5 mt-5 bg-white">
+                <div class="button-direction flex justify-end">
+                    @if ($task->completed_date)
+                        <a type="button"
+                            class="text-white bg-green-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center">
+                            {{ __('Completed') }}
+                        </a>
+                    @else
+                        @if ($task->canComplete())
+                            <a type="button" href="{{ route('tasks.edit', $task) }}"
+                                class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center">
+                                {{ __('Edit') }}
+                        @endif
+                        </a>
+                    @endif
+                </div>
                 <form class="mx-auto">
-
-                    <h4 class="text-xl font-extrabold text-center mb-3">{{ __('Task Details') }}</h4>
 
                     <div class="edit-field-container">
 

@@ -8,77 +8,50 @@
     </x-slot>
 
     <div class="py-12">
-        <div class="bg-white mx-auto sm:px-6 lg:px-8 py-5">
+        <div class="mx-auto sm:px-6 lg:px-8 py-5">
 
-            <div class="relative z-0 w-full mb-5 group">
-                <input disabled type="text" name="username" id="username" value="{{ $user->name }}"
-                    class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                    placeholder=" " required />
-                <label for="username"
-                    class="peer-focus:font-medium absolute text-sm text-gray-500 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
-                    {{__("Username")}}
-                </label>
-            </div>
-            <div class="relative z-0 w-full mb-5 group">
-                <input disabled type="email" name="email" id="email" value="{{ $user->email }}"
-                    class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                    placeholder=" " required />
-                <label for="email"
-                    class="peer-focus:font-medium absolute text-sm text-gray-500 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
-                    {{__("Email address")}}
-                </label>
-            </div>
-            <div class="relative z-0 w-full mb-5 group">
-                <label for="confirm_password"
-                    class="peer-focus:font-medium absolute text-sm text-gray-500 duration-300 transform -translate-y-6 scale-75 top-2 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
-                    {{__("Select Timezone")}}
-                </label>
-                <select name="timezone" class="form-select text-gray-600" disabled>
-                    @foreach ($timezones as $tz)
-                        <option value="{{ $tz['value'] }}"
-                            {{ old('timezone', $user->timezone ?? '') === $tz['value'] ? 'selected' : '' }}>
-                            {{ $tz['label'] }}
-                        </option>
-                    @endforeach
-                </select>
-            </div>
-            <div class="grid md:grid-cols-2 md:gap-6">
-                <div class="relative z-0 w-full mb-5 group">
-                    <div class="space-y-4 text-gray-500">
-                        <div class="flex items-center mb-3">
-                            {{__("Role:")}}
-                        </div>
-                        <div class="flex items-center m-2">
-                            <input id="role_user" name="role" type="radio" value="user" disabled
-                                class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300"
-                                {{ old('role', $user->role ?? '') == 'user' ? 'checked' : '' }}>
-                            <label for="role_user" class="ml-2 block text-sm font-medium text-gray-500">
-                                {{__("Standard User")}}
-                            </label>
-                        </div>
+            <!-- resources/views/users/show.blade.php -->
 
-                        <div class="flex items-center m-2">
-                            <input id="role_admin" name="role" type="radio" value="admin" disabled
-                                class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300"
-                                {{ old('role', $user->role ?? '') == 'admin' ? 'checked' : '' }}>
-                            <label for="role_admin" class="ml-2 block text-sm font-medium text-gray-500">
-                                {{__("Administrator")}}
-                            </label>
-                        </div>
+            <div class="max-w-3xl mx-auto p-6 bg-white rounded-xl shadow-md">
+                <div class="flex items-center mb-6">
+                    <div
+                        class="h-16 w-16 rounded-full bg-gray-200 flex items-center justify-center text-2xl font-semibold text-gray-600 uppercase">
+                        {{ strtoupper(substr($user->name, 0, 1)) }}
+                    </div>
+                    <div class="ml-4">
+                        <h2 class="text-xl font-bold text-gray-900">{{ $user->name }}</h2>
+                        <p class="text-sm text-gray-500">{{ $user->email }}</p>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-gray-600 font-medium">Username</label>
+                        <div class="mt-1 text-gray-800">{{ $user->name }}</div>
                     </div>
 
+                    <div>
+                        <label class="block text-gray-600 font-medium">Email address</label>
+                        <div class="mt-1 text-gray-800">{{ $user->email }}</div>
+                    </div>
+
+                    <div>
+                        <label class="block text-gray-600 font-medium">Timezone</label>
+                        <div class="mt-1 text-gray-800">{{ $user->timezone ?? 'N/A' }}</div>
+                    </div>
+
+                    <div>
+                        <label class="block text-gray-600 font-medium">Role</label>
+                        <div class="mt-1">
+                            <span
+                                class="inline-flex items-center px-2 py-1 rounded-md text-sm font-medium 
+                    {{ $user->role === 'admin' ? 'bg-red-100 text-red-800' : 'bg-blue-100 text-blue-800' }}">
+                                {{ ucfirst($user->role) }}
+                            </span>
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            @if (auth()->user()->isAdmin())
-                <a type="button" href="{{ route('users.edit', $user->id) }}"
-                    class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                    {{__("Edit")}}
-                </a>
-            @endif
-            </form>
-
-
         </div>
-    </div>
 </x-app-layout>
