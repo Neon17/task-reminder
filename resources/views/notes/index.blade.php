@@ -101,6 +101,12 @@
                     </select>
                 </div>
 
+                <div class="h-full py-auto flex justify-center items-center mb-4">
+                    <input id="default-checkbox" name="export_excel" type="checkbox" value=true
+                        class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-blue-500">
+                    <label for="default-checkbox" class="ms-2 text-sm font-medium text-gray-900">Export to Excel</label>
+                </div>
+
                 <div class="flex gap-2 w-full md:w-auto">
                     <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded-md">
                         {{ __('Apply Filters') }}

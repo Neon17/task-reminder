@@ -7,6 +7,8 @@ use App\Models\Task;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Exports\NotesExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class NoteController extends Controller
 {
@@ -37,8 +39,13 @@ class NoteController extends Controller
 
         $notes = $notes->filter($validated)
             ->sort($validated['sort'] ?? null)
-            // ->with(['task', 'user']) maybe to fix N+1 problem
-            ->paginate($validated['per_page'] ?? 15)->withQueryString();
+            ->with(['task', 'user']); // maybe to fix N+1 problem
+
+        if ($request->export_excel == 'true') {
+            return Excel::download(new NotesExport($notes->get()), 'notes.xlsx');
+        }
+
+        $notes = $notes->paginate($validated['per_page'] ?? 15)->withQueryString();
 
         $users = [];
         if (Auth::user()->role=='admin') {
