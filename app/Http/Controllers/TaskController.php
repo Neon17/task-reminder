@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Task;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -16,14 +17,36 @@ class TaskController extends Controller
         $alltasks = [];
         $yourtasks = [];
         $followedtasks = [];
+        $trashedtasks = [];
 
-        $tasks = Task::with('creator')->get();
-        return view('tasks.index', compact('tasks'));
+        $user = User::find(Auth::user()->id);
+
+        $alltasks = Task::where('created_by', '!=', Auth::user()->id)
+            ->whereDoesntHave('followers', fn($q) => $q->where('user_id', Auth::user()->id))
+            ->with('creator', 'followers')->get();
+        $yourtasks = Task::where('created_by', Auth::user()->id)->with('creator')->get();
+        $followedtasks = $user->followedTasks()->with('creator')->get();
+        $trashedtasks = Task::onlyTrashed()->with('creator')->get();
+
+        // $tasks = Task::with('creator', 'followers')->get();
+        // return $tasks;
+
+        return view('tasks.index', [
+            'tasks' => $alltasks,
+            'yourtasks' => $yourtasks,
+            'followedtasks' => $followedtasks,
+            'trashedtasks' => $trashedtasks
+        ]);
     }
 
     public function create()
     {
         return view('tasks.create');
+    }
+
+    public function restore(Task $task){
+        $task->restore();
+        return redirect()->route('tasks.index')->with('success', 'Task restored successfully!');
     }
 
     public function store(Request $request)
@@ -49,7 +72,8 @@ class TaskController extends Controller
                         $fail("The notification interval cannot exceed $maxInterval days. Your value = $value");
                     }
                 }
-            ]
+            ],
+            'notes' => 'required'
         ]);
         $task = Task::create([
             'title' => $request->title,
@@ -60,7 +84,13 @@ class TaskController extends Controller
             'created_by' => Auth::user()->id,
         ]);
 
-        return redirect()->route('tasks.index')->with('success', 'Task updated successfully!');
+        $task->notes()->create([
+            'reason' => 'creation', // no need as creation is default
+            'description' => $request->notes,
+            'user_id' => Auth::user()->id
+        ]);
+
+        return redirect()->route('tasks.index')->with('success', 'Task created successfully!');
     }
 
     public function show(Task $task)
@@ -107,14 +137,32 @@ class TaskController extends Controller
             'notification_interval' => $validated['notification_interval'],
         ]);
 
+        $task->notes()->create([
+            'reason' => 'updation',
+            'description' => $request->notes,
+            'user_id' => Auth::user()->id
+        ]);
+
         return redirect()->route('tasks.index')->with('success', 'Task updated successfully!');
     }
 
-    public function destroy(Task $task)
+    public function delete(Task $task) {
+        if (!$task) {
+            return redirect()->route('tasks.index')->with('error', 'Task not found!');
+        }
+        return view('tasks.delete', compact('task'));
+    }
+
+    public function destroy(Request $request, Task $task)
     {
         if (!$task) {
             return redirect()->route('tasks.index')->with('error', 'Task not found!');
         }
+        $task->notes()->create([
+            'reason' => 'deletion',
+            'description' => $request->notes,
+            'user_id' => Auth::user()->id
+        ]);
         $task->delete();
         return redirect()->route('tasks.index')->with('success', 'Task deleted successfully!');
     }

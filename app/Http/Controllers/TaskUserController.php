@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 
 class TaskUserController extends Controller
 {
-    //
+    //this controller is meant to add follower and remove follower
     public function index(Task $task){
 
         return view('tasks.followers.index', [
@@ -31,6 +31,13 @@ class TaskUserController extends Controller
             'task' => $task,
             'users' => $unfollowedUsers
         ]);
+    }
+
+    public function show(Task $task, User $user) {
+        // return view('tasks.followers.show', [
+        //     'task' => $task,
+        //     'user' => $user
+        // ]);
     }
 
     public function store(Request $request, Task $task){

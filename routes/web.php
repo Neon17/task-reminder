@@ -20,7 +20,9 @@ Route::middleware([
     Route::get('/index', [UserController::class,'index'])->name('users.index');
     
     Route::resource('tasks', TaskController::class);
-    
+    Route::post('tasks/{task}', [TaskController::class, 'delete'])->name('tasks.delete'); //here delete form is rendered and notes are required for delete so
+    Route::post('tasks/{task}/restore', [TaskController::class, 'restore'])->name('tasks.restore');
+
     Route::prefix('tasks/{task}')->group(function () {
         Route::resource('followers', TaskUserController::class)->names([
             'index' => 'task.followers.index',

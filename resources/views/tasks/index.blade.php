@@ -71,6 +71,184 @@
                             </tr>
                         </thead>
                         <tbody>
+                            @if ($yourtasks->count() == 0)
+                                <tr class="bg-white border-b border-gray-200">
+                                    <td class="px-6 py-4 w-100">
+                                        <p class="text-center">No task found</p>
+                                    </td>
+                                </tr>
+                            @else
+                                @foreach ($yourtasks as $task)
+                                    <tr class="bg-white border-b border-gray-200">
+                                        <td class="px-6 py-4 w-100">
+                                            {{ $loop->iteration }}
+                                        </td>
+                                        <td class="px-6 py-4 w-100">
+                                            {{ $task->title }}
+                                        </td>
+                                        <td class="px-6 py-4 w-100">
+                                            {{ $task->description }}
+                                        </td>
+                                        <td class="px-6 py-4 w-100">
+                                            {{ $task->creator->name }}
+                                        </td>
+                                        <td class="px-6 py-4 w-100">
+                                            {{ $task->assigned_date }}
+                                        </td>
+                                        <td class="px-6 py-4 w-100">
+                                            {{ $task->completed_date }}
+                                        </td>
+                                        <td class="px-6 py-4 w-100">
+                                            {{ $task->created_at }}
+                                        </td>
+                                        <td class="px-6 py-4 w-100">
+                                            <div class="grid grid-cols-2 w-100">
+                                                <a href="{{ route('tasks.edit', $task->id) }}" type="button"
+                                                    class="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5">Edit</a>
+                                                <form action="{{ route('tasks.delete', $task->id) }}" method="post">
+                                                    @csrf
+                                                    @method('POST')
+                                                    <button type="submit"
+                                                        class="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5">Delete</button>
+                                                </form>
+                                            </div>
+                                        </td>
+
+                                    </tr>
+                                @endforeach
+                            @endif
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+
+
+            <h4 class="text-xl font-extrabold text-center mt-5">Tasks you are followers of</h4>
+
+            <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg m-4 mb-7">
+
+                <div class="relative overflow-x-auto">
+                    <table class="w-full text-sm text-left rtl:text-right text-gray-500">
+                        <thead class="text-xs text-gray-900 uppercase bg-gray-200">
+                            <tr>
+                                <th scope="col" class="px-6 py-3">
+                                    SN
+                                </th>
+                                <th scope="col" class="px-6 py-3">
+                                    Name
+                                </th>
+                                <th scope="col" class="px-6 py-3">
+                                    Description
+                                </th>
+                                <th scope="col" class="px-6 py-3">
+                                    Created By
+                                </th>
+                                <th scope="col" class="px-6 py-3">
+                                    Assigned Date For Completion
+                                </th>
+                                <th scope="col" class="px-6 py-3">
+                                    Completed Date
+                                </th>
+                                <th scope="col" class="px-6 py-3">
+                                    Created At
+                                </th>
+                                <th scope="col" class="px-6 py-3">
+                                    Updated At
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            @if ($followedtasks->count() == 0)
+                                <tr class="bg-white border-b border-gray-200">
+                                    <td class="px-6 py-4 w-100">
+                                        <p class="text-center">No task found</p>
+                                    </td>
+                                </tr>
+                            @else
+                                @foreach ($followedtasks as $task)
+                                    <tr class="bg-white border-b border-gray-200">
+                                        <td class="px-6 py-4 w-100">
+                                            {{ $loop->iteration }}
+                                        </td>
+                                        <td class="px-6 py-4 w-100">
+                                            {{ $task->title }}
+                                        </td>
+                                        <td class="px-6 py-4 w-100">
+                                            {{ $task->description }}
+                                        </td>
+                                        <td class="px-6 py-4 w-100">
+                                            {{ $task->creator->name }}
+                                        </td>
+                                        <td class="px-6 py-4 w-100">
+                                            {{ $task->assigned_date }}
+                                        </td>
+                                        <td class="px-6 py-4 w-100">
+                                            {{ $task->completed_date }}
+                                        </td>
+                                        <td class="px-6 py-4 w-100">
+                                            {{ $task->created_at }}
+                                        </td>
+                                        <td class="px-6 py-4 w-100">
+                                            <div class="grid grid-cols-2 w-100">
+                                                <a href="{{ route('tasks.edit', $task->id) }}" type="button"
+                                                    class="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5">Edit</a>
+                                                <form action="{{ route('tasks.delete', $task->id) }}" method="post">
+                                                    @csrf
+                                                    @method('POST')
+                                                    <button type="submit"
+                                                        class="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5">Delete</button>
+                                                </form>
+                                            </div>
+                                        </td>
+
+                                    </tr>
+                                @endforeach
+                            @endif
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+
+            <h4 class="text-xl font-extrabold text-center">All Other Tasks</h4>
+
+            <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg m-4 mb-7">
+
+                <div class="relative overflow-x-auto">
+                    <table class="w-full text-sm text-left rtl:text-right text-gray-500">
+                        <thead class="text-xs text-gray-900 uppercase bg-gray-200">
+                            <tr>
+                                <th scope="col" class="px-6 py-3">
+                                    SN
+                                </th>
+                                <th scope="col" class="px-6 py-3">
+                                    Name
+                                </th>
+                                <th scope="col" class="px-6 py-3">
+                                    Description
+                                </th>
+                                <th scope="col" class="px-6 py-3">
+                                    Created By
+                                </th>
+                                <th scope="col" class="px-6 py-3">
+                                    Assigned Date For Completion
+                                </th>
+                                <th scope="col" class="px-6 py-3">
+                                    Completed Date
+                                </th>
+                                <th scope="col" class="px-6 py-3">
+                                    Created At
+                                </th>
+                                <th scope="col" class="px-6 py-3">
+                                    Updated At
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
 
                             @if ($tasks->count() == 0)
                                 <tr class="bg-white border-b border-gray-200">
@@ -104,11 +282,100 @@
                                         </td>
                                         <td class="px-6 py-4 w-100">
                                             <div class="grid grid-cols-2 w-100">
-                                                <a href="{{route('tasks.edit', $task->id)}}" type="button" class="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5">Edit</a>
-                                                <form action="{{route('tasks.destroy', $task->id)}}" method="post">
+                                                <a href="{{ route('tasks.edit', $task->id) }}" type="button"
+                                                    class="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5">Edit</a>
+                                                <form action="{{ route('tasks.delete', $task->id) }}" method="post">
                                                     @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit" class="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5">Delete</button>
+                                                    @method('POST')
+                                                    <button type="submit"
+                                                        class="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5">Delete</button>
+                                                </form>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            @endif
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+
+
+            <h4 class="text-xl font-extrabold text-center">All Trashed Tasks</h4>
+
+            <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg m-4 mb-7">
+
+                <div class="relative overflow-x-auto">
+                    <table class="w-full text-sm text-left rtl:text-right text-gray-500">
+                        <thead class="text-xs text-gray-900 uppercase bg-gray-200">
+                            <tr>
+                                <th scope="col" class="px-6 py-3">
+                                    SN
+                                </th>
+                                <th scope="col" class="px-6 py-3">
+                                    Name
+                                </th>
+                                <th scope="col" class="px-6 py-3">
+                                    Description
+                                </th>
+                                <th scope="col" class="px-6 py-3">
+                                    Created By
+                                </th>
+                                <th scope="col" class="px-6 py-3">
+                                    Assigned Date For Completion
+                                </th>
+                                <th scope="col" class="px-6 py-3">
+                                    Completed Date
+                                </th>
+                                <th scope="col" class="px-6 py-3">
+                                    Created At
+                                </th>
+                                <th scope="col" class="px-6 py-3">
+                                    Updated At
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            @if ($trashedtasks->count() == 0)
+                                <tr class="bg-white border-b border-gray-200">
+                                    <td class="px-6 py-4 w-100">
+                                        <p class="text-center">No task found</p>
+                                    </td>
+                                </tr>
+                            @else
+                                @foreach ($trashedtasks as $task)
+                                    <tr class="bg-white border-b border-gray-200">
+                                        <td class="px-6 py-4 w-100">
+                                            {{ $loop->iteration }}
+                                        </td>
+                                        <td class="px-6 py-4 w-100">
+                                            {{ $task->title }}
+                                        </td>
+                                        <td class="px-6 py-4 w-100">
+                                            {{ $task->description }}
+                                        </td>
+                                        <td class="px-6 py-4 w-100">
+                                            {{ $task->creator->name }}
+                                        </td>
+                                        <td class="px-6 py-4 w-100">
+                                            {{ $task->assigned_date }}
+                                        </td>
+                                        <td class="px-6 py-4 w-100">
+                                            {{ $task->completed_date }}
+                                        </td>
+                                        <td class="px-6 py-4 w-100">
+                                            {{ $task->created_at }}
+                                        </td>
+                                        <td class="px-6 py-4 w-100">
+                                            <div class="grid grid-cols-2 w-100">
+                                                <form action="{{ route('tasks.restore', $task->id) }}" method="post">
+                                                    @csrf
+                                                    @method('POST')
+                                                    <button type="submit"
+                                                        class="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5">Restore</button>
                                                 </form>
                                             </div>
                                         </td>
@@ -123,119 +390,6 @@
 
             </div>
 
-
-            <h4 class="text-xl font-extrabold text-center mt-5">Tasks you are followers of</h4>
-
-
-            <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg m-4 mb-7">
-
-                <div class="relative overflow-x-auto">
-                    <table class="w-full text-sm text-left rtl:text-right text-gray-500">
-                        <thead class="text-xs text-gray-900 uppercase bg-gray-200">
-                            <tr>
-                                <th scope="col" class="px-6 py-3">
-                                    SN
-                                </th>
-                                <th scope="col" class="px-6 py-3">
-                                    Name
-                                </th>
-                                <th scope="col" class="px-6 py-3">
-                                    Description
-                                </th>
-                                <th scope="col" class="px-6 py-3">
-                                    Created By
-                                </th>
-                                <th scope="col" class="px-6 py-3">
-                                    Assigned Date For Completion
-                                </th>
-                                <th scope="col" class="px-6 py-3">
-                                    Completed Date
-                                </th>
-                                <th scope="col" class="px-6 py-3">
-                                    Created At
-                                </th>
-                                <th scope="col" class="px-6 py-3">
-                                    Updated At
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-
-                            @if ($tasks->count() == 0)
-                                <tr class="bg-white border-b border-gray-200">
-                                    <td class="px-6 py-4 w-100">
-                                        <p class="text-center">No task found</p>
-                                    </td>
-                                </tr>
-                            @else
-                                @foreach ($tasks as $task)
-                                    <tr class="bg-white border-b border-gray-200">
-
-                                    </tr>
-                                @endforeach
-                            @endif
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-
-            </div>
-
-            <h4 class="text-xl font-extrabold text-center">All Tasks</h4>
-
-            <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg m-4 mb-7">
-
-                <div class="relative overflow-x-auto">
-                    <table class="w-full text-sm text-left rtl:text-right text-gray-500">
-                        <thead class="text-xs text-gray-900 uppercase bg-gray-200">
-                            <tr>
-                                <th scope="col" class="px-6 py-3">
-                                    SN
-                                </th>
-                                <th scope="col" class="px-6 py-3">
-                                    Name
-                                </th>
-                                <th scope="col" class="px-6 py-3">
-                                    Description
-                                </th>
-                                <th scope="col" class="px-6 py-3">
-                                    Created By
-                                </th>
-                                <th scope="col" class="px-6 py-3">
-                                    Assigned Date For Completion
-                                </th>
-                                <th scope="col" class="px-6 py-3">
-                                    Completed Date
-                                </th>
-                                <th scope="col" class="px-6 py-3">
-                                    Created At
-                                </th>
-                                <th scope="col" class="px-6 py-3">
-                                    Updated At
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-
-                            @if ($tasks->count() == 0)
-                                <tr class="bg-white border-b border-gray-200">
-                                    <td class="px-6 py-4 w-100">
-                                        <p class="text-center">No task found</p>
-                                    </td>
-                                </tr>
-                            @else
-                                @foreach ($tasks as $task)
-                                    <tr class="bg-white border-b border-gray-200">
-
-                                    </tr>
-                                @endforeach
-                            @endif
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-
-            </div>
 
         </div>
     </div>

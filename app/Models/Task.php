@@ -31,4 +31,8 @@ class Task extends Model
     public function followers() {
         return $this->belongsToMany(User::class, 'task_user_followers')->withTimestamps();
     }
+
+    public function notes() {
+        return $this->hasMany(Note::class);
+    }
 }

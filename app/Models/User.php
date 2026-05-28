@@ -38,6 +38,10 @@ class User extends Authenticatable
         return $this->hasMany(Task::class);
     }
 
+    public function notes() {
+        return $this->hasMany(Note::class);
+    }
+
     public function followedTasks() {
         return $this->belongsToMany(Task::class, 'task_user_followers')->withTimestamps();
     }
