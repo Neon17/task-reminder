@@ -82,7 +82,7 @@
                                 @foreach ($tasks as $task)
                                     <tr class="bg-white border-b border-gray-200">
                                         <td class="px-6 py-4 w-100">
-                                            {{ $task->id }}
+                                            {{ $loop->iteration }}
                                         </td>
                                         <td class="px-6 py-4 w-100">
                                             {{ $task->title }}
@@ -94,7 +94,7 @@
                                             {{ $task->creator->name }}
                                         </td>
                                         <td class="px-6 py-4 w-100">
-                                            {{ $task->assigned_date_for_completion }}
+                                            {{ $task->assigned_date }}
                                         </td>
                                         <td class="px-6 py-4 w-100">
                                             {{ $task->completed_date }}
@@ -105,7 +105,11 @@
                                         <td class="px-6 py-4 w-100">
                                             <div class="grid grid-cols-2 w-100">
                                                 <a href="{{route('tasks.edit', $task->id)}}" type="button" class="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5">Edit</a>
-                                                <a href="{{route('tasks.edit', $task->id)}}" type="button" class="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5">Delete</a>
+                                                <form action="{{route('tasks.destroy', $task->id)}}" method="post">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5">Delete</button>
+                                                </form>
                                             </div>
                                         </td>
 

@@ -13,6 +13,10 @@ class TaskController extends Controller
     public function index()
     {
         // Divide the tasks into logged in users' tasks, tasks they are following, and tasks they are not following
+        $alltasks = [];
+        $yourtasks = [];
+        $followedtasks = [];
+
         $tasks = Task::with('creator')->get();
         return view('tasks.index', compact('tasks'));
     }
@@ -56,17 +60,62 @@ class TaskController extends Controller
             'created_by' => Auth::user()->id,
         ]);
 
-        return redirect()->route('tasks.index')->with('success', 'Task created successfully!');
+        return redirect()->route('tasks.index')->with('success', 'Task updated successfully!');
     }
 
-    public function show() {}
+    public function show(Task $task)
+    {
+        //this route is for showing single Task
+    }
 
-    public function edit($id) {
+    public function edit($id)
+    {
         $task = Task::where('id', $id)->with('creator')->first();
         return view('tasks.edit', compact('task'));
     }
 
-    public function update(Request $request) {}
+    public function update(Request $request, Task $task)
+    {
+        if (!$task) {
+            return redirect()->route('tasks.index')->with('error', 'Task not found!');
+        }
+        $validated = $request->validate([
+            'title' => 'required|max:15',
+            'description' => 'required|max:255',
+            'notification_start_date' => 'required|after:today|before:date_of_completion',
+            'date_of_completion' => 'required|date|after:today',
+            'notification_interval' => [
+                'required',
+                'numeric',
+                'min:1',
+                function ($attribute, $value, $fail) use ($request) {
+                    $startDate = Carbon::parse($request->notification_start_date);
+                    $endDate = Carbon::parse($request->date_of_completion);
+                    $maxInterval = $startDate->diffInDays($endDate);
 
-    public function destroy() {}
+                    if ($value > $maxInterval) {
+                        $fail("The notification interval cannot exceed $maxInterval days. Your value = $value");
+                    }
+                }
+            ]
+        ]);
+        $task->update([
+            'title' => $validated['title'],
+            'description' => $validated['description'],
+            'assigned_date' => $validated['date_of_completion'],
+            'notification_start_date' => $validated['notification_start_date'],
+            'notification_interval' => $validated['notification_interval'],
+        ]);
+
+        return redirect()->route('tasks.index')->with('success', 'Task updated successfully!');
+    }
+
+    public function destroy(Task $task)
+    {
+        if (!$task) {
+            return redirect()->route('tasks.index')->with('error', 'Task not found!');
+        }
+        $task->delete();
+        return redirect()->route('tasks.index')->with('success', 'Task deleted successfully!');
+    }
 }
