@@ -147,6 +147,14 @@
                     </select>
                 </div>
 
+
+                <div class="h-full py-auto flex justify-center items-center mb-4">
+                    <input id="default-checkbox" name="export_excel" type="checkbox" value=true
+                        class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-blue-500">
+                    <label for="default-checkbox" class="ms-2 text-sm font-medium text-gray-900">Export to Excel</label>
+                </div>
+
+
                 <div class="flex gap-2 w-full md:w-auto">
                     <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded-md">
                         {{ __('Apply Filters') }}
@@ -265,31 +273,29 @@
                                                     </div>
                                                 @endforeach
                                             @else
-                                            
                                                 <button type="button"
-                                            class="text-gray-500 hover:text-gray-700 focus:outline-none transition-all duration-200 action-toggle"
-                                            onclick="toggleActions(this)">
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20"
-                                                fill="currentColor">
-                                                <path fill-rule="evenodd"
-                                                    d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                                                    clip-rule="evenodd" />
-                                            </svg>
-                                        </button>
+                                                    class="text-gray-500 hover:text-gray-700 focus:outline-none transition-all duration-200 action-toggle"
+                                                    onclick="toggleActions(this)">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5"
+                                                        viewBox="0 0 20 20" fill="currentColor">
+                                                        <path fill-rule="evenodd"
+                                                            d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                                                            clip-rule="evenodd" />
+                                                    </svg>
+                                                </button>
 
-                                        <!-- Vertical Actions dropdown -->
-                                        <div
-                                            class="absolute mt-2 w-32 bg-white rounded-md shadow-lg z-50 hidden actions-dropdown origin-top-right">
-                                            <div class="flex flex-col space-y-2 p-2">
-                                                @foreach($task->followers as $follower)
-                                                <a href="{{ route('users.show', $follower->id) }}"
-                                                    class="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-3 py-2 text-center whitespace-nowrap">
-                                                    {{ Str::limit($follower->name, 11, '...') }}
-                                                </a>
-                                                @endforeach
-                                            </div>
-                                        </div>
-                                        
+                                                <!-- Vertical Actions dropdown -->
+                                                <div
+                                                    class="absolute mt-2 w-32 bg-white rounded-md shadow-lg z-50 hidden actions-dropdown origin-top-right">
+                                                    <div class="flex flex-col space-y-2 p-2">
+                                                        @foreach ($task->followers as $follower)
+                                                            <a href="{{ route('users.show', $follower->id) }}"
+                                                                class="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-3 py-2 text-center whitespace-nowrap">
+                                                                {{ Str::limit($follower->name, 11, '...') }}
+                                                            </a>
+                                                        @endforeach
+                                                    </div>
+                                                </div>
                                             @endif
 
                                         </td>

@@ -45,6 +45,8 @@ Route::middleware(['auth'])->group(function () {
     });
 });
 
+Route::get('/excel-test', [TaskController::class, 'testExcel']);
+
 Route::middleware([
     'auth:sanctum',
 ])->group(function () {

@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\TasksExport;
 use App\Models\Task;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Maatwebsite\Excel\Facades\Excel;
 
 class TaskController extends Controller
 {
@@ -19,7 +21,8 @@ class TaskController extends Controller
             'status' => "nullable|in:completed,pending,''",
             'sort' => 'nullable|string', // e.g., "assigned_date,-created_at"
             'assignee' => "nullable|string|in:creator,follower,others",
-            'per_page' => 'nullable|integer|min:1|max:100'
+            'per_page' => 'nullable|integer|min:1|max:100',
+            'export_excel' => 'nullable|string'
         ]);
 
         $tasks = null;
@@ -33,8 +36,12 @@ class TaskController extends Controller
 
 
         $tasks = $tasks->filter($validated)
-            ->sort($validated["sort"] ?? null)
-            ->paginate($validated["per_page"] ?? 15)->withQueryString();
+            ->sort($validated["sort"] ?? null);
+
+        if ($request->export_excel == 'true') {
+            return Excel::download(new TasksExport($tasks->get()), 'tasks.xlsx');
+        }
+        $tasks = $tasks->paginate($validated["per_page"] ?? 15)->withQueryString();
 
 
         return view('tasks.index', [
@@ -51,6 +58,12 @@ class TaskController extends Controller
         return view('tasks.trashes', [
             'tasks' => $trashedtasks
         ]);
+    }
+
+    public function testExcel()
+    {
+        $tasks = Task::with('creator')->select('title', 'description', 'assigned_date', 'notification_start_date', 'notification_interval', 'created_by')->get();
+        return Excel::download(new TasksExport($tasks), 'tasks.xlsx');
     }
 
 
@@ -199,7 +212,7 @@ class TaskController extends Controller
     {
         // $status = 0 means creating and $status = 1 means updating
 
-        if ($status == 1){
+        if ($status == 1) {
             return $request->validate([
                 'title' => 'required|max:30',
                 'description' => 'required|max:255',
@@ -213,10 +226,10 @@ class TaskController extends Controller
                         $startDate = Carbon::parse($request->notification_start_date);
                         $endDate = Carbon::parse($request->date_of_completion);
                         $maxInterval = $startDate->diffInDays($endDate);
-    
+
                         info("maxInterval = $maxInterval");
                         info("Value = $value");
-    
+
                         if ($value > $maxInterval) {
                             $fail("The notification interval cannot exceed $maxInterval days. Your value = $value");
                         }
@@ -227,29 +240,28 @@ class TaskController extends Controller
         }
 
         return $request->validate([
-                'title' => 'required|max:30',
-                'description' => 'required|max:255',
-                'notification_start_date' => 'required|after:today',
-                'date_of_completion' => 'required|after:today',
-                'notification_interval' => [
-                    'required',
-                    'numeric',
-                    'min:1',
-                    function ($attribute, $value, $fail) use ($request) {
-                        $startDate = Carbon::parse($request->notification_start_date);
-                        $endDate = Carbon::parse($request->date_of_completion);
-                        $maxInterval = $startDate->diffInDays($endDate);
-    
-                        info("maxInterval = $maxInterval");
-                        info("Value = $value");
-    
-                        if ($value > $maxInterval) {
-                            $fail("The notification interval cannot exceed $maxInterval days. Your value = $value");
-                        }
+            'title' => 'required|max:30',
+            'description' => 'required|max:255',
+            'notification_start_date' => 'required|after:today',
+            'date_of_completion' => 'required|after:today',
+            'notification_interval' => [
+                'required',
+                'numeric',
+                'min:1',
+                function ($attribute, $value, $fail) use ($request) {
+                    $startDate = Carbon::parse($request->notification_start_date);
+                    $endDate = Carbon::parse($request->date_of_completion);
+                    $maxInterval = $startDate->diffInDays($endDate);
+
+                    info("maxInterval = $maxInterval");
+                    info("Value = $value");
+
+                    if ($value > $maxInterval) {
+                        $fail("The notification interval cannot exceed $maxInterval days. Your value = $value");
                     }
-                ],
-                'notes' => 'required'
-            ]);
-        
+                }
+            ],
+            'notes' => 'required'
+        ]);
     }
 }
