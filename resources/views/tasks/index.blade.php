@@ -60,10 +60,13 @@
                 class="py-2.5 px-5 me-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100">
                 {{ __('Create Task') }}
             </a>
-            <a type="button" href="{{ route('tasks.trashed') }}"
-                class="py-2.5 px-5 me-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100">
-                {{ __('Trashed Reminders') }}
-            </a>
+
+            @if (auth()->user()->isAdmin())
+                <a type="button" href="{{ route('tasks.trashed') }}"
+                    class="py-2.5 px-5 me-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100">
+                    {{ __('Trashed Reminders') }}
+                </a>
+            @endif
 
             <form method="GET" class="mt-5 px-5 flex flex-col md:flex-row md:items-center md:justify-start gap-2"
                 action="{{ route('tasks.index') }}">
@@ -205,10 +208,10 @@
                                             {{ $loop->iteration }}
                                         </td>
                                         <td class="px-6 py-4 w-100">
-                                            {{ $task->title }}
+                                            {{ Str::words($task->title, 4, '...') }}
                                         </td>
                                         <td class="px-6 py-4 w-100">
-                                            {{ $task->description }}
+                                            {{ Str::limit($task->description, 35, '...') }}
                                         </td>
                                         <td class="px-6 py-4 w-100">
                                             <div class="flex">
@@ -262,18 +265,31 @@
                                                     </div>
                                                 @endforeach
                                             @else
-                                                <select name="followers" id="">
-                                                    <option value="0">{{ $task->followers->count() }}</option>
-                                                    @foreach ($task->followers as $follower)
-                                                        <option value ="{{ $follower->id }}"
-                                                            class="bg-blue-100 text-blue-800 text-sm font-medium px-2.5 py-2.5 rounded flex items-center">
-                                                                <a href="{{ route('users.show', $follower) }}"
-                                                                class="ml-1 text-blue-400 hover:text-blue-600">
-                                                                {{ $follower->name }}
-                                                        </a>
-                                                        </option>
-                                                    @endforeach
-                                                </select>
+                                            
+                                                <button type="button"
+                                            class="text-gray-500 hover:text-gray-700 focus:outline-none transition-all duration-200 action-toggle"
+                                            onclick="toggleActions(this)">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20"
+                                                fill="currentColor">
+                                                <path fill-rule="evenodd"
+                                                    d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                                                    clip-rule="evenodd" />
+                                            </svg>
+                                        </button>
+
+                                        <!-- Vertical Actions dropdown -->
+                                        <div
+                                            class="absolute mt-2 w-32 bg-white rounded-md shadow-lg z-50 hidden actions-dropdown origin-top-right">
+                                            <div class="flex flex-col space-y-2 p-2">
+                                                @foreach($task->followers as $follower)
+                                                <a href="{{ route('users.show', $follower->id) }}"
+                                                    class="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-3 py-2 text-center whitespace-nowrap">
+                                                    {{ Str::limit($follower->name, 11, '...') }}
+                                                </a>
+                                                @endforeach
+                                            </div>
+                                        </div>
+                                        
                                             @endif
 
                                         </td>
@@ -297,10 +313,13 @@
                                                         class="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-3 py-2 text-center whitespace-nowrap">
                                                         {{ __('View') }}
                                                     </a>
-                                                    <a href="{{ route('tasks.edit', $task->id) }}"
-                                                        class="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-3 py-2 text-center whitespace-nowrap">
-                                                        {{ __('Edit') }}
-                                                    </a>
+
+                                                    @if ($task->canComplete())
+                                                        <a href="{{ route('tasks.edit', $task->id) }}"
+                                                            class="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-3 py-2 text-center whitespace-nowrap">
+                                                            {{ __('Edit') }}
+                                                        </a>
+                                                    @endif
                                                     <form action="{{ route('tasks.delete', $task->id) }}"
                                                         method="post">
                                                         @csrf
