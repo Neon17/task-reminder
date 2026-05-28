@@ -16,7 +16,7 @@
             </a>
 
             <a type="button" href={{ route('users.exportFiltered', request()->query()) }}
-                class="py-2.5 px-5 me-2 mb-2 text-sm float-right font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100">
+                class="py-2.5 px-5 mx-2 mb-2 text-sm md:float-right font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100">
                 {{ __('Export') }}
             </a>
 
@@ -132,8 +132,8 @@
                     </select>
                 </div>
 
-                <div class="flex gap-2 w-full md:w-auto">
-                    <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded-md">
+                <div class="flex gap-2 w-full h-full md:w-auto">
+                    <button type="submit" class="px-6 py-2 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-700 transition">
                         {{ __('Apply Filters') }}
                     </button>
                     <a href="{{ route('users.index') }}" class="px-4 py-2 bg-gray-300 text-gray-700 rounded-md">
@@ -177,15 +177,18 @@
                                         {{ $loop->iteration }}
                                     </td>
                                     <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                                        {{ $user->name }}
+                                        <a href="{{ route('users.show', $user) }}"
+                                            class="text-gray-900 bg-white focus:outline-none hover:bg-gray-200 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-3 py-2 text-center whitespace-nowrap">
+                                            {{ $user->name }}
+                                        </a>
                                     </th>
-                                    <td class="px-6 py-4">
+                                    <td class="px-6 py-4 text-gray-900">
                                         {{ $user->email }}
                                     </td>
-                                    <td class="px-6 py-4">
+                                    <td class="px-6 py-4 text-gray-900">
                                         {{ $user->role }}
                                     </td>
-                                    <td class="px-6 py-4">
+                                    <td class="px-6 py-4 text-gray-900">
                                         {{ $user->timezone }}
                                     </td>
                                     <td class="px-6 py-4">
@@ -202,7 +205,7 @@
 
                                         <!-- Vertical Actions dropdown -->
                                         <div
-                                            class="absolute w-32 bg-white rounded-md shadow-lg z-50 hidden actions-dropdown origin-top-right">
+                                            class="absolute w-32 bg-white rounded-md shadow-lg z-50 hidden actions-dropdown right-0 lg:right-auto">
                                             <div class="flex flex-col space-y-2 p-2">
                                                 @if (request('status') && request('status') == 'trashed')
                                                     <form action="{{ route('users.restore', $user->id) }}"
@@ -216,7 +219,7 @@
                                                 @else
                                                     <a href="{{ route('users.show', $user->id) }}"
                                                         class="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-3 py-2 text-center whitespace-nowrap">
-                                                            {{ __('View') }}
+                                                        {{ __('View') }}
                                                     </a>
                                                     <a href="{{ route('users.edit', $user->id) }}"
                                                         class="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-3 py-2 text-center whitespace-nowrap">

@@ -126,7 +126,7 @@
 
                                         <!-- Vertical Actions dropdown -->
                                         <div
-                                            class="absolute mt-2 w-32 bg-white rounded-md shadow-lg z-50 hidden actions-dropdown origin-top-right">
+                                            class="absolute mt-2 w-32 bg-white rounded-md shadow-lg z-50 hidden actions-dropdown right-0 lg:right-auto">
                                             <div class="flex flex-col space-y-2 p-2">
                                                 <form action="{{ route('users.restore', $user->id) }}"
                                                     method="post">

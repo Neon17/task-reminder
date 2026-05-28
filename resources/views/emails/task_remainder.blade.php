@@ -207,10 +207,12 @@
             </div>
 
             <div class="creator-followers">
-                <strong>{{__("Created by:")}}</strong> {{ $task->creator->name }}| 
+
+                <strong>{{__("Created by:")}}</strong> {{ $task->creator->name }}
+                {{__(' | ')}} 
                 <strong>{{__("Followers:")}}</strong>
                 @foreach ($task->followers as $follower)
-                   {{ $follower->name }}
+                   {{ $follower->name }}{{__(', ')}}
                 @endforeach
             </div>
 

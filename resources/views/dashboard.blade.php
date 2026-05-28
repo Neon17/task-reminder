@@ -36,7 +36,7 @@
 
 
                 <!-- Welcome Banner -->
-                <div class="bg-gradient-to-r from-indigo-500 to-purple-600 rounded-xl shadow-lg p-6 mb-8 text-white">
+                <div class="bg-gradient-to-r from-indigo-500 to-purple-600 rounded-xl shadow-lg p-6 text-white m-2">
                     <div class="flex items-center justify-between">
                         <div>
                             <h1 class="text-3xl font-bold">{{__("Welcome back")}}, {{ Auth::user()->name }}!</h1>

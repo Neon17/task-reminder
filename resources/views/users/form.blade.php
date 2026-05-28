@@ -13,6 +13,7 @@
     <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
         <!-- Username -->
         <div>
+            <x-form.input name="name" label="Username" value="{{ old('name', $user->name ?? '') }}" />
             <label class="block text-gray-700 font-medium mb-1">Username</label>
             <input type="text" name="name" value="{{ old('name', $user->name ?? '') }}"
                 class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring focus:ring-blue-200">

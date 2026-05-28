@@ -93,7 +93,7 @@
 
                                             <!-- Vertical Actions dropdown -->
                                             <div
-                                                class="absolute right-0 mt-2 w-32 bg-white rounded-md shadow-lg z-50 hidden actions-dropdown origin-top-right">
+                                                class="absolute right-0 lg-right-auto mt-2 w-32 bg-white rounded-md shadow-lg z-50 hidden actions-dropdown">
                                                 <div class="flex flex-col space-y-2 p-2">
                                                     <form action="{{ route('tasks.restore', $task->id) }}"
                                                         method="post">

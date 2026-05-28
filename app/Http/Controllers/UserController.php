@@ -80,6 +80,11 @@ class UserController extends Controller
         return view('users.index', compact('users'));
     }
 
+    public function apiIndex(){
+        // this is for calling all users in the assign followers list
+        return User::all();
+    }
+
     public function exportFiltered(Request $request)
     {
         $timezones = TimezoneHelper::all();

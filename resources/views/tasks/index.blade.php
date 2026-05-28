@@ -16,7 +16,7 @@
             </a>
 
             <a type="button" href={{ route('tasks.exportFiltered', request()->query()) }}
-                class="py-2.5 px-5 me-2 mb-2 text-sm float-right font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100">
+                class="py-2.5 px-5 me-2 mb-2 text-sm md:float-right font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100">
                 {{ __('Export') }}
             </a>
 
@@ -103,7 +103,8 @@
                 </div>
 
                 <div class="flex gap-2 w-full md:w-auto">
-                    <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded-md">
+                    <button type="submit"
+                        class="px-6 py-2 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-700 transition">
                         {{ __('Apply Filters') }}
                     </button>
                     <a href="{{ route('tasks.index') }}" class="px-4 py-2 bg-gray-300 text-gray-700 rounded-md">
@@ -115,7 +116,7 @@
             <div class="bg-white shadow-xl sm:rounded-lg m-4 mb-7">
 
                 <div class="overflow-x-auto">
-                    <table class="w-full text-sm text-left rtl:text-right text-gray-500 table-auto">
+                    <table class="w-full text-sm text-left rtl:text-right text-gray-900 table-auto">
                         <thead class="text-xs text-gray-900 uppercase bg-gray-200">
                             <tr>
                                 <th scope="col" class="px-6 py-3">
@@ -170,16 +171,10 @@
                                             <div class="flex">
                                                 <div value ="{{ $task->creator ? $task->creator->id : '' }}"
                                                     class="text-sm font-medium px-2.5 py-2.5 rounded flex items-center">
-                                                    {{ $task->creator ? $task->creator->name : '' }}
                                                     @if ($task->creator)
                                                         <a href="{{ route('users.show', $task->creator ? $task->creator->id : '') }}"
-                                                            class="ml-1 text-blue-400 hover:text-blue-600">
-                                                            <svg class="w-3 h-3" fill="currentColor"
-                                                                viewBox="0 0 20 20">
-                                                                <path fill-rule="evenodd"
-                                                                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-8.707l-3-3a1 1 0 00-1.414 0l-3 3a1 1 0 001.414 1.414L9 9.414V13a1 1 0 102 0V9.414l1.293 1.293a1 1 0 001.414-1.414z"
-                                                                    clip-rule="evenodd"></path>
-                                                            </svg>
+                                                            class="text-gray-900 bg-white focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-3 py-2 text-center whitespace-nowrap">
+                                                            {{ Str::limit($task->creator->name, 11, '...') }}
                                                         </a>
                                                     @endif
                                                 </div>
@@ -192,35 +187,38 @@
                                             @if ($task->completed_date)
                                                 {{ __('Yes') }}
                                             @else
-                                                {{ __('No') }}
+                                                <p class="text-gray-300">
+                                                    {{ __('No') }}
+                                                </p>
                                             @endif
                                         </td>
                                         <td class="px-6 py-4 w-100">
                                             @if ($task->followers->count() == 0)
-                                                {{ __('No follower') }}
+                                                <p class="text-gray-300">
+                                                    {{ __('No follower') }}
+                                                </p>
                                             @elseif ($task->followers->count() == 1)
                                                 @foreach ($task->followers as $follower)
                                                     <div class="flex">
                                                         <div value ="{{ $follower->id }}"
                                                             class="text-sm font-medium px-2.5 py-2.5 rounded flex items-center">
-                                                            {{ $follower->name }}
-                                                            <a href="{{ route('users.show', $follower) }}"
-                                                                class="ml-1 text-blue-400 hover:text-blue-600">
-                                                                <svg class="w-3 h-3" fill="currentColor"
-                                                                    viewBox="0 0 20 20">
-                                                                    <path fill-rule="evenodd"
-                                                                        d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-8.707l-3-3a1 1 0 00-1.414 0l-3 3a1 1 0 001.414 1.414L9 9.414V13a1 1 0 102 0V9.414l1.293 1.293a1 1 0 001.414-1.414z"
-                                                                        clip-rule="evenodd"></path>
-                                                                </svg>
+                                                            <a href="{{ route('users.show', $follower->id) }}"
+                                                                class=" bg-white focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-3 py-2 text-center whitespace-nowrap">
+                                                                {{ Str::limit($follower->name, 11, '...') }}
                                                             </a>
                                                         </div>
                                                     </div>
                                                 @endforeach
                                             @else
                                                 <button type="button"
-                                                    class="text-gray-500 flex hover:text-gray-700 focus:outline-none transition-all duration-200 action-toggle"
+                                                    class="text-gray-900 flex items-center hover:text-gray-700 focus:outline-none transition-all duration-200 action-toggle"
                                                     onclick="toggleActions(this)">
-                                                    {{ $task->followers->count() }}
+                                                    <a href="{{ route('users.show', $task->followers[0]->id) }}"
+                                                        class="text-gray-900 bg-white focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-3 py-2 text-center whitespace-nowrap">
+                                                        {{ Str::limit($task->followers[0]->name, 6, '...') }}
+                                                        {{ __('+ ') }}
+                                                        {{ $task->followers->count() - 1 }}
+                                                    </a>
                                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5"
                                                         viewBox="0 0 20 20" fill="currentColor">
                                                         <path fill-rule="evenodd"
@@ -231,13 +229,15 @@
 
                                                 <!-- Vertical Actions dropdown -->
                                                 <div
-                                                    class="absolute mt-2 w-32 bg-white rounded-md shadow-lg z-50 hidden actions-dropdown origin-top-right">
+                                                    class="absolute mt-2 w-32 bg-white rounded-md shadow-lg z-50 hidden actions-dropdown right-0 lg:right-auto">
                                                     <div class="flex flex-col space-y-2 p-2">
                                                         @foreach ($task->followers as $follower)
-                                                            <a href="{{ route('users.show', $follower->id) }}"
-                                                                class="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-3 py-2 text-center whitespace-nowrap">
-                                                                {{ Str::limit($follower->name, 11, '...') }}
-                                                            </a>
+                                                            @if ($loop->index > 0)
+                                                                <a href="{{ route('users.show', $follower->id) }}"
+                                                                    class="text-gray-900 bg-white focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-3 py-2 text-center whitespace-nowrap">
+                                                                    {{ Str::limit($follower->name, 11, '...') }}
+                                                                </a>
+                                                            @endif
                                                         @endforeach
                                                     </div>
                                                 </div>
@@ -246,7 +246,7 @@
                                         </td>
                                         <td class="px-6 py-4 w-100">
                                             <button type="button"
-                                                class="text-gray-500 hover:text-gray-700 focus:outline-none transition-all duration-200 action-toggle"
+                                                class="text-gray-900 hover:text-gray-700 focus:outline-none transition-all duration-200 action-toggle"
                                                 onclick="toggleActions(this)">
                                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5"
                                                     viewBox="0 0 20 20" fill="currentColor">
@@ -258,7 +258,7 @@
 
                                             <!-- Vertical Actions dropdown -->
                                             <div
-                                                class="absolute w-32 bg-white rounded-md shadow-lg z-50 hidden actions-dropdown">
+                                                class="absolute w-32 bg-white rounded-md shadow-lg z-50 hidden right-0 lg:right-auto actions-dropdown">
                                                 <div class="flex flex-col space-y-2 p-2">
                                                     @if (request('status') && request('status') == 'trashed')
                                                         <form action="{{ route('tasks.restore', $task->id) }}"

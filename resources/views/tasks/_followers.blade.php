@@ -58,7 +58,7 @@
 
         searchInput.addEventListener('input', function () {
             const query = this.value.trim();
-            if (query.length < 2) return resultsContainer.classList.add('hidden');
+            // if (query.length < 2) return resultsContainer.classList.add('hidden');
 
             fetch(`/api/users/search/${query}`)
                 .then(res => res.json())

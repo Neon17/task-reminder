@@ -14,7 +14,7 @@
 - Email verification part
 - reason ko filter in notes page
 
-- mobile responsive
+- mobile responsive (still remaining)
 - dashboard ma task ko recent task ma complete lai pending chha
 - remove created by, notes in edit page of tasks
 - filters lai left align garne
@@ -72,3 +72,15 @@ Reuse the input field everywhere possible
 
 Make this: Admin cannot delete task, cannot edit task, cannot add/remove followers
 Admin can only view tasks, view users
+
+
+==============Another Thing ===============================
+
+Followers name ma at most 1 follower show garne aru lai +2 ani dropdown
+Followers name in export
+Assign Followers ma list aauna paryo
+Design Consistency in Forms (create reminder)
+show * for required
+Make assign followers like design
+Design Consistency: Your Notes should be inside the form
+Make Notes Length Fixed (250 len char maybe while creating note(s))

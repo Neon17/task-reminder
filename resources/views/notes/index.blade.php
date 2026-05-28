@@ -9,7 +9,7 @@
         <div class="mx-auto sm:px-6 lg:px-8">
 
             <a type="button" href={{ route('notes.exportFiltered', request()->query()) }}
-                class="py-2.5 px-5 me-2 mb-2 text-sm float-right font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100">
+                class="py-2.5 px-5 mx-5 mb-2 text-sm md:float-right font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100">
                 {{ __('Export') }}
             </a>
 
@@ -107,7 +107,8 @@
                 </div>
 
                 <div class="flex gap-2 w-full md:w-auto">
-                    <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded-md">
+                    <button type="submit"
+                        class="px-6 py-2 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-700 transition">
                         {{ __('Apply Filters') }}
                     </button>
                     <a href="{{ route('notes.index') }}" class="px-4 py-2 bg-gray-300 text-gray-700 rounded-md">
@@ -119,7 +120,7 @@
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg m-4 mb-7">
 
                 <div class="overflow-x-auto">
-                    <table class="w-full text-sm text-left rtl:text-right text-gray-500">
+                    <table class="w-full text-sm text-left rtl:text-right text-gray-900">
                         <thead class="text-xs text-gray-900 uppercase bg-gray-200">
                             <tr>
                                 <th scope="col" class="px-6 py-3">
@@ -166,36 +167,34 @@
                                             <div class="flex">
                                                 <div value ="{{ $note->user->id }}"
                                                     class="text-sm font-medium px-2.5 py-2.5 rounded flex items-center">
-                                                    {{ $note->user->name }}
                                                     <a href="{{ route('users.show', $note->user) }}"
-                                                        class="ml-1 text-blue-400 hover:text-blue-600">
-                                                        <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
-                                                            <path fill-rule="evenodd"
-                                                                d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-8.707l-3-3a1 1 0 00-1.414 0l-3 3a1 1 0 001.414 1.414L9 9.414V13a1 1 0 102 0V9.414l1.293 1.293a1 1 0 001.414-1.414z"
-                                                                clip-rule="evenodd"></path>
-                                                        </svg>
+                                                        class="text-gray-900 bg-white focus:outline-none hover:bg-gray-200 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-3 py-2 text-center whitespace-nowrap">
+                                                        {{ $note->user->name }}
                                                     </a>
                                                 </div>
                                             </div>
                                         </td>
                                         <td class="px-6 py-4 w-100">
                                             @if ($note->task)
-                                                {{ $note->task->title }}
+                                                <a href="{{ route('tasks.show', $note->task) }}"
+                                                    class="text-gray-900 bg-white focus:outline-none hover:bg-gray-200 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-3 py-2 text-center whitespace-nowrap">
+                                                    {{ $note->task->title }}
+                                                </a>
                                             @else
-                                                <em>{{ __('Deleted') }}</em>
+                                                <em class="px-3 py-2">{{ __('Deleted') }}</em>
                                             @endif
                                         </td>
-                                        <td class="px-6 py-4 w-100">
+                                        <td class="px-6 py-4 w-100 text-gray-900">
                                             {{ $note->reason }}
                                         </td>
-                                        <td class="px-6 py-4 w-100">
+                                        <td class="px-6 py-4 w-100 text-gray-900">
                                             @if ($note->task)
                                                 {{ $note->task->assigned_date }}
                                             @else
                                                 <em>{{ __('Deleted') }}</em>
                                             @endif
                                         </td>
-                                        <td class="px-6 py-4 w-100">
+                                        <td class="px-6 py-4 w-100 text-gray-900">
                                             {{ $note->created_at }}
                                         </td>
                                     </tr>

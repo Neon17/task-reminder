@@ -62,6 +62,31 @@ class SendTaskNotifications extends Command
             }
         }
 
+        // // below code is for testing email facilities where email can be sent to specific user
+        // $task = Task::whereDate('notification_start_date','>=', $today)
+        //     ->whereDate('assigned_date', '>=', $today)
+        //     ->whereHas('creator', fn($q) => $q->where('email', 'user@gmail.com'))
+        //     ->with('creator', 'followers')->first();
+
+        // if (!$task) {
+        //     $this->info("No task found for today.");
+        //     return;
+        // }
+
+        // $ccEmails = $task->followers
+        //     ->where('email', '!=', $task->creator->email)
+        //     // ->where('email_verified_at', '!=', null)
+        //     ->pluck('email')->toArray();
+
+        // Mail::to($task->creator->email)
+        //     ->cc($ccEmails)
+        //     ->send(new TaskRemainderMail($task));
+
+        // $task->last_notified_at = now();
+        // $task->save();
+
+        // $this->info("Notification sent to creator ({$task->creator->email}) and CCed to followers.");
+
         return 0;
     }
 }

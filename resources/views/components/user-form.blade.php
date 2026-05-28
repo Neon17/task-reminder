@@ -12,24 +12,12 @@
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <!-- Username Field -->
             <div class="space-y-2">
-                <label class="block text-sm font-medium text-gray-700">Username</label>
-                <input type="username" name="username" value="{{ old('username', $user->name ?? '') }}"
-                    class="mt-1 block w-full rounded-md border-gray-200 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm p-3 border"
-                    required>
-                    @error('username')
-                        <p class="text-red-800">{{$message}}</p>
-                    @enderror
+                <x-form.input name="username" label="Name" value="{{ old('name', $user->name ?? '') }}" required/>
             </div>
 
             <!-- Email Field -->
             <div class="space-y-2">
-                <label class="block text-sm font-medium text-gray-700">Email address</label>
-                <input type="email" name="email" value="{{ old('email', $user->email ?? '') }}"
-                    class="mt-1 block w-full rounded-md border-gray-200 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm p-3 border"
-                    required>
-                @error('email')
-                       <p class="text-red-800">{{$message}}</p> 
-                @enderror
+                <x-form.input name="email" type="email" label="Email" value="{{ old('email', $user->email ?? '') }}" required/>
             </div>
 
             <!-- Timezone Field -->
@@ -49,22 +37,10 @@
 
             @if (!$user)
                 <div class="space-y-2">
-                    <label class="block text-sm font-medium text-gray-700">Password</label>
-                    <input type="password" name="password" value=""
-                        class="mt-1 block w-full rounded-md border-gray-200 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm p-3 border"
-                        required>
-                    @error('password')
-                        <p class="text-red-800">{{$message}}</p>
-                    @enderror
+                    <x-form.input name="password" type="password" label="Password" required/>
                 </div>
                 <div class="space-y-2">
-                    <label class="block text-sm font-medium text-gray-700">Confirm Password</label>
-                    <input type="password" name="confirm_password" value=""
-                        class="mt-1 block w-full rounded-md border-gray-200 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm p-3 border"
-                        required>
-                    @error('confirm_password')
-                        <p class="text-red-800">{{$message}}</p>
-                    @enderror
+                    <x-form.input name="confirm_password" type="password" label="Confirm Password" required/>
                  </div>
             @endif
             <!-- Role Field -->
