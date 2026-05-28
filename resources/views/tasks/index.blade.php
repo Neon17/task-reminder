@@ -57,10 +57,11 @@
             </div>
 
             <a type="button" href="{{ route('tasks.create') }}"
-                class="py-2.5 px-5 me-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100">Create
-                Task</a>
+                class="py-2.5 px-5 me-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100">
+                {{__("Create Task")}}
+            </a>
 
-            <h4 class="text-xl font-extrabold text-center">Your Tasks</h4>
+            <h4 class="text-xl font-extrabold text-center">{{__("Your Tasks")}}</h4>
 
             <div class="bg-white shadow-xl sm:rounded-lg m-4 mb-7">
 
@@ -69,28 +70,28 @@
                         <thead class="text-xs text-gray-900 uppercase bg-gray-200">
                             <tr>
                                 <th scope="col" class="px-6 py-3">
-                                    SN
+                                    {{__("SN")}}
                                 </th>
                                 <th scope="col" class="px-6 py-3">
-                                    Name
+                                    {{__("Name")}}
                                 </th>
                                 <th scope="col" class="px-6 py-3">
-                                    Description
+                                    {{__("Description")}}
                                 </th>
                                 <th scope="col" class="px-6 py-3">
-                                    Created By
+                                    {{__("Created By")}}
                                 </th>
                                 <th scope="col" class="px-6 py-3">
-                                    Assigned Date For Completion
+                                    {{__("Assigned Date For Completion")}}
                                 </th>
                                 <th scope="col" class="px-6 py-3">
-                                    Completed Date
+                                    {{__("Completed Date")}}
                                 </th>
                                 <th scope="col" class="px-6 py-3">
-                                    Created At
+                                    {{__("Created At")}}
                                 </th>
                                 <th scope="col" class="px-6 py-3">
-                                    Actions
+                                    {{__("Actions")}}
                                 </th>
                             </tr>
                         </thead>
@@ -98,7 +99,7 @@
                             @if ($yourtasks->count() == 0)
                                 <tr class="bg-white border-b border-gray-200">
                                     <td class="px-6 py-4 w-100">
-                                        <p class="text-center">No task found</p>
+                                        <p class="text-center">{{__("No task found")}}</p>
                                     </td>
                                 </tr>
                             @else
@@ -143,13 +144,13 @@
                                                 <div class="flex flex-col space-y-2 p-2">
                                                     <a href="{{ route('tasks.show', $task->id) }}"
                                                         class="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-3 py-2 text-center whitespace-nowrap">
-                                                        View
+                                                        {{__("View")}}
                                                     </a>
 
                                                     @if (auth()->user()->isAdmin() || $task->completed_date == null)
                                                         <a href="{{ route('tasks.edit', $task->id) }}"
                                                             class="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-3 py-2 text-center whitespace-nowrap">
-                                                            Edit
+                                                            {{__("Edit")}}
                                                         </a>
                                                         <form action="{{ route('tasks.delete', $task->id) }}"
                                                             method="post">
@@ -157,7 +158,7 @@
                                                             @method('POST')
                                                             <button type="submit"
                                                                 class="w-full focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-3 py-2 text-center">
-                                                                Delete
+                                                                {{__("Delete")}}
                                                             </button>
                                                         </form>
                                                     @endif

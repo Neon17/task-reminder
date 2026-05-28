@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Task Reminder</title>
+    <title>{{__("Task Reminder")}}</title>
     <style type="text/css">
         /* Base Styles */
         body {
@@ -177,51 +177,51 @@
 <body>
     <div class="email-wrapper">
         <div class="email-content">
-            <h2 class="header">Task Reminder</h2>
+            <h2 class="header">{{__("Task Remainder")}}</h2>
 
             <p class="greeting">
-                Hello <span class="highlight-name">{{ $task->creator->name }}</span>,
+                {{__("Hello ")}}<span class="highlight-name">{{ $task->creator->name }}</span>,
             </p>
 
             <p class="intro-text">
-                Hope you're doing great! Just a friendly reminder about a task you created. Let's keep the energy up and
-                collaborate to get things done effectively. 💪
+                {{__("Hope you're doing great! Just a friendly reminder about a task you created. Let's keep the energy up and
+                collaborate to get things done effectively. 💪")}}
             </p>
 
             <div class="task-section">
-                <h3 class="section-title">Task Details:</h3>
+                <h3 class="section-title">{{__("Task Details:")}}</h3>
                 <ul class="task-details">
-                    <li><strong>Title:</strong> {{ $task->title }}</li>
-                    <li><strong>Description:</strong>{{ $task->description }}</li>
-                    <li><strong>Assigned Date:</strong>{{ ($task->assigned_date)->format('F j, Y') }}</li>
-                    <li><strong>Created At:</strong>{{ ($task->created_at)->format('F j, Y') }}</li>
-                    <li><strong>Timezone:</strong> UTC</li>
+                    <li><strong>{{__('Title:')}}</strong> {{ $task->title }}</li>
+                    <li><strong>{{__('Description:')}}</strong>{{ $task->description }}</li>
+                    <li><strong>{{__("Assigned Date:")}}</strong>{{ ($task->assigned_date)->format('F j, Y') }}</li>
+                    <li><strong>{{__("Created At:")}}</strong>{{ ($task->created_at)->format('F j, Y') }}</li>
+                    <li><strong>{{__("Timezone:")}}</strong>{{__("UTC")}}</li>
                 </ul>
             </div>
 
             <div>
                 <p class="closing-text">
-                    Let's stay focused and work together toward completing this task. Your teamwork makes a difference! If
-                    you need any help or clarification, don't hesitate to reach out. 👍
+                    {{__("Let's stay focused and work together toward completing this task. Your teamwork makes a difference! If
+                    you need any help or clarification, don't hesitate to reach out. 👍")}}
                 </p>
             </div>
 
             <div class="creator-followers">
-                <strong>Created by:</strong> {{ $task->creator->name }}| 
-                <strong>Followers:</strong>
+                <strong>{{__("Created by:")}}</strong> {{ $task->creator->name }}| 
+                <strong>{{__("Followers:")}}</strong>
                 @foreach ($task->followers as $follower)
                    {{ $follower->name }}
                 @endforeach
             </div>
 
-            <p class="signature">Cheers,</p>
-            <p class="signature-text">Your Productivity Assistant 💼</p>
+            <p class="signature">{{__("Cheers,")}}</p>
+            <p class="signature-text">{{__("Your Productivity Assistant 💼")}}</p>
         </div>
 
         <div class="footer">
-            This is an automated reminder sent to {{ $task->creator->email }}
+            {{__("This is an automated reminder sent to ")}}{{ $task->creator->email }}
             @if ($task->followers->count())
-                and CC'd to {{ $task->followers->count() }} follower{{ $task->followers->count() > 1 ? 's' : '' }}.
+                {{__("and CC'd to ")}}{{ $task->followers->count() }} {{__("follower")}}{{ $task->followers->count() > 1 ? 's' : '' }}.
             @endif
         </div>
     </div>

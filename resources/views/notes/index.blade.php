@@ -10,9 +10,9 @@
 
 
             @if (auth()->user()->isAdmin())
-                <h4 class="text-xl font-extrabold text-center">All Notes</h4>
+                <h4 class="text-xl font-extrabold text-center">{{__("All Notes")}}</h4>
             @else
-                <h4 class="text-xl font-extrabold text-center">Your Notes</h4>
+                <h4 class="text-xl font-extrabold text-center">{{__("Your Notes")}}</h4>
             @endif
 
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg m-4 mb-7">
@@ -22,25 +22,25 @@
                         <thead class="text-xs text-gray-900 uppercase bg-gray-200">
                             <tr>
                                 <th scope="col" class="px-6 py-3">
-                                    SN
+                                    {{__("SN")}}
                                 </th>
                                 <th scope="col" class="px-6 py-3">
-                                    Description
+                                    {{__("Description")}}
                                 </th>
                                 <th scope="col" class="px-6 py-3">
-                                    User
+                                    {{__("User")}}
                                 </th>
                                 <th scope="col" class="px-6 py-3">
-                                    Task
+                                    {{__("Task")}}
                                 </th>
                                 <th scope="col" class="px-6 py-3">
-                                    Reason
+                                    {{__("Reason")}}
                                 </th>
                                 <th scope="col" class="px-6 py-3">
-                                    Assigned Date
+                                    {{__("Assigned Date")}}
                                 </th>
                                 <th scope="col" class="px-6 py-3">
-                                    Created Date
+                                    {{__("Created Date")}}
                                 </th>
                             </tr>
                         </thead>
@@ -49,7 +49,7 @@
                             @if (count($notes) == 0)
                                 <tr class="bg-white border-b border-gray-200">
                                     <td class="px-6 py-4 w-100">
-                                        <p class="text-center">No notes found</p>
+                                        <p class="text-center">{{__("No notes found")}}</p>
                                     </td>
                                 </tr>
                             @else
@@ -68,7 +68,7 @@
                                             @if ($note->task)
                                                 {{ $note->task->title }}
                                             @else
-                                                <em>Deleted</em>
+                                                <em>{{__("Deleted")}}</em>
                                             @endif
                                         </td>
                                         <td class="px-6 py-4 w-100">
@@ -78,7 +78,7 @@
                                             @if ($note->task)
                                                 {{ $note->task->assigned_date }}
                                             @else
-                                                <em>Deleted</em>
+                                                <em>{{__("Deleted")}}</em>
                                             @endif
                                         </td>
                                         <td class="px-6 py-4 w-100">

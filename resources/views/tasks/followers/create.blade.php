@@ -55,7 +55,7 @@
                 </div>
             @endif
 
-            <h4 class="text-xl font-extrabold text-center mt-3 mb-2">Add Followers</h4>
+            <h4 class="text-xl font-extrabold text-center mt-3 mb-2">{{__("Add Followers")}}</h4>
 
             <form action="{{ route('task.followers.store', $task) }}" method="post">
                 @csrf
@@ -71,22 +71,22 @@
                             <thead class="text-xs text-gray-900 uppercase bg-gray-200">
                                 <tr>
                                     <th scope="col" class="px-6 py-3">
-                                        SN
+                                        {{__("SN")}}
                                     </th>
                                     <th scope="col" class="px-6 py-3">
-                                        Name
+                                        {{__("Name")}}
                                     </th>
                                     <th scope="col" class="px-6 py-3">
-                                        Email
+                                        {{__("Email")}}
                                     </th>
                                     <th scope="col" class="px-6 py-3">
-                                        Role
+                                        {{__("Role")}}
                                     </th>
                                     <th scope="col" class="px-6 py-3">
-                                        Timezone
+                                        {{__("Timezone")}}
                                     </th>
                                     <th scope="col" class="px-6 py-3">
-                                        Action
+                                        {{__("Action")}}
                                     </th>
                                 </tr>
                             </thead>
@@ -94,7 +94,7 @@
                                 @if ($users->count() == 0)
                                     <tr class="bg-white border-b border-gray-200">
                                         <td class="px-6 py-4 w-100">
-                                            <p class="text-center">No users who unfollowed this task found</p>
+                                            <p class="text-center">{{__("No users who unfollowed this task found")}}</p>
                                         </td>
                                     </tr>
                                 @endif
@@ -131,8 +131,9 @@
 
                 </div>
                 <button type="submit"
-                    class="text-gray-900 mt-3 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2">Update
-                    Selected Followers</button>
+                    class="text-gray-900 mt-3 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2">
+                    {{__("Update Selected Followers")}}
+                </button>
             </form>
         </div>
     </div>

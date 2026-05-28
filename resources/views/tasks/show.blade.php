@@ -60,7 +60,7 @@
             <div class="relative overflow-x-auto p-5 bg-white">
                 <form class="mx-auto">
 
-                     <h4 class="text-xl font-extrabold text-center mb-3">Task Details</h4>
+                     <h4 class="text-xl font-extrabold text-center mb-3">{{__("Task Details")}}</h4>
 
                     <div class="edit-field-container">
 
@@ -69,7 +69,9 @@
                                 class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                                 value="{{ $task->title }}" placeholder=" " required />
                             <label for="floating_first_name"
-                                class="peer-focus:font-medium absolute text-sm text-gray-500 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Title</label>
+                                class="peer-focus:font-medium absolute text-sm text-gray-500 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
+                                {{__("Title")}}
+                            </label>
                         </div>
 
 
@@ -79,7 +81,9 @@
                                 class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                                 placeholder=" " required />
                             <label for="floating_first_name"
-                                class="peer-focus:font-medium absolute text-sm text-gray-500 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Description</label>
+                                class="peer-focus:font-medium absolute text-sm text-gray-500 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
+                                {{__("Description")}}
+                            </label>
                         </div>
 
                         <div class="relative z-0 w-full mb-5 group">
@@ -89,7 +93,8 @@
                                 placeholder=" " required />
                             <label for="floating_first_name"
                                 class="peer-focus:font-medium absolute text-sm text-gray-500 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
-                                Assigned Date of Completion</label>
+                                {{__("Assigned Date of Completion")}}
+                            </label>
                         </div>
 
                         <div class="relative z-0 w-full mb-5 group">
@@ -98,8 +103,9 @@
                                 class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                                 placeholder=" " required />
                             <label for="floating_first_name"
-                                class="peer-focus:font-medium absolute text-sm text-gray-500 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Notification
-                                Start Date</label>
+                                class="peer-focus:font-medium absolute text-sm text-gray-500 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
+                                {{__("Notification Start Date")}}
+                            </label>
                         </div>
 
                         <div class="relative z-0 w-full mb-5 group">
@@ -108,8 +114,9 @@
                                 class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                                 placeholder=" " required />
                             <label for="floating_first_name"
-                                class="peer-focus:font-medium absolute text-sm text-gray-500 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Notification
-                                Interval (in days)</label>
+                                class="peer-focus:font-medium absolute text-sm text-gray-500 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
+                                {{__("Notification Interval (in days)")}}
+                            </label>
                         </div>
 
 
@@ -117,8 +124,9 @@
 
                     <div class="notes-fields mb-3">
 
-                        <label for="message" class="block mb-2 text-sm font-medium text-gray-900">Your
-                            Notes</label>
+                        <label for="message" class="block mb-2 text-sm font-medium text-gray-900">
+                            {{__("Your Notes")}}
+                        </label>
                         <textarea id="message" rows="4" name="notes" required
                             class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
                             placeholder="Write your reason for the task updation here..."></textarea>
@@ -126,10 +134,14 @@
 
                     @if ($task->completed_date)
                         <a type="button"
-                            class="text-white bg-green-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center">Completed</a>
+                            class="text-white bg-green-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center">
+                            {{__("Completed")}}
+                        </a>
                     @else
                         <a type="button" href="{{ route('tasks.edit', $task) }}"
-                            class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center">Edit</a>
+                            class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center">
+                            {{__("Edit")}}
+                        </a>
                     @endif
                 </form>
 
@@ -137,23 +149,25 @@
 
 
             <div class="relative overflow-x-auto mt-5 p-5 bg-white">
-                <h4 class="text-xl font-extrabold text-center mb-3">Created By</h4>
+                <h4 class="text-xl font-extrabold text-center mb-3">
+                    {{__("Created By")}}
+                </h4>
 
 
                 <table class="w-full text-sm text-left rtl:text-right text-gray-500">
                     <thead class="text-xs text-gray-900 uppercase bg-gray-200">
                         <tr>
                             <th scope="col" class="px-6 py-3">
-                                Name
+                                {{__("Name")}}
                             </th>
                             <th scope="col" class="px-6 py-3">
-                                Email
+                                {{__("Email")}}
                             </th>
                             <th scope="col" class="px-6 py-3">
-                                Timezone
+                                {{__("Timezone")}}
                             </th>
                             <th scope="col" class="px-6 py-3">
-                                Role
+                                {{__("Role")}}
                             </th>
                         </tr>
                     </thead>
@@ -178,28 +192,30 @@
 
 
             <div class="relative overflow-x-auto p-5 mt-5 bg-white">
-                <h4 class="text-xl font-extrabold text-center">Followers</h4>
+                <h4 class="text-xl font-extrabold text-center">
+                    {{__("Followers")}}
+                </h4>
 
                 <table class="w-full mt-3 text-sm text-left rtl:text-right text-gray-500">
                     <thead class="text-xs text-gray-900 uppercase bg-gray-200">
                         <tr>
                             <th scope="col" class="px-6 py-3">
-                                SN
+                                {{__("SN")}}
                             </th>
                             <th scope="col" class="px-6 py-3">
-                                Name
+                                {{__("Name")}}
                             </th>
                             <th scope="col" class="px-6 py-3">
-                                Email
+                                {{__("Email")}}
                             </th>
                             <th scope="col" class="px-6 py-3">
-                                Role
+                                {{__("Role")}}
                             </th>
                             <th scope="col" class="px-6 py-3">
-                                Timezone
+                                {{__("Timezone")}}
                             </th>
                             <th scope="col" class="px-6 py-3">
-                                Action
+                                {{__("Action")}}
                             </th>
                         </tr>
                     </thead>
@@ -208,7 +224,9 @@
                         @if ($task->followers->count() == 0)
                             <tr class="bg-white border-b border-gray-200">
                                 <td class="px-6 py-4 w-100">
-                                    <p class="text-center">No followers found</p>
+                                    <p class="text-center">
+                                        {{__("No followers found")}}
+                                    </p>
                                 </td>
                             </tr>
                         @else
@@ -232,7 +250,7 @@
                                     <td class="px-6 py-4 w-100">
                                         <a href="{{ route('users.show', $follower) }}" type="button"
                                             class="text-red-500 hover:underline hover:cursor-pointer">
-                                            View
+                                            {{__("View")}}
                                         </a>
                                     </td>
                                 </tr>

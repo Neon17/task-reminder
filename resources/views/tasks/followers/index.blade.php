@@ -58,10 +58,11 @@
             </div>
 
             <a type="button" href="{{ route('task.followers.create', $task) }}"
-                class="py-2.5 px-5 me-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100">Add
-                Follower(s)</a>
+                class="py-2.5 px-5 me-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100">
+                {{__("Add Follower(s)")}}
+            </a>
 
-            <h4 class="text-xl font-extrabold text-center mt-3 mb-2">Followers</h4>
+            <h4 class="text-xl font-extrabold text-center mt-3 mb-2">{{__("Followers")}}</h4>
 
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
 
@@ -71,22 +72,22 @@
                         <thead class="text-xs text-gray-900 uppercase bg-gray-200">
                             <tr>
                                 <th scope="col" class="px-6 py-3">
-                                    SN
+                                    {{__("SN")}}
                                 </th>
                                 <th scope="col" class="px-6 py-3">
-                                    Name
+                                    {{__("Name")}}
                                 </th>
                                 <th scope="col" class="px-6 py-3">
-                                    Email
+                                    {{__("Email")}}
                                 </th>
                                 <th scope="col" class="px-6 py-3">
-                                    Role
+                                    {{__("Role")}}
                                 </th>
                                 <th scope="col" class="px-6 py-3">
-                                    Timezone
+                                    {{__("Timezone")}}
                                 </th>
                                 <th scope="col" class="px-6 py-3">
-                                    Action
+                                    {{__("Action")}}
                                 </th>
                             </tr>
                         </thead>
@@ -94,7 +95,7 @@
                             @if ($followers->count() == 0)
                                 <tr class="bg-white border-b border-gray-200">
                                     <td class="px-6 py-4 w-100">
-                                        <p class="text-center">No followers found for this task</p>
+                                        <p class="text-center">{{__("No followers found for this task")}}</p>
                                     </td>
                                 </tr>
                             @endif
@@ -120,7 +121,7 @@
                                             action="{{ route('task.followers.destroy', [$task, $follower]) }}">
                                             @csrf @method('DELETE')
                                             <button type="submit" class="text-red-500 hover:underline">
-                                                Detach Follower
+                                                {{__("Detach Follower")}}
                                             </button>
                                         </form>
                                     </td>

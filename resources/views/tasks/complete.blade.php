@@ -39,8 +39,9 @@
                     @method('POST')
                     <div class="notes-fields">
 
-                        <label for="message" class="block mb-2 text-sm font-medium text-gray-900">Your
-                            Notes</label>
+                        <label for="message" class="block mb-2 text-sm font-medium text-gray-900">
+                            {{__("Your Notes")}}
+                        </label>
                         <textarea id="message" rows="4" name="notes" required
                             class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
                             placeholder="Write your reason for the task completion here..."></textarea>
@@ -59,8 +60,9 @@
 
                     <div class="flex gap-3"></div>
                     <button type="submit"
-                        class="text-white mt-1 bg-blue-700 hover:bg-blue-900 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center">Complete
-                        Task</button>
+                        class="text-white mt-1 bg-blue-700 hover:bg-blue-900 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center">
+                        {{__("Complete Task")}}
+                    </button>
 
                 </form>
             </div>

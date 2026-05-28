@@ -60,8 +60,9 @@
 
 
             <a type="button" href="{{ route('users.create') }}"
-                class="py-2.5 px-5 me-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100">Create
-                User</a>
+                class="py-2.5 px-5 me-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100">
+                {{__("Create User")}}
+            </a>
 
 
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg mt-5">
@@ -72,22 +73,22 @@
                         <thead class="text-xs text-gray-900 uppercase bg-gray-200">
                             <tr>
                                 <th scope="col" class="px-6 py-3">
-                                    SN
+                                    {{__("SN")}}
                                 </th>
                                 <th scope="col" class="px-6 py-3">
-                                    Name
+                                    {{__("Name")}}
                                 </th>
                                 <th scope="col" class="px-6 py-3">
-                                    Email
+                                    {{__("Email")}}
                                 </th>
                                 <th scope="col" class="px-6 py-3">
-                                    Role
+                                    {{__("Role")}}
                                 </th>
                                 <th scope="col" class="px-6 py-3">
-                                    Timezone
+                                    {{__("Timezone")}}
                                 </th>
                                 <th scope="col" class="px-6 py-3">
-                                    Action
+                                    {{__("Action")}}
                                 </th>
                             </tr>
                         </thead>
@@ -127,14 +128,14 @@
                                             <div class="flex flex-col space-y-2 p-2">
                                                 <a href="{{ route('users.edit', $user->id) }}"
                                                     class="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-3 py-2 text-center whitespace-nowrap">
-                                                    Edit
+                                                    {{__("Edit")}}
                                                 </a>
                                                 <form action="{{ route('users.destroy', $user->id) }}" method="post">
                                                     @csrf
                                                     @method('POST')
                                                     <button type="submit"
                                                         class="w-full focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-3 py-2 text-center">
-                                                        Delete
+                                                        {{__("Delete")}}
                                                     </button>
                                                 </form>
                                             </div>
