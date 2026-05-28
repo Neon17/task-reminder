@@ -61,7 +61,7 @@
 
             <div class="bg-white shadow-xl sm:rounded-lg m-4 mb-7">
 
-                <div class="relative">
+                <div class="relative overflow-x-auto">
                     <table class="w-full text-sm text-left rtl:text-right text-gray-500">
                         <thead class="text-xs text-gray-900 uppercase bg-gray-200">
                             <tr>
@@ -87,7 +87,7 @@
                                     {{__("Created At")}}
                                 </th>
                                 <th scope="col" class="px-6 py-3">
-                                    {{__("Updated At")}}
+                                    {{__("Actions")}}
                                 </th>
                             </tr>
                         </thead>

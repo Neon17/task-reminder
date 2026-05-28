@@ -8,11 +8,12 @@
     <div class="py-12">
         <div class="mx-auto sm:px-6 lg:px-8">
 
-            <form method="GET" class="flex items-center ps-3 gap-3 mb-3" action="{{ route('notes.index') }}">
+            <form method="GET" class="mt-5 px-5 flex flex-col md:flex-row md:items-center md:justify-start gap-2"
+                action="{{ route('notes.index') }}">
                 @csrf
 
                 <!-- Search by Title -->
-                <div class="mb-4">
+                <div class="mb-4 w-full md:w-auto">
                     <label for="title" class="block text-sm font-medium text-gray-700">
                         {{ __('Search Title') }}
                     </label>
@@ -43,7 +44,7 @@
 
 
                 <!-- Notes by Task Categories (like yours, you followed, others) -->
-                <div class="mb-4">
+                <div class="mb-4 w-full md:w-auto">
                     <label for="category" class="block text-sm font-medium text-gray-700">
                         {{ __('Category by Tasks') }}
                     </label>
@@ -63,7 +64,7 @@
                 </div>
 
                 <!-- Notes by Reason Categories (like creation, deletion, updation) -->
-                <div class="mb-4">
+                <div class="mb-4 w-full md:w-auto">
                     <label for="reason" class="block text-sm font-medium text-gray-700">
                         {{ __('Category by Reason') }}
                     </label>
@@ -86,7 +87,7 @@
                 </div>
 
                 <!-- Sort Options -->
-                <div class="mb-4">
+                <div class="mb-4 w-full md:w-auto">
                     <label for="sort" class="block text-sm font-medium text-gray-700">{{ __('Sort By') }}</label>
                     <select name="sort" id="sort"
                         class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
@@ -100,7 +101,7 @@
                     </select>
                 </div>
 
-                <div class="space-x-4">
+                <div class="flex gap-2 w-full md:w-auto">
                     <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded-md">
                         {{ __('Apply Filters') }}
                     </button>
