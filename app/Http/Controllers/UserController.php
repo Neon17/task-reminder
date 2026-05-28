@@ -46,9 +46,30 @@ class UserController extends Controller
         return redirect()->route('users.index')->with('success', 'User restored successfully!');
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        $users = User::paginate(15)->withQueryString();;
+        $timezones = TimezoneHelper::all();
+        $labels = [];
+        foreach ($timezones as $timezone) {
+            $labels[] = $timezone['value'];
+        }
+        $strTimezones = implode(',', $labels);
+
+        $validated = $request->validate([
+            'search' => 'nullable|string|max:255',
+            'email' => 'nullable|in:unverified,verified',
+            'role' => 'nullable|in:admin,user',
+            'timezone' => 'nullable|in:'.$strTimezones,
+            'sort' => 'nullable|string',
+            'export_excel' => 'nullable|in:true',
+        ]);
+
+        $users = User::where('id', '!=', Auth::user()->id);
+        $users = $users->filter($validated)
+            ->sort($validated['sort'] ?? null)
+            ->paginate(15)
+            ->withQueryString();
+
         return view('users.index', compact('users'));
     }
 

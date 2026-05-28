@@ -20,3 +20,6 @@
   - Signature (Cheers, Regards)
   - Signature text(Your Assistant Name, ...., .... (can be array of length 3)) 
   - Introductory text (introduction_text)
+
+- Add filter of User (filter by Role, Timezone, Verified Email)
+- Search User by name, email

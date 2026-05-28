@@ -6,6 +6,7 @@ namespace App\Models;
 
 use App\Traits\HandlesTimeZones;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -43,6 +44,50 @@ class User extends Authenticatable implements MustVerifyEmail
         'created_at',
         'updated_at'
     ];
+
+    public function scopeFilter(Builder $query, array $filters): Builder
+    {
+        // Search by name or email
+        if (!empty($filters['search'])) {
+            $query->where(function ($q) use ($filters) {
+                $q->where('name', 'like', '%' . $filters['search'] . '%')
+                    ->orWhere('email', 'like', '%' . $filters['search'] . '%');
+            });
+        }
+
+        // Email verification status
+        if (!empty($filters['email'])) {
+            $query->where(
+                'email_verified_at',
+                $filters['email'] === 'verified' ? '!=' : '=',
+                null
+            );
+        }
+
+        // Role filter
+        if (!empty($filters['role'])) {
+            $query->where('role', $filters['role']);
+        }
+
+        // Timezone filter
+        if (!empty($filters['timezone'])) {
+            $query->where('timezone', $filters['timezone']);
+        }
+
+        return $query;
+    }
+
+    public function scopeSort(Builder $query, ?string $sort): Builder
+    {
+        return match ($sort) {
+            'name' => $query->orderBy('name'),
+            '-name' => $query->orderByDesc('name'),
+            'created_date' => $query->orderBy('created_at'),
+            '-created_date' => $query->orderByDesc('created_at'),
+            default => $query,
+        };
+    }
+
 
     public function isAdmin()
     {
