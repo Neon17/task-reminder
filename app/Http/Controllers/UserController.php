@@ -14,7 +14,8 @@ use Laravel\Socialite\Facades\Socialite;
 class UserController extends Controller
 {
     //
-    public function dashboard() {
+    public function dashboard()
+    {
         //$recentTasks, $pendingTasksCount, $completedTodayCount, $teamMembersCount
         //recent tasks can be 3
 
@@ -24,6 +25,25 @@ class UserController extends Controller
         $teamMembersCount = Task::with('followers')->count() + 1;
 
         return view('dashboard', compact('recentTasks', 'pendingTasksCount', 'completedTodayCount', 'teamMembersCount'));
+    }
+
+    public function trashedItems(Request $request)
+    {
+        $trashedusers = [];
+
+        $trashedusers = User::onlyTrashed()->paginate(15)->withQueryString();
+        // return $trashedusers;
+
+        return view('users.trashes', [
+            'users' => $trashedusers
+        ]);
+    }
+
+    public function restore($id)
+    {
+        //trashed object doesn't bind automatically, so can't write Task $task instead of $id in parameter
+        $task = User::onlyTrashed()->where('id', $id)->restore();
+        return redirect()->route('users.index')->with('success', 'User restored successfully!');
     }
 
     public function index()
@@ -127,14 +147,13 @@ class UserController extends Controller
                 $user = User::where('id', $finduser->id)->first();
                 $user->email_verified_at = now();
                 $user->save();
-                
+
                 return redirect()->intended('dashboard');
             }
 
             return redirect('/login')->withErrors([
                 'message' => 'Your email is not registered. Please contact admin!'
             ]);
-
         } catch (\Exception $e) {
             return redirect('/login')->withErrors([
                 'message' => 'Google login failed. Please try again.'

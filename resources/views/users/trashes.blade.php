@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Users') }}
+            {{ __('Trashed Users') }}
         </h2>
     </x-slot>
 
@@ -58,13 +58,6 @@
             </div>
 
 
-
-            <a type="button" href="{{ route('users.create') }}"
-                class="py-2.5 px-5 me-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100">
-                {{__("Create User")}}
-            </a>
-
-
             <div class="bg-white m-2 overflow-hidden shadow-xl sm:rounded-lg mt-5">
 
 
@@ -73,26 +66,35 @@
                         <thead class="text-xs text-gray-900 uppercase bg-gray-200">
                             <tr>
                                 <th scope="col" class="px-6 py-3">
-                                    {{__("SN")}}
+                                    {{ __('SN') }}
                                 </th>
                                 <th scope="col" class="px-6 py-3">
-                                    {{__("Name")}}
+                                    {{ __('Name') }}
                                 </th>
                                 <th scope="col" class="px-6 py-3">
-                                    {{__("Email")}}
+                                    {{ __('Email') }}
                                 </th>
                                 <th scope="col" class="px-6 py-3">
-                                    {{__("Role")}}
+                                    {{ __('Role') }}
                                 </th>
                                 <th scope="col" class="px-6 py-3">
-                                    {{__("Timezone")}}
+                                    {{ __('Timezone') }}
                                 </th>
                                 <th scope="col" class="px-6 py-3">
-                                    {{__("Action")}}
+                                    {{ __('Action') }}
                                 </th>
                             </tr>
                         </thead>
                         <tbody>
+                            @if (!$users || count($users) <= 0)
+                                <tr>
+                                    <td>
+                                        <p class="no-user p-3">
+                                            No Trashed Users Found. Delete some user to get list here.
+                                        </p>
+                                    </td>
+                                </tr>
+                            @endif
                             @foreach ($users as $user)
                                 <tr class="bg-white border-b border-gray-200">
                                     <td class="px-6 py-4">
@@ -124,18 +126,24 @@
 
                                         <!-- Vertical Actions dropdown -->
                                         <div
-                                            class="absolute w-32 bg-white rounded-md shadow-lg z-50 hidden actions-dropdown origin-top-right">
+                                            class="absolute mt-2 w-32 bg-white rounded-md shadow-lg z-50 hidden actions-dropdown origin-top-right">
                                             <div class="flex flex-col space-y-2 p-2">
-                                                <a href="{{ route('users.edit', $user->id) }}"
-                                                    class="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-3 py-2 text-center whitespace-nowrap">
-                                                    {{__("Edit")}}
-                                                </a>
-                                                <form action="{{ route('users.destroy', $user->id) }}" method="post">
+                                                <form action="{{ route('users.restore', $user->id) }}"
+                                                    method="post">
                                                     @csrf
-                                                    @method('DELETE')
+                                                    @method('POST')
+                                                    <button type="submit"
+                                                        class="w-full focus:outline-none text-black bg-white border hover:bg-gray-200 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-3 py-2 text-center">
+                                                        {{ __('Restore') }}
+                                                    </button>
+                                                </form>
+                                                <form action="{{ route('users.forceDelete', $user->id) }}"
+                                                    method="post">
+                                                    @csrf
+                                                    @method('POST')
                                                     <button type="submit"
                                                         class="w-full focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-3 py-2 text-center">
-                                                        {{__("Delete")}}
+                                                        {{ __('Delete') }}
                                                     </button>
                                                 </form>
                                             </div>

@@ -78,10 +78,13 @@ Route::middleware([
     Route::get('/users/{user}/edit', [UserController::class, 'edit'])->name('users.edit');
     Route::put('/users/{user}', [UserController::class, 'update'])->name('users.update');
     Route::get('/users/{user}', [UserController::class, 'show'])->name('users.show');
+    Route::get('/users/trashed/items', [UserController::class, 'trashedItems'])->name('users.trashed');
+    Route::post('users/{user}/restore', [UserController::class, 'restore'])->name('users.restore');
+    Route::post('users/{user}/forceDelete', [UserController::class, 'forceDelete'])->name('users.forceDelete');
 
     Route::resource('tasks', TaskController::class);
     Route::post('tasks/{task}', [TaskController::class, 'delete'])->name('tasks.delete'); //here delete form is rendered and notes are required for delete so
-    Route::post('tasks/{task}/restore', [TaskController::class, 'restore'])->name('tasks.restore'); // says not found
+    Route::post('tasks/{task}/restore', [TaskController::class, 'restore'])->name('tasks.restore');
     Route::post('tasks/{task}/forceDelete', [TaskController::class, 'forceDelete'])->name('tasks.forceDelete');
     Route::post('tasks/{task}/complete', [TaskController::class, 'completeTask'])->name('tasks.complete');
     Route::get('tasks/{task}/complete', [TaskController::class, 'complete'])->name('tasks.complete');

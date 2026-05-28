@@ -89,7 +89,8 @@
 
         <div class="col-span-6 sm:col-span-4">
             <x-label for="timezone_selector" value="{{ __('Update Timezone') }}" />
-            <select name="timezone" id="timezone-_selector" wire:model="state.timezone" class="form-select text-gray-600" required>
+            <select name="timezone" id="timezone-_selector" wire:model="state.timezone"
+                class="form-select text-gray-600" required>
                 @foreach (App\Helpers\TimezoneHelper::all() as $tz)
                     <option value="{{ $tz['value'] }}"
                         {{ auth()->user()->timezone === $tz['value'] ? 'selected' : '' }}>

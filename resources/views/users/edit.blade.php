@@ -7,8 +7,8 @@
         </h2>
     </x-slot>
 
-    <div class="py-12">
-        <div class="bg-white mx-auto sm:px-6 lg:px-8 py-5">
+    <div class="p-0 sm:p-5">
+        <div class="bg-white mx-auto sm:px-6 lg:px-8 p-5">
 
 
 
@@ -39,7 +39,7 @@
                         <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                     @enderror
                 </div>
-                <div class="relative z-0 w-full mb-5 group">
+                <div class="relative z-0 w-full mb-5 group flex flex-col">
                     <label for="confirm_password"
                         class="peer-focus:font-medium absolute text-sm text-gray-500 duration-300 transform -translate-y-6 scale-75 top-2 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
                         {{__("Select Timezone")}}
