@@ -31,8 +31,18 @@
         <div class="px-6 py-8 space-y-6">
             <!-- Profile Summary -->
             <div class="flex items-center space-x-4">
-                <div class="flex-shrink-0 h-16 w-16 rounded-full bg-blue-100 flex items-center justify-center">
-                    <span class="text-2xl font-medium text-blue-800">{{ strtoupper(substr($user->username, 0, 1)) }}</span>
+               <div class="flex-shrink-0 h-16 w-16 rounded-full bg-blue-100 flex items-center justify-center overflow-hidden">
+                    @if($user->profile_photo_path)
+                        <img 
+                            src="{{ $user->profile_photo_url }}" 
+                            alt="{{ $user->name }}"
+                            class="h-full w-full object-cover"
+                        >
+                    @else
+                        <span class="text-2xl font-medium text-blue-800">
+                            {{ strtoupper(substr($user->username, 0, 1)) }}
+                        </span>
+                    @endif
                 </div>
                 <div>
                     <h2 class="text-xl font-semibold text-gray-900">{{ $user->username }}</h2>

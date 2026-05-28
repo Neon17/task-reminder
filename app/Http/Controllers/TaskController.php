@@ -129,14 +129,14 @@ class TaskController extends Controller
             'assigned_date' => $validated["date_of_completion"],
             'notification_start_date' => $validated["notification_start_date"],
             'notification_interval' => $validated["notification_interval"],
-            'created_by' => Auth::user()->id,
+            'created_by' => Auth::user()->id, 
         ]);
 
-        // $task->notes()->create([
-        //     'reason' => 'creation', // no need as creation is default
-        //     'description' => $request->notes,
-        //     'user_id' => Auth::user()->id
-        // ]);
+        // Assign followers
+        $followersId = $request->input('followers', []);
+        $followersId = json_decode($followersId, true);
+        $task1 = Task::find($task->id);
+        $task1 = $task1->followers()->sync($followersId);
 
         return redirect()->route('tasks.index')->with('success', 'Task created successfully!');
     }

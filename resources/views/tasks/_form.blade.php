@@ -1,8 +1,8 @@
-@props(['task' => null, 'isEdit' => false])
+@props(['task' => null, 'isEdit' => "false"])
 
-<form method="POST" class="mb-2" action="{{ $isEdit ? route('tasks.update', $task) : route('tasks.store') }}">
+<form method="POST" class="mb-2" action="{{ ($isEdit=='true') ? route('tasks.update', $task) : route('tasks.store') }}">
     @csrf
-    @if ($isEdit)
+    @if ($isEdit=='true')
         @method('PATCH')
     @endif
 
@@ -29,8 +29,15 @@
         <x-form.input name="notification_interval" id="notification_interval" label="Notification Interval" type="number"
             :value="old('notification_interval', $task->notification_interval ?? '')" required :editable="$isEdit" />
 
+        <div>
+
+        @if( $isEdit!="true" )
+            <x-assign-followers />
+        @endif
+    </div>
+
         {{-- Notes (only on Edit) --}}
-        @if ($isEdit!="false")
+        @if ($isEdit=="true")
             <div>
                 <label for="notes" class="block mb-2 text-sm font-medium text-gray-900">
                     Your Notes
@@ -48,7 +55,7 @@
         <div>
             <button type="submit"
                 class="text-white bg-blue-700 hover:bg-blue-900 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
-                {{ $isEdit ? 'Update' : 'Create' }}
+                {{ ($isEdit=='true') ? 'Update' : 'Create' }}
             </button>
         </div>
     </div>

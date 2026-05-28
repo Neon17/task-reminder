@@ -204,10 +204,6 @@
                                         <div
                                             class="absolute w-32 bg-white rounded-md shadow-lg z-50 hidden actions-dropdown origin-top-right">
                                             <div class="flex flex-col space-y-2 p-2">
-                                                <a href="{{ route('users.show', $user->id) }}"
-                                                    class="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-3 py-2 text-center whitespace-nowrap">
-                                                    {{ __('View') }}
-                                                </a>
                                                 @if (request('status') && request('status') == 'trashed')
                                                     <form action="{{ route('users.restore', $user->id) }}"
                                                         method="post">
@@ -218,6 +214,10 @@
                                                         </button>
                                                     </form>
                                                 @else
+                                                    <a href="{{ route('users.show', $user->id) }}"
+                                                        class="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-3 py-2 text-center whitespace-nowrap">
+                                                            {{ __('View') }}
+                                                    </a>
                                                     <a href="{{ route('users.edit', $user->id) }}"
                                                         class="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-3 py-2 text-center whitespace-nowrap">
                                                         {{ __('Edit') }}
