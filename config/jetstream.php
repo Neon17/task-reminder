@@ -76,6 +76,8 @@ return [
     |
     */
 
+    'logo' => 'images/logo.png',
+
     'profile_photo_disk' => 'public',
 
 ];
