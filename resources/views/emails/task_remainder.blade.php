@@ -193,8 +193,8 @@
                 <ul class="task-details">
                     <li><strong>{{__('Title:')}}</strong> {{ $task->title }}</li>
                     <li><strong>{{__('Description:')}}</strong>{{ $task->description }}</li>
-                    <li><strong>{{__("Assigned Date:")}}</strong>{{ ($task->assigned_date)->format('F j, Y') }}</li>
-                    <li><strong>{{__("Created At:")}}</strong>{{ ($task->created_at)->format('F j, Y') }}</li>
+                    <li><strong>{{__("Assigned Date:")}}</strong>{{ \Carbon\Carbon::parse($task->assigned_date)->format('F j, Y') }}</li>
+                    <li><strong>{{__("Created At:")}}</strong>{{ \Carbon\Carbon::parse($task->created_at)->format('F j, Y') }}</li>
                     <li><strong>{{__("Timezone:")}}</strong>{{__("UTC")}}</li>
                 </ul>
             </div>

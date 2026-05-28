@@ -39,6 +39,46 @@ class Task extends Model
         'deleted_at' => 'datetime'
     ];
 
+    public function scopeFilter($query, array $filters)
+    {
+        info('filters = ' . json_encode($filters));
+        return $query
+            ->when(array_key_exists('assignee', $filters) && $filters['assignee'] === 'follower' ?? false, fn($q, $assignee) =>
+            $q->whereHas('followers', fn($q) => $q->where('user_id', $assignee)))
+            ->when(array_key_exists('assignee', $filters) && $filters['assignee'] === 'creator', fn($q) =>
+            $q->where('created_by', Auth::user()->id))
+            ->when($filters['title'] ?? false, fn($q, $title) =>
+            $q->where('title', 'like', "%{$title}%"))
+            ->when($filters['created_by'] ?? false, fn($q, $createdBy) =>
+            $q->where('created_by', $createdBy))
+            ->when($filters['status'] ?? false, function ($q, $status) {
+                return match ($status) {
+                    'completed' => $q->whereNotNull('completed_date'),
+                    'pending' => $q->whereNull('completed_date'),
+                    default => $q
+                };
+            });
+    }
+
+    public function scopeSort($query, $sort = "")
+    {
+        info("sort = $sort");
+        if (!$sort) return $query->latest();
+
+        $direction = str_starts_with($sort, '-') ? 'desc' : 'asc';
+        $column = ltrim($sort, '-');
+
+        info("sorting p= $column, d= $direction");
+
+        $sortableColumns = array_merge($this->fillable);
+
+        info('sortable columns = ' . json_encode($sortableColumns));
+
+        return in_array($column, $sortableColumns)
+            ? $query->orderBy($column, $direction)
+            : $query->latest();
+    }
+
     public function creator()
     {
         return $this->belongsTo(User::class, 'created_by');
@@ -54,7 +94,8 @@ class Task extends Model
         return $this->hasMany(Note::class);
     }
 
-    public function canComplete(){
+    public function canComplete()
+    {
         // it checks if the user is authorized to complete the task
         // only task creator and admin can complete the task
 

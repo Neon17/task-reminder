@@ -11,33 +11,39 @@ use Illuminate\Support\Facades\Auth;
 class TaskController extends Controller
 {
     //
-    public function index()
+    public function index(Request $request)
     {
-        // Divide the tasks into logged in users' tasks, tasks they are following, and tasks they are not following
-        $alltasks = [];
-        $yourtasks = [];
-        $followedtasks = [];
-        $trashedtasks = [];
+        $validated = $request->validate([
+            'title' => 'nullable|string|max:255',
+            'created_by' => 'nullable|integer|exists:users,id',
+            'status' => "nullable|in:completed,pending,''",
+            'sort' => 'nullable|string', // e.g., "assigned_date,-created_at"
+            'assignee' => "nullable|string|in:creator,follower,''",
+            'per_page' => 'nullable|integer|min:1|max:100'
+        ]);
 
-        $user = User::find(Auth::user()->id);
+        $tasks = Task::query()
+            ->filter($validated)
+            ->sort($validated["sort"] ?? null)
+            ->paginate($validated["per_page"] ?? 10)->withQueryString();
 
-        $alltasks = Task::where('created_by', '!=', Auth::user()->id)
-            ->whereDoesntHave('followers', fn($q) => $q->where('user_id', Auth::user()->id))
-            ->with('creator', 'followers')->get();
-        $yourtasks = Task::where('created_by', Auth::user()->id)->with('creator')->get();
-        $followedtasks = $user->followedTasks()->with('creator')->get();
-        $trashedtasks = Task::onlyTrashed()->with('creator')->get();
-
-        // $tasks = Task::with('creator', 'followers')->get();
-        // return $tasks;
 
         return view('tasks.index', [
-            'tasks' => $alltasks,
-            'yourtasks' => $yourtasks,
-            'followedtasks' => $followedtasks,
-            'trashedtasks' => $trashedtasks
+            'tasks' => $tasks,
         ]);
     }
+
+    public function trashedTasks(Request $request)
+    {
+        $trashedtasks = [];
+
+        $trashedtasks = Task::onlyTrashed()->with('creator')->get();
+
+        return view('tasks.trashes', [
+            'tasks' => $trashedtasks
+        ]);
+    }
+
 
     public function create()
     {
@@ -59,36 +65,13 @@ class TaskController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
-            'title' => 'required|max:30',
-            'description' => 'required|max:255',
-            'notification_start_date' => 'required|after:today',
-            'date_of_completion' => 'required|after:today',
-            'notification_interval' => [
-                'required',
-                'numeric',
-                'min:1',
-                function ($attribute, $value, $fail) use ($request) {
-                    $startDate = Carbon::parse($request->notification_start_date);
-                    $endDate = Carbon::parse($request->date_of_completion);
-                    $maxInterval = $startDate->diffInDays($endDate);
-
-                    info("maxInterval = $maxInterval");
-                    info("Value = $value");
-
-                    if ($value > $maxInterval) {
-                        $fail("The notification interval cannot exceed $maxInterval days. Your value = $value");
-                    }
-                }
-            ],
-            'notes' => 'required'
-        ]);
+        $validated = $this->validateRequest($request);
         $task = Task::create([
-            'title' => $request->title,
-            'description' => $request->description,
-            'assigned_date' => $request->date_of_completion,
-            'notification_start_date' => $request->notification_start_date,
-            'notification_interval' => $request->notification_interval,
+            'title' => $validated["title"],
+            'description' => $validated["description"],
+            'assigned_date' => $validated["date_of_completion"],
+            'notification_start_date' => $validated["notification_start_date"],
+            'notification_interval' => $validated["notification_interval"],
             'created_by' => Auth::user()->id,
         ]);
 
@@ -158,26 +141,7 @@ class TaskController extends Controller
         if (!$task) {
             return redirect()->route('tasks.index')->with('error', 'Task not found!');
         }
-        $validated = $request->validate([
-            'title' => 'required|max:30',
-            'description' => 'required|max:255',
-            'notification_start_date' => 'required|after:today|before:date_of_completion',
-            'date_of_completion' => 'required|after:today',
-            'notification_interval' => [
-                'required',
-                'numeric',
-                'min:1',
-                function ($attribute, $value, $fail) use ($request) {
-                    $startDate = Carbon::parse($request->notification_start_date);
-                    $endDate = Carbon::parse($request->date_of_completion);
-                    $maxInterval = $startDate->diffInDays($endDate);
-
-                    if ($value > $maxInterval) {
-                        $fail("The notification interval cannot exceed $maxInterval days. Your value = $value");
-                    }
-                }
-            ]
-        ]);
+        $validated = $this->validateRequest($request);
         $task->update([
             'title' => $validated['title'],
             'description' => $validated['description'],
@@ -215,5 +179,32 @@ class TaskController extends Controller
         ]);
         $task->delete();
         return redirect()->route('tasks.index')->with('success', 'Task deleted successfully!');
+    }
+
+    public function validateRequest($request){
+        return $request->validate([
+            'title' => 'required|max:30',
+            'description' => 'required|max:255',
+            'notification_start_date' => 'required|after:today',
+            'date_of_completion' => 'required|after:today',
+            'notification_interval' => [
+                'required',
+                'numeric',
+                'min:1',
+                function ($attribute, $value, $fail) use ($request) {
+                    $startDate = Carbon::parse($request->notification_start_date);
+                    $endDate = Carbon::parse($request->date_of_completion);
+                    $maxInterval = $startDate->diffInDays($endDate);
+
+                    info("maxInterval = $maxInterval");
+                    info("Value = $value");
+
+                    if ($value > $maxInterval) {
+                        $fail("The notification interval cannot exceed $maxInterval days. Your value = $value");
+                    }
+                }
+            ],
+            'notes' => 'required'
+        ]);
     }
 }

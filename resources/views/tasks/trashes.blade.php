@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Tasks') }}
+            {{ __('Trashed Tasks') }}
         </h2>
     </x-slot>
 
@@ -56,82 +56,8 @@
                 @endif
             </div>
 
-            <a type="button" href="{{ route('tasks.create') }}"
-                class="py-2.5 px-5 me-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100">
-                {{ __('Create Task') }}
-            </a>
-            <a type="button" href="{{ route('tasks.trashed') }}"
-                class="py-2.5 px-5 me-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100">
-                {{ __('Trashed Tasks') }}
-            </a>
 
-            <form method="GET" class="mt-5 flex items-center justify-center gap-2"
-                action="{{ route('tasks.index') }}">
-                <!-- Search by Title -->
-                @csrf
-                <div class="mb-4">
-                    <label for="title" class="block text-sm font-medium text-gray-700">Search Title</label>
-                    <input type="text" name="title" id="title" value="{{ old('title', request('title')) }}"
-                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
-                </div>
-
-                <!-- Status Filter -->
-                <div class="mb-4">
-                    <label for="status" class="block text-sm font-medium text-gray-700">Status</label>
-                    <select name="status" id="status"
-                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
-                        <option value="">All</option>
-                        <option value="pending" {{ old('status', request('status')) === 'pending' ? 'selected' : '' }}>
-                            Pending</option>
-                        <option value="completed"
-                            {{ old('status', request('status')) === 'completed' ? 'selected' : '' }}>Completed
-                        </option>
-                    </select>
-                </div>
-
-                <!-- Assignee Filter -->
-                <div class="mb-4">
-                    <label for="assignee" class="block text-sm font-medium text-gray-700">Creators and Followers</label>
-                    <select name="assignee" id="assignee"
-                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
-                        <option value="">All</option>
-                        <option value="creator"
-                            {{ old('assignee', request('assignee')) === 'creator' ? 'selected' : '' }}>Created By You
-                        </option>
-                        <option value="follower"
-                            {{ old('assignee', request('assignee')) === 'follower' ? 'selected' : '' }}>Followed By You
-                        </option>
-                        <option value="others">Neither Created By You nor Followed By You</option>
-                    </select>
-                </div>
-
-                <!-- Sort Options -->
-                <div class="mb-4">
-                    <label for="sort" class="block text-sm font-medium text-gray-700">Sort By</label>
-                    <select name="sort" id="sort"
-                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
-                        <option value="">Default</option>
-                        <option value="title" {{ request('sort') === 'title' ? 'selected' : '' }}>Title (A-Z)</option>
-                        <option value="-title" {{ request('sort') === '-title' ? 'selected' : '' }}>Title (Z-A)
-                        </option>
-                        <option value="assigned_date" {{ request('sort') === 'assigned_date' ? 'selected' : '' }}>
-                            Assigned Date (Oldest)</option>
-                        <option value="-assigned_date" {{ request('sort') === '-assigned_date' ? 'selected' : '' }}>
-                            Assigned Date (Newest)</option>
-                    </select>
-                </div>
-
-                <div class="space-x-4">
-                    <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded-md">
-                        Apply Filters
-                    </button>
-                    <a href="{{ route('tasks.index') }}" class="px-4 py-2 bg-gray-300 text-gray-700 rounded-md">
-                        Reset
-                    </a>
-                </div>
-            </form>
-
-            <h4 class="text-xl font-extrabold text-center">All Tasks</h4>
+            <h4 class="text-xl font-extrabold text-center">All Trashed Tasks</h4>
 
             <div class="bg-white shadow-xl sm:rounded-lg m-4 mb-7">
 
@@ -197,7 +123,8 @@
                                         <td class="px-6 py-4 w-100">
                                             {{ $task->created_at }}
                                         </td>
-                                        <td class="px-6 py-4 w-100">
+                                        <td class="px-1 py-4 w-100">
+
                                             <button type="button"
                                                 class="text-gray-500 hover:text-gray-700 focus:outline-none transition-all duration-200 action-toggle"
                                                 onclick="toggleActions(this)">
@@ -213,15 +140,16 @@
                                             <div
                                                 class="absolute right-0 mt-2 w-32 bg-white rounded-md shadow-lg z-50 hidden actions-dropdown origin-top-right">
                                                 <div class="flex flex-col space-y-2 p-2">
-                                                    <a href="{{ route('tasks.show', $task->id) }}"
-                                                        class="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-3 py-2 text-center whitespace-nowrap">
-                                                        View
-                                                    </a>
-                                                    <a href="{{ route('tasks.edit', $task->id) }}"
-                                                        class="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-3 py-2 text-center whitespace-nowrap">
-                                                        Edit
-                                                    </a>
-                                                    <form action="{{ route('tasks.delete', $task->id) }}"
+                                                    <form action="{{ route('tasks.restore', $task->id) }}"
+                                                        method="post">
+                                                        @csrf
+                                                        @method('POST')
+                                                        <button type="submit"
+                                                            class="w-full focus:outline-none text-black bg-gray-100 hover:bg-gray-200 hover:text-black focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-3 py-2 text-center">
+                                                            Restore
+                                                        </button>
+                                                    </form>
+                                                    <form action="{{ route('tasks.forceDelete', $task->id) }}"
                                                         method="post">
                                                         @csrf
                                                         @method('POST')
@@ -232,21 +160,19 @@
                                                     </form>
                                                 </div>
                                             </div>
+
+
+
                                         </td>
+
                                     </tr>
                                 @endforeach
+                            @endif
                         </tbody>
                     </table>
                 </div>
-
             </div>
 
-            @endif
-
-            {{ $tasks->links() }}
-
         </div>
-
-
     </div>
 </x-app-layout>
