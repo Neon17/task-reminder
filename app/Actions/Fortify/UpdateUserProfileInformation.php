@@ -22,7 +22,7 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
         Validator::make($input, [
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'email', 'max:255', Rule::unique('users')->ignore($user->id)],
-            'photo' => ['nullable', 'mimes:jpg,jpeg,png', 'max:1024'],
+            'photo' => ['nullable', 'mimes:jpg,jpeg,png,webp', 'max:1024'],
             'timezone' => ['required']
         ])->validateWithBag('updateProfileInformation');
 
@@ -41,7 +41,6 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
                 'email' => $input['email'],
             ])->save();
 
-            info($input['timezone']); //bug also returns previous timezone despite which selection
             if ($input['timezone']) {
                 User::where('id', Auth::user()->id)
                     ->update([

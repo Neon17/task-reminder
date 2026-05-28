@@ -76,7 +76,7 @@ Route::middleware([
                     ->orWhere('email', 'like', "%{$query}%");
             })
             ->limit(10)
-            ->get(['id', 'name', 'email']);
+            ->get(['id', 'name', 'email', 'profile_photo_path']);
     });
 
     Route::get('/users/export', [UserController::class, 'exportFiltered'])->name('users.exportFiltered');
