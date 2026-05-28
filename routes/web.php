@@ -95,6 +95,7 @@ Route::middleware([
     Route::post('tasks/{task}/complete', [TaskController::class, 'completeTask'])->name('tasks.complete');
     Route::get('tasks/{task}/complete', [TaskController::class, 'complete'])->name('tasks.complete');
     Route::get('/tasks/export', [TaskController::class, 'exportFiltered'])->name('tasks.exportFiltered');
+    Route::post('tasks/followers/update', [TaskController::class, 'updateFollowers'])->name('tasks.followers.update');
     // Route::get('tasks/export', function() {
     //     log('Export route hit'); // Check storage/logs/laravel.log
     //     return "Hello, Exporting takes time...";

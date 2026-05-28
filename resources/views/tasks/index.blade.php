@@ -268,7 +268,7 @@
                                                             </button>
                                                         </form>
                                                     @else
-                                                        @if ($task->canComplete())
+                                                        @if ($task->canComplete() && $task->completed_date == null)
                                                             <a href="{{ route('tasks.edit', $task->id) }}"
                                                                 class="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-3 py-2 text-center whitespace-nowrap">
                                                                 {{ __('Edit') }}
@@ -276,6 +276,11 @@
                                                             <a href="{{ route('tasks.complete', $task->id) }}"
                                                                 class="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-3 py-2 text-center whitespace-nowrap">
                                                                 {{ __('Complete') }}
+                                                            </a>
+                                                        @else
+                                                            <a href="{{ route('tasks.show', $task->id) }}"
+                                                                class="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-3 py-2 text-center whitespace-nowrap">
+                                                                {{ __('View') }}
                                                             </a>
                                                         @endif
                                                     @endif

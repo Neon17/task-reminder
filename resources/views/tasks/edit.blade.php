@@ -1,13 +1,25 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{__('Reminder: ')}}  @if ($task)  {{$task->title}} @endif
+            {{ __('Reminder: ') }} @if ($task)
+                {{ $task->title }}
+            @endif
         </h2>
     </x-slot>
 
-    <div class="py-12">
+    <div class="p-2">
         <div class="mx-auto sm:px-6 lg:px-8">
 
+            <x-session-message />
+
+            <div class="buttons my-3">
+                @if ($task->canComplete())
+                    <a type="button" href="{{ route('tasks.complete', $task) }}"
+                        class="text-white bg-gray-600 hover:bg-gray-900 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center">
+                        {{ __('Complete Task') }}
+                    </a>
+                @endif
+            </div>
 
             <div class="relative overflow-x-auto p-5 bg-white">
                 <form class="mx-auto" action="{{ route('tasks.update', $task) }}" method="POST">
@@ -59,46 +71,6 @@
                                     {{ $message }}
                                 </div>
                             @enderror
-                        </div>
-
-                        <div class="relative z-0 w-full mb-5 group">
-                            <label for="followers" class="block mb-2 text-sm font-medium text-gray-900">
-                                {{ __('Assign Followers') }}
-                            </label>
-                            <div class="relative">
-                                <input type="text" id="follower-search"
-                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                                    placeholder="Search users...">
-                                <div id="follower-results"
-                                    class="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-lg shadow-lg hidden max-h-60 overflow-auto">
-                                </div>
-                            </div>
-                            <div id="selected-followers" class="mt-2 flex flex-wrap gap-2">
-                                @foreach ($task->followers as $follower)
-                                    <div
-                                        class="bg-blue-100 text-blue-800 text-sm font-medium px-2.5 py-0.5 rounded flex items-center">
-                                        <a href="{{ route('users.show', $follower) }}"
-                                            class="ml-1 text-blue-400 hover:text-blue-600">
-                                            <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
-                                                <path fill-rule="evenodd"
-                                                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-8.707l-3-3a1 1 0 00-1.414 0l-3 3a1 1 0 001.414 1.414L9 9.414V13a1 1 0 102 0V9.414l1.293 1.293a1 1 0 001.414-1.414z"
-                                                    clip-rule="evenodd"></path>
-                                            </svg>
-                                        </a>
-                                        {{ $follower->name }}
-                                        <button type="button" data-id="{{ $follower->id }}"
-                                            class="ml-1 text-blue-400 hover:text-blue-600">
-                                            <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
-                                                <path fill-rule="evenodd"
-                                                    d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                                                    clip-rule="evenodd"></path>
-                                            </svg>
-                                        </button>
-                                    </div>
-                                @endforeach
-                            </div>
-                            <input type="hidden" name="followers" id="selected-followers-input"
-                                value="{{ $task->followers->pluck('id')->toJson() }}">
                         </div>
 
 
@@ -192,22 +164,162 @@
                         @enderror
                     </div>
 
-                    <div class="flex gap-3"></div>
                     <button type="submit"
                         class="text-white mt-1 bg-blue-700 hover:bg-blue-900 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center">
                         {{ __('Update') }}
                     </button>
-
-                    @if ($task->canComplete())
-                        <a type="button" href="{{ route('tasks.complete', $task) }}"
-                            class="text-white mt-1 bg-gray-600 hover:bg-gray-900 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center">
-                            {{ __('Complete Task') }}
-                        </a>
-                    @endif
                 </form>
 
             </div>
 
+            <div class="relative overflow-x-auto p-5 mt-4 bg-white">
+                <form action="{{route('tasks.followers.update')}}" method="POST">
+                    @csrf
+                    <input type="text" name="task_id" id="" value="{{ $task->id }}" hidden />
+                    <div class="relative z-0 w-full mb-5 group">
+                        <label for="followers" class="block mb-2 text-sm font-medium text-gray-900">
+                            {{ __('Assign Followers (*Notes are not assigned on only updating followers)') }}
+                        </label>
+                        <div class="relative">
+                            <input type="text" id="follower-search"
+                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                                placeholder="Search users...">
+                            <div id="follower-results"
+                                class="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-lg shadow-lg hidden max-h-60 overflow-auto">
+                            </div>
+                        </div>
+                        <div id="selected-followers" class="mt-2 flex flex-wrap gap-2">
+                            @foreach ($task->followers as $follower)
+                                <div
+                                    class="bg-blue-100 text-blue-800 text-sm font-medium px-2.5 py-0.5 rounded flex items-center">
+                                    <a href="{{ route('users.show', $follower) }}"
+                                        class="ml-1 text-blue-400 hover:text-blue-600">
+                                        <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd"
+                                                d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-8.707l-3-3a1 1 0 00-1.414 0l-3 3a1 1 0 001.414 1.414L9 9.414V13a1 1 0 102 0V9.414l1.293 1.293a1 1 0 001.414-1.414z"
+                                                clip-rule="evenodd"></path>
+                                        </svg>
+                                    </a>
+                                    {{ $follower->name }}
+                                    <button type="button" data-id="{{ $follower->id }}"
+                                        class="ml-1 text-blue-400 hover:text-blue-600">
+                                        <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd"
+                                                d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                                                clip-rule="evenodd"></path>
+                                        </svg>
+                                    </button>
+                                </div>
+                            @endforeach
+                        </div>
+                        <input type="hidden" name="followers" id="selected-followers-input"
+                            value="{{ $task->followers->pluck('id')->toJson() }}">
+                    </div>
+
+                    <button type="submit"
+                        class="text-white mt-1 bg-blue-700 hover:bg-blue-900 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center">
+                        {{ __('Update Followers') }}
+                    </button>
+                </form>
+            </div>
+
+            @if (count($notes) > 0)
+                <h4 class="text-xl font-extrabold text-center mt-5 mb-2">{{ __('Notes') }}</h4>
+
+                <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg mb-7">
+
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-sm text-left rtl:text-right text-gray-500">
+                            <thead class="text-xs text-gray-900 uppercase bg-gray-200">
+                                <tr>
+                                    <th scope="col" class="px-6 py-3">
+                                        {{ __('SN') }}
+                                    </th>
+                                    <th scope="col" class="px-6 py-3">
+                                        {{ __('Description') }}
+                                    </th>
+                                    <th scope="col" class="px-6 py-3">
+                                        {{ __('Creator') }}
+                                    </th>
+                                    <th scope="col" class="px-6 py-3">
+                                        {{ __('Task') }}
+                                    </th>
+                                    <th scope="col" class="px-6 py-3">
+                                        {{ __('Reason') }}
+                                    </th>
+                                    <th scope="col" class="px-6 py-3">
+                                        {{ __('Assigned Date') }}
+                                    </th>
+                                    <th scope="col" class="px-6 py-3">
+                                        {{ __('Created Date') }}
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                @if (count($notes) == 0)
+                                    <tr class="bg-white border-b border-gray-200">
+                                        <td class="px-6 py-4 w-100">
+                                            <p class="text-center">{{ __('No notes found') }}</p>
+                                        </td>
+                                    </tr>
+                                @else
+                                    @foreach ($notes as $note)
+                                        <tr class="bg-white border-b border-gray-200">
+                                            <td class="px-6 py-4 w-100">
+                                                {{ $loop->iteration }}
+                                            </td>
+                                            <td class="px-6 py-4 w-100">
+                                                {{ Str::words($note->description, 6, '...') }}
+                                            </td>
+                                            <td class="px-6 py-4 w-100">
+                                                <div class="flex">
+                                                    <div value ="{{ $note->user->id }}"
+                                                        class="bg-blue-100 text-blue-800 text-sm font-medium px-2.5 py-2.5 rounded flex items-center">
+                                                        {{ $note->user->name }}
+                                                        <a href="{{ route('users.show', $note->user) }}"
+                                                            class="ml-1 text-blue-400 hover:text-blue-600">
+                                                            <svg class="w-3 h-3" fill="currentColor"
+                                                                viewBox="0 0 20 20">
+                                                                <path fill-rule="evenodd"
+                                                                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-8.707l-3-3a1 1 0 00-1.414 0l-3 3a1 1 0 001.414 1.414L9 9.414V13a1 1 0 102 0V9.414l1.293 1.293a1 1 0 001.414-1.414z"
+                                                                    clip-rule="evenodd"></path>
+                                                            </svg>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td class="px-6 py-4 w-100">
+                                                @if ($note->task)
+                                                    {{ $note->task->title }}
+                                                @else
+                                                    <em>{{ __('Deleted') }}</em>
+                                                @endif
+                                            </td>
+                                            <td class="px-6 py-4 w-100">
+                                                {{ $note->reason }}
+                                            </td>
+                                            <td class="px-6 py-4 w-100">
+                                                @if ($note->task)
+                                                    {{ $note->task->assigned_date }}
+                                                @else
+                                                    <em>{{ __('Deleted') }}</em>
+                                                @endif
+                                            </td>
+                                            <td class="px-6 py-4 w-100">
+                                                {{ $note->created_at }}
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                @endif
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+                {{ $notes->links() }}
+            @endif
         </div>
     </div>
 

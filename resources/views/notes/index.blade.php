@@ -166,8 +166,6 @@
                                             <div class="flex">
                                                 <div value ="{{ $note->user->id }}"
                                                     class="bg-blue-100 text-blue-800 text-sm font-medium px-2.5 py-2.5 rounded flex items-center">
-                                                    <img src="{{ $note->user->avatar || 'https://ui-avatars.com/api/?name=' . $note->user->name }}"
-                                                        class="w-5 h-5 rounded-full mr-1">
                                                     {{ $note->user->name }}
                                                     <a href="{{ route('users.show', $note->user) }}"
                                                         class="ml-1 text-blue-400 hover:text-blue-600">

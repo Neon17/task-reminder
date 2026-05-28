@@ -37,8 +37,7 @@ class TaskController extends Controller
         } else {
             if (array_key_exists('status', $validated) && $validated['status'] == 'trashed') {
                 $tasks = Task::where('created_by', Auth::user()->id)->onlyTrashed();
-            }
-            else {
+            } else {
                 $tasks = Task::where('created_by', Auth::user()->id)
                     ->orWhereHas('followers', fn($q) => $q->where('user_id', Auth::user()->id));
             }
@@ -146,7 +145,11 @@ class TaskController extends Controller
     {
         //this route is for showing single Task
         $task = Task::where('id', $task->id)->with('creator', 'followers')->first();
-        return view('tasks.show', compact('task'));
+        $notes = [];
+        if (Auth::user()->role == 'admin' || $task->created_by == Auth::user()->id) {
+            $notes = $task->notes()->with('user')->paginate(15)->withQueryString();
+        }
+        return view('tasks.show', compact('task', 'notes'));
     }
 
     public function complete(Task $task)
@@ -191,7 +194,20 @@ class TaskController extends Controller
         if (($task->created_by != Auth::user()->id) && (Auth::user()->role != 'admin')) {
             return redirect()->back()->with('error', 'Only task creator and admin are authorized to edit this task!'); //back() suitable or route('tasks.index')
         }
-        return view('tasks.edit', compact('task'));
+
+        $notes = [];
+        if (Auth::user()->role == 'admin' || $task->created_by == Auth::user()->id) {
+            $notes = $task->notes()->with('user')->paginate(15)->withQueryString();
+        }
+        return view('tasks.edit', compact('task', 'notes'));
+    }
+
+    public function updateFollowers(Request $request)
+    {
+        $task = Task::find($request->task_id);
+        $followerIds = json_decode($request->followers, true);
+        $task->followers()->sync($followerIds);
+        return redirect()->back()->with('success', 'Followers updated successfully!');
     }
 
     public function update(Request $request, Task $task)
