@@ -168,17 +168,20 @@
                                         </td>
                                         <td class="px-6 py-4 w-100">
                                             <div class="flex">
-                                                <div value ="{{ $task->creator->id }}"
+                                                <div value ="{{ $task->creator ? $task->creator->id : '' }}"
                                                     class="text-sm font-medium px-2.5 py-2.5 rounded flex items-center">
-                                                    {{ $task->creator->name }}
-                                                    <a href="{{ route('users.show', $task->creator) }}"
-                                                        class="ml-1 text-blue-400 hover:text-blue-600">
-                                                        <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
-                                                            <path fill-rule="evenodd"
-                                                                d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-8.707l-3-3a1 1 0 00-1.414 0l-3 3a1 1 0 001.414 1.414L9 9.414V13a1 1 0 102 0V9.414l1.293 1.293a1 1 0 001.414-1.414z"
-                                                                clip-rule="evenodd"></path>
-                                                        </svg>
-                                                    </a>
+                                                    {{ $task->creator ? $task->creator->name : '' }}
+                                                    @if ($task->creator)
+                                                        <a href="{{ route('users.show', $task->creator ? $task->creator->id : '') }}"
+                                                            class="ml-1 text-blue-400 hover:text-blue-600">
+                                                            <svg class="w-3 h-3" fill="currentColor"
+                                                                viewBox="0 0 20 20">
+                                                                <path fill-rule="evenodd"
+                                                                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-8.707l-3-3a1 1 0 00-1.414 0l-3 3a1 1 0 001.414 1.414L9 9.414V13a1 1 0 102 0V9.414l1.293 1.293a1 1 0 001.414-1.414z"
+                                                                    clip-rule="evenodd"></path>
+                                                            </svg>
+                                                        </a>
+                                                    @endif
                                                 </div>
                                             </div>
                                         </td>

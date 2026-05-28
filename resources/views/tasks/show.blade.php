@@ -11,7 +11,7 @@
         <div class="mx-auto sm:px-6 lg:px-8">
 
             <x-session-message />
-    
+
             <div class="relative overflow-x-auto p-5 mt-5 bg-white">
                 <div class="button-direction flex justify-end">
                     @if ($task->completed_date)
@@ -24,88 +24,46 @@
                             <a type="button" href="{{ route('tasks.edit', $task) }}"
                                 class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center">
                                 {{ __('Edit') }}
+
+                            </a>
+                            <form action="{{ route('tasks.delete', $task->id) }}" class="mx-2" method="post">
+                                @csrf
+                                @method('POST')
+                                <button type="submit"
+                                    class="w-full focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-3 py-2 text-center">
+                                    {{ __('Delete') }}
+                                </button>
+                            </form>
                         @endif
-                        </a>
                     @endif
                 </div>
                 <form class="mx-auto">
 
-                    <div class="edit-field-container">
-
-                        <div class="relative z-0 w-full mb-5 group">
-                            <input type="text" name="title" id="floating_first_name"
-                                class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                                value="{{ $task->title }}" placeholder=" " required />
-                            <label for="floating_first_name"
-                                class="peer-focus:font-medium absolute text-sm text-gray-500 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
-                                {{ __('Title') }}
-                            </label>
-                        </div>
-
-
-                        <div class="relative z-0 w-full mb-5 group">
-                            <input type="text" name="description" id="floating_first_name"
-                                value="{{ $task->description }}"
-                                class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                                placeholder=" " required />
-                            <label for="floating_first_name"
-                                class="peer-focus:font-medium absolute text-sm text-gray-500 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
-                                {{ __('Description') }}
-                            </label>
-                        </div>
-
-                        <div class="relative z-0 w-full mb-5 group">
-                            <input type="datetime-local" name="date_of_completion" id="floating_first_name"
-                                value="{{ $task->assigned_date }}"
-                                class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                                placeholder=" " required />
-                            <label for="floating_first_name"
-                                class="peer-focus:font-medium absolute text-sm text-gray-500 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
-                                {{ __('Assigned Date of Completion') }}
-                            </label>
-                        </div>
-
-                        <div class="relative z-0 w-full mb-5 group">
-                            <input type="datetime-local" name="notification_start_date" id="floating_first_name"
-                                value="{{ $task->notification_start_date }}"
-                                class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                                placeholder=" " required />
-                            <label for="floating_first_name"
-                                class="peer-focus:font-medium absolute text-sm text-gray-500 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
-                                {{ __('Notification Start Date') }}
-                            </label>
-                        </div>
-
-                        <div class="relative z-0 w-full mb-5 group">
-                            <input type="number" name="notification_interval" id="floating_first_name"
-                                value="{{ $task->notification_interval }}"
-                                class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                                placeholder=" " required />
-                            <label for="floating_first_name"
-                                class="peer-focus:font-medium absolute text-sm text-gray-500 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
-                                {{ __('Notification Interval (in days)') }}
-                            </label>
-                        </div>
-
-
+                    <div class="edit-field-container flex flex-col gap-5">
+                        <x-form.input type="text" name="title" :value="$task->title" label="Title" editable="false" />
+                        <x-form.input type="text" name="description" :value="$task->description" label="Description" editable="false" />
+                        <x-form.input type="datetime-local" name="date_of_completion" label="Complete Date" :value="$task->assigned_date" editable="false" />
+                        <x-form.input type="number" name="notification_interval" label="Notification Interval (in days)" :value="$task->notification_interval"  editable="false" />
                     </div>
 
-                    <div class="relative z-0 flex gap-3 mb-5 group">
+                    <div class="relative z-0 flex gap-3 mb-5 mt-5 group">
                         <label class="block mb-2 text-sm font-medium text-gray-900">
                             {{ __('Created By') }}
                         </label>
-                        <div
-                            class="bg-blue-100 text-blue-800 text-sm font-medium px-2.5 py-1.5 rounded flex items-center">
-                            {{ $task->creator->name }}
-                            <a href="{{ route('users.show', $task->creator) }}"
-                                class="ml-1 text-blue-400 hover:text-blue-600">
-                                <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd"
-                                        d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-8.707l-3-3a1 1 0 00-1.414 0l-3 3a1 1 0 001.414 1.414L9 9.414V13a1 1 0 102 0V9.414l1.293 1.293a1 1 0 001.414-1.414z"
-                                        clip-rule="evenodd"></path>
-                                </svg>
-                            </a>
-                        </div>
+                        @if ($task->creator)
+                            <div
+                                class="bg-blue-100 text-blue-800 text-sm font-medium px-2.5 py-1.5 rounded flex items-center">
+                                {{ $task->creator->name }}
+                                <a href="{{ route('users.show', $task->creator) }}"
+                                    class="ml-1 text-blue-400 hover:text-blue-600">
+                                    <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd"
+                                            d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-8.707l-3-3a1 1 0 00-1.414 0l-3 3a1 1 0 001.414 1.414L9 9.414V13a1 1 0 102 0V9.414l1.293 1.293a1 1 0 001.414-1.414z"
+                                            clip-rule="evenodd"></path>
+                                    </svg>
+                                </a>
+                            </div>
+                        @endif
                         </a>
                     </div>
                 </form>

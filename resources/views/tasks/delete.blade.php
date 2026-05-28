@@ -13,7 +13,9 @@
 
                 <div class="edit-field-container flex flex-col gap-5">
 
-                    <x-form.input type="text" name="description" label="Notes" />
+                    <x-form.input type="text" name="title" label="Title" :value="$task->title" />
+
+                    <x-form.input type="text" name="description" label="Description" :value="$task->description" />
 
                     <x-form.input type="datetime-local" name="date_of_completion" :value="$task->assigned_date" label="Assigned Date of Completion"  />
 

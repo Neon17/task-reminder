@@ -11,10 +11,10 @@
         <x-form.input name="title" id="title" label="Title" type="text" :value="old('title', $task->title ?? '')" :editable="$isEdit" required />
         <x-form.input name="description" id="description" label="Description" type="text" :value="old('description', $task->description ?? '')" :editable="$isEdit" required />
 
-        <x-form.input name="assigned_completion_date" id="assigned_completion_date" label="Assigned Completion Date"
+        <x-form.input name="date_of_completion" id="assigned_completion_date" label="Assigned Completion Date"
             :editable="$isEdit"
             type="datetime-local" :value="old(
-                'assigned_completion_date',
+                'date_of_completion',
                 isset($task->assigned_date) ? \Carbon\Carbon::parse($task->assigned_date)->format('Y-m-d\TH:i') : '',
             )" required />
 
@@ -30,7 +30,7 @@
             :value="old('notification_interval', $task->notification_interval ?? '')" required :editable="$isEdit" />
 
         {{-- Notes (only on Edit) --}}
-        @if ($isEdit)
+        @if ($isEdit!="false")
             <div>
                 <label for="notes" class="block mb-2 text-sm font-medium text-gray-900">
                     Your Notes

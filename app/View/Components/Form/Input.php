@@ -12,7 +12,7 @@ class Input extends Component
     public $value;
     public $required;
     public $placeholder;
-    public $editable = true;
+    public $editable = "true";
 
     public function __construct(
         $name,
@@ -21,9 +21,9 @@ class Input extends Component
         $value = '',
         $required = false,
         $placeholder = ' ',
-        $editable = true
+        $editable = "true"
     ) {
-        info('editable = ' . $editable);
+        info("Editable = $editable");
         $this->editable = $editable;
         $this->name = $name;
         $this->label = $label;

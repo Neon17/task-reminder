@@ -24,7 +24,7 @@ class TaskController extends Controller
             'per_page' => 'nullable|integer|min:1|max:100',
         ]);
 
-        $tasks = null;
+        $tasks = [];
 
         // return $validated;
 
@@ -50,7 +50,7 @@ class TaskController extends Controller
         if ($request->export_excel == 'true') {
             return Excel::download(new TasksExport($tasks->get()), 'tasks.xlsx');
         }
-        $tasks = $tasks->paginate($validated["per_page"] ?? 15)->withQueryString();
+        $tasks = $tasks->with('creator', 'followers')->paginate($validated["per_page"] ?? 15)->withQueryString();
 
 
         return view('tasks.index', [
@@ -132,11 +132,11 @@ class TaskController extends Controller
             'created_by' => Auth::user()->id,
         ]);
 
-        $task->notes()->create([
-            'reason' => 'creation', // no need as creation is default
-            'description' => $request->notes,
-            'user_id' => Auth::user()->id
-        ]);
+        // $task->notes()->create([
+        //     'reason' => 'creation', // no need as creation is default
+        //     'description' => $request->notes,
+        //     'user_id' => Auth::user()->id
+        // ]);
 
         return redirect()->route('tasks.index')->with('success', 'Task created successfully!');
     }
@@ -191,7 +191,7 @@ class TaskController extends Controller
             return redirect()->route('tasks.index')->with('error', "Task not Found!");
         }
 
-        if (!$task->canDelete())
+        if (!$task->canComplete())
             return redirect()->back()->with('error', "Only task creator can edit the task");
 
         if ($task->completed_date) {
@@ -199,7 +199,7 @@ class TaskController extends Controller
         }
 
         if (($task->created_by != Auth::user()->id) && (Auth::user()->role != 'admin')) {
-            return redirect()->back()->with('error', 'Only task creator and admin are authorized to edit this task!'); //back() suitable or route('tasks.index')
+            return redirect()->back()->with('error', 'Only task creator or admin are authorized to edit this task!'); //back() suitable or route('tasks.index')
         }
 
         $notes = [];
@@ -251,7 +251,7 @@ class TaskController extends Controller
 
     public function delete(Task $task)
     {
-        if (($task->created_by != Auth::user()->id) || (Auth::user()->role != 'admin')) {
+        if (($task->created_by != Auth::user()->id) && (Auth::user()->role != 'admin')) {
             return redirect()->route('tasks.index')->with('error', 'Only task creator or admin is authorized to delete this task!');
         }
         if (!$task) {
@@ -309,7 +309,7 @@ class TaskController extends Controller
             'title' => 'required|max:30',
             'description' => 'required|max:255',
             'notification_start_date' => 'required|after:today',
-            'date_of_completion' => 'required|after:today',
+            'date_of_completion' => 'required|after:notification_start_date',
             'notification_interval' => [
                 'required',
                 'numeric',
@@ -317,6 +317,8 @@ class TaskController extends Controller
                 function ($attribute, $value, $fail) use ($request) {
                     $startDate = Carbon::parse($request->notification_start_date);
                     $endDate = Carbon::parse($request->date_of_completion);
+                    info("Start Date = $startDate");
+                    info("End Date = $endDate");
                     $maxInterval = $startDate->diffInDays($endDate);
 
                     info("maxInterval = $maxInterval");
@@ -327,7 +329,6 @@ class TaskController extends Controller
                     }
                 }
             ],
-            'notes' => 'required'
         ]);
     }
 }

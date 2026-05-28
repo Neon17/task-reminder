@@ -22,7 +22,7 @@
             </div>
 
             <div class="relative overflow-x-auto p-5 my-2 bg-white">
-                @include('tasks._form', ['task' => $task, 'isEdit' => true])                
+                @include('tasks._form', ['task' => $task, 'isEdit' => "true"])                
             </div>
             
             <div class="relative overflow-x-auto p-5 my-2 bg-white">
